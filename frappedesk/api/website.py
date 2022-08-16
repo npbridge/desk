@@ -19,3 +19,14 @@ def navbar_items():
 def helpdesk_name():
     name = frappe.get_doc("Support Settings").helpdesk_name
     return name if name else ''
+
+@frappe.whitelist(allow_guest=True)
+def threshold_limit():
+    limit = frappe.get_doc("Support Settings").threshold_limit
+    return limit if limit else ''
+
+@frappe.whitelist(allow_guest=True)
+def use_bot_answers():
+    flag = frappe.get_doc("Support Settings").use_bot_answers
+    return flag if flag else ''
+
