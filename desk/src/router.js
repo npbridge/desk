@@ -4,23 +4,29 @@ const routes = [
   {
     path: '/frappedesk/login',
     name: 'DeskLogin',
-    component: () => import('@/pages/auth/Login.vue'),
+    // component: () => import('@/pages/auth/Login.vue'),
+    redirect: () => {
+      return { path: '/login' }
+    },
   },
   {
     path: '/support/login',
     name: 'PortalLogin',
-    component: () => import('@/pages/auth/Login.vue'),
+    // component: () => import('@/pages/auth/Login.vue'),
+    redirect: () => {
+      return { path: '/login' }
+    },
   },
-  {
-    path: '/frappedesk/signup',
-    name: 'DeskSignup',
-    component: () => import('@/pages/auth/Signup.vue'),
-  },
-  {
-    path: '/support/signup',
-    name: 'PortalSignup',
-    component: () => import('@/pages/auth/Signup.vue'),
-  },
+  // {
+  //   path: '/frappedesk/signup',
+  //   name: 'DeskSignup',
+  //   component: () => import('@/pages/auth/Signup.vue'),
+  // },
+  // {
+  //   path: '/support/signup',
+  //   name: 'PortalSignup',
+  //   component: () => import('@/pages/auth/Signup.vue'),
+  // },
   {
     path: '/support/verify/:requestKey',
     name: 'Verify Account',
