@@ -31,18 +31,20 @@ def sent_invites(emails, send_welcome_mail_to_user=True):
 	for email in emails:
 		if frappe.db.exists("User", email):
 			user = frappe.get_doc("User", email)
-			user.role_profile_name = "helpdesk agent"
+			# user.role_profile_name = "Help Desk Agent" 
+			user.add_roles("Frappedesk User")
 			user.save()
 		else:
 			user = frappe.get_doc({
 				"doctype": "User",
 				"email": email,
 				"first_name": email.split("@")[0],
-				"role_profile_name": "helpdesk agent"
 			}).insert()
-			
 			if send_welcome_mail_to_user:
 				user.send_welcome_mail_to_user()
+
+		user.add_roles("Frappedesk User")
+		user.save()
 
 		frappe.get_doc({
 			"doctype": "Agent",
