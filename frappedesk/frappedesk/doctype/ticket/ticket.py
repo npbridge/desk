@@ -255,13 +255,13 @@ def create_communication_via_agent(ticket, message, attachments=None):
 	communication.save(ignore_permissions=True)
 
 	_attachments = []
-	
+
 	for attachment in attachments:
 		file_doc = frappe.get_doc("File", attachment)
 		file_doc.attached_to_name = communication.name
 		file_doc.attached_to_doctype = "Communication"
 		file_doc.save(ignore_permissions=True)
-		
+
 		_attachments.append({'file_url': file_doc.file_url})
 
 	if sent_email:
@@ -317,7 +317,7 @@ def update_ticket_status_via_customer_portal(ticket, new_status):
 @frappe.whitelist()
 def get_all_conversations(ticket):
 	conversations = frappe.db.get_all("Communication", filters={"reference_doctype": ["=", "Ticket"], "reference_name": ["=", ticket]}, order_by="creation asc", fields=["name", "content", "creation", "sent_or_received", "sender"])
-	
+
 	for conversation in conversations:
 		if frappe.db.exists("Agent", conversation.sender):
 			# user User details instead of Contact if the sender is an agent
@@ -333,7 +333,7 @@ def get_all_conversations(ticket):
 		conversation.sender = sender
 
 		attachments = frappe.get_all(
-			"File", 
+			"File",
 			["file_name", "file_url"],
 			{"attached_to_name": conversation.name, "attached_to_doctype": "Communication"}
 		)
@@ -365,7 +365,7 @@ def get_user_tickets(filters='{}', order_by='creation desc', impersonate=None):
 	print(f'CALL: get_user_tickets, filters: {filters} order_by: {order_by} impersonate: {impersonate}')
 	filters = json.loads(filters)
 	filters['raised_by'] = ['=', frappe.session.user]
-	
+
 	if impersonate and frappe.db.exists("Agent", frappe.session.user):
 		filters['raised_by'] = ['=', impersonate]
 
@@ -474,6 +474,16 @@ def make_ticket_from_communication(communication, ignore_communication_links=Fal
 	).insert(ignore_permissions=True)
 
 	link_communication_to_document(doc, "Ticket", ticket.name, ignore_communication_links)
+
+	frappe.get_doc(
+        {
+            "doctype": "Comment",
+            "comment_type": "Comment",
+            "reference_doctype": "Ticket",
+            "reference_name": doc.reference_name,
+            "content": "Response from VELA Bot"
+            }
+    ).insert(ignore_permissions=True)
 
 	return ticket.name
 
