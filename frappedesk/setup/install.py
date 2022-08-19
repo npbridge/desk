@@ -1,7 +1,9 @@
 import frappe
+from ..config.loginPage import app_data
 
 def before_install():
 	set_home_page_to_kb()
+	set_login_page()
 	add_support_redirect_to_tickets()
 
 def after_install():
@@ -15,11 +17,20 @@ def after_install():
 	update_agent_role_permissions()
 	add_default_assignment_rule()
 
+def set_login_page():
+	website_settings = frappe.get_doc("Website Settings")
+
+	website_settings.app_name = app_data["app_name"]
+	website_settings.app_logo = app_data["app_logo"]
+	website_settings.disable_signup = 1
+	website_settings.save()
+
+
 def set_home_page_to_kb():
 	website_settings = frappe.get_doc("Website Settings")
 
 	if not website_settings.home_page:
-		website_settings.home_page = "/home"
+		website_settings.home_page = "home"
 		website_settings.save()
 
 def add_support_redirect_to_tickets():
