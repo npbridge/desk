@@ -13,7 +13,7 @@
 				/>
 			</div>
 			<router-link
-				:to="`/moodledesk/contacts/${contact.name}`"
+				:to="`/frappedesk/contacts/${contact.name}`"
 				class="w-full group flex items-center"
 			>
 				<div class="sm:w-5/12 truncate pr-10">
