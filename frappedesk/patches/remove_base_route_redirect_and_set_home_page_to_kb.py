@@ -9,6 +9,6 @@ def remove_base_route_redirect():
     website_settings = frappe.get_doc("Website Settings")
 
     for route_redirect in website_settings.route_redirects:
-        if(route_redirect.source == "/" and route_redirect.target == "/support/kb"):
+        if(route_redirect.source == "/" and route_redirect.target == "/home"):
             website_settings.remove(route_redirect)
             website_settings.save()
