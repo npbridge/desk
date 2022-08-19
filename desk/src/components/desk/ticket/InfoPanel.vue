@@ -419,7 +419,6 @@ export default {
 			}
 		},
 		contactDepartment() {
-			console.log(this.ticket.contact.department, "ticket contact")
 			if (this.ticket.contact) { 
 				return this.ticket.contact.department || 'Not available'
 			}

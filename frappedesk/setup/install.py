@@ -1,4 +1,5 @@
 import frappe
+from ..config.loginPage import app_data
 
 def before_install():
 	set_home_page_to_kb()
@@ -19,11 +20,10 @@ def after_install():
 def set_login_page():
 	website_settings = frappe.get_doc("Website Settings")
 
-	if not website_settings.home_page:
-		website_settings.app_name = "Moodle Helpdesk"
-		website_settings.app_logo = "https://www.col.org/wp-content/uploads/2021/08/col-logo-stacked-color-1.png"
-		website_settings.disable_signup = 1
-		website_settings.save()
+	website_settings.app_name = app_data["app_name"]
+	website_settings.app_logo = app_data["app_logo"]
+	website_settings.disable_signup = 1
+	website_settings.save()
 
 
 def set_home_page_to_kb():
