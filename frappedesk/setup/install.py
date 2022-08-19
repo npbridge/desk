@@ -2,6 +2,7 @@ import frappe
 
 def before_install():
 	set_home_page_to_kb()
+	set_login_page()
 	add_support_redirect_to_tickets()
 
 def after_install():
@@ -15,11 +16,21 @@ def after_install():
 	update_agent_role_permissions()
 	add_default_assignment_rule()
 
+def set_login_page():
+	website_settings = frappe.get_doc("Website Settings")
+
+	if not website_settings.home_page:
+		website_settings.app_name = "Moodle Helpdesk"
+		website_settings.app_logo = "https://www.col.org/wp-content/uploads/2021/08/col-logo-stacked-color-1.png"
+		website_settings.disable_signup = 1
+		website_settings.save()
+
+
 def set_home_page_to_kb():
 	website_settings = frappe.get_doc("Website Settings")
 
 	if not website_settings.home_page:
-		website_settings.home_page = "/home"
+		website_settings.home_page = "home"
 		website_settings.save()
 
 def add_support_redirect_to_tickets():
