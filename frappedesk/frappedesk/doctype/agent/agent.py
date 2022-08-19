@@ -11,7 +11,7 @@ class Agent(Document):
 
 	def set_user_roles(self):
 		user = frappe.get_doc("User", self.user)
-		for role in ["Agent", "System Manager"]:
+		for role in ["Helpdesk Agent"]:
 			user.append("roles", {
 				"role": role
 			})
