@@ -38,7 +38,6 @@ def sent_invites(emails, send_welcome_mail_to_user=True):
 				"email": email,
 				"first_name": email.split("@")[0],
 			}).insert()
-			
 			if send_welcome_mail_to_user:
 				user.send_welcome_mail_to_user()
 
