@@ -19,7 +19,7 @@ def set_home_page_to_kb():
 	website_settings = frappe.get_doc("Website Settings")
 
 	if not website_settings.home_page:
-		website_settings.home_page = "/support/kb"
+		website_settings.home_page = "/home"
 		website_settings.save()
 
 def add_support_redirect_to_tickets():
