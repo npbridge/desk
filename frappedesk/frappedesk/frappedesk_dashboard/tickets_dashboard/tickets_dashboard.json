@@ -5,6 +5,9 @@
   },
   {
    "card": "Total Number Of Unresolved Tickets"
+  },
+  {
+   "card": "Total Number Of Learners Contacted"
   }
  ],
  "charts": [
@@ -13,11 +16,11 @@
    "width": "Half"
   },
   {
-   "chart": "Tickets Resolved Over Time",
+   "chart": "Tickets Replied To Over Time",
    "width": "Half"
   },
   {
-   "chart": "Tickets Replied To Over Time",
+   "chart": "Tickets Resolved Over Time",
    "width": "Half"
   },
   {
@@ -25,11 +28,11 @@
    "width": "Half"
   },
   {
-   "chart": "Total Number Of Tickets Over Department",
+   "chart": "Total Number Of Contacts Over Department",
    "width": "Half"
   },
   {
-   "chart": "Total Number Of Contacts Grouped Over Department",
+   "chart": "Total Number Of Tickets Over Department",
    "width": "Half"
   }
  ],
@@ -40,7 +43,7 @@
  "idx": 0,
  "is_default": 1,
  "is_standard": 1,
- "modified": "2022-08-22 11:38:16.704294",
+ "modified": "2022-08-22 13:34:06.939254",
  "modified_by": "Administrator",
  "module": "FrappeDesk",
  "name": "Tickets Dashboard",
