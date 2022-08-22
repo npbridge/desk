@@ -1,0 +1,13 @@
+{
+ "creation": "2022-08-22 11:23:21.064013",
+ "docstatus": 0,
+ "doctype": "Dashboard Chart Source",
+ "idx": 0,
+ "modified": "2022-08-22 11:23:21.064013",
+ "modified_by": "Administrator",
+ "module": "FrappeDesk",
+ "name": "Contacts Grouped Over Department",
+ "owner": "Administrator",
+ "source_name": "Contacts Grouped Over Department",
+ "timeseries": 0
+}
