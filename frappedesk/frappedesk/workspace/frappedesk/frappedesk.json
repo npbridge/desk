@@ -149,7 +149,7 @@
    "type": "Link"
   }
  ],
- "modified": "2022-07-21 19:26:55.214322",
+ "modified": "2022-08-19 15:19:42.238093",
  "modified_by": "Administrator",
  "module": "FrappeDesk",
  "name": "FrappeDesk",
@@ -190,5 +190,5 @@
    "type": "DocType"
   }
  ],
- "title": "Frappe Desk"
+ "title": "FrappeDesk"
 }

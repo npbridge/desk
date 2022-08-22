@@ -5,7 +5,7 @@ from frappe import _
 def get_breadcrumbs(route):
     parents = []
 
-    parents.append({'label': 'Home', 'route': '/support/kb'})
+    parents.append({'label': 'Home', 'route': '/home'})
 
     allowed_doctypes = [
         {

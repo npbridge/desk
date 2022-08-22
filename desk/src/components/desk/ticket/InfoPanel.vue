@@ -33,6 +33,16 @@
 								/>
 							</div>
 						</div>
+						<div class="flex flex-row items-center space-x-[12px]">
+							<FeatherIcon
+								name="book"
+								class="stroke-gray-500"
+								style="width: 15px"
+							/>
+								<a :title="ticket.contact.department" class="text-gray-700 text-base">{{
+									ticket.contact.department
+								}}</a>
+						</div> 
 						<div
 							v-if="ticket.contact.phone_nos.length > 0"
 							class="flex space-x-[12px] items-center"
@@ -407,6 +417,12 @@ export default {
 					(this.ticket.contact.last_name || '')
 				).slice(0, 40)
 			}
+		},
+		contactDepartment() {
+			if (this.ticket.contact) { 
+				return this.ticket.contact.department || 'Not available'
+			}
+
 		},
 		filterdContacts() {
 			return this.query === ''
