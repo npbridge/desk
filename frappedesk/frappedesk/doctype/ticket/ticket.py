@@ -192,6 +192,16 @@ def create_communication_via_contact(ticket, message, attachments=[]):
         file_doc.attached_to_doctype = "Communication"
         file_doc.save(ignore_permissions=True)
 
+    frappe.get_doc(
+        {
+            "doctype": "Comment",
+            "comment_type": "Comment",
+            "reference_doctype": "Ticket",
+            "reference_name": communication.reference_name,
+            "content": "Response from Bot"
+            }
+    ).insert(ignore_permissions=True)
+
 @frappe.whitelist(allow_guest=True)
 def create_communication_via_agent(ticket, message, attachments=None):
     ticket_doc = frappe.get_doc("Ticket", ticket)
@@ -316,7 +326,7 @@ def update_ticket_status_via_customer_portal(ticket, new_status):
 
 @frappe.whitelist()
 def get_all_conversations(ticket):
-    conversations = frappe.db.get_all("Communication", filters={"reference_doctype": ["=", "Ticket"], "reference_name": ["=", ticket]}, order_by="creation asc", fields=["name", "content", "creation", "sent_or_received", "sender"])
+    conversations = frappe.db.get_all("Communication", filters={"reference_doctype": ["=", "Ticket"], "reference_name": ["=", ticket]}, order_by="creation asc", fields=["name", "content", "creation", "sent_or_received", "sender", "reference_name"])
 
     for conversation in conversations:
         if frappe.db.exists("Agent", conversation.sender):
@@ -339,6 +349,20 @@ def get_all_conversations(ticket):
         )
 
         conversation.attachments = attachments
+
+        # If there is no comment for any ticket then we are adding comment from BOT
+        comment_count = frappe.db.count("Comment", {"reference_doctype": "Ticket", "reference_name": conversation.reference_name, "comment_type": "Comment"})
+        if not comment_count:
+            frappe.get_doc(
+                {
+                    "doctype": "Comment",
+                    "comment_type": "Comment",
+                    "reference_doctype": "Ticket",
+                    "reference_name": conversation.reference_name,
+                    "content": "Response from Bot"
+                }
+            ).insert(ignore_permissions=True)
+
     return conversations
 
 @frappe.whitelist()
@@ -475,15 +499,17 @@ def make_ticket_from_communication(communication, ignore_communication_links=Fal
 
     link_communication_to_document(doc, "Ticket", ticket.name, ignore_communication_links)
 
-    frappe.get_doc(
-        {
-            "doctype": "Comment",
-            "comment_type": "Comment",
-            "reference_doctype": "Ticket",
-            "reference_name": doc.reference_name,
-            "content": "Response from VELA Bot"
-            }
-    ).insert(ignore_permissions=True)
+    ## This should work to create ticket from email, but it is not getting triggered right now
+
+    #frappe.get_doc(
+    #    {
+    #        "doctype": "Comment",
+    #        "comment_type": "Comment",
+    #        "reference_doctype": "Ticket",
+    #        "reference_name": doc.reference_name,
+    #        "content": "Response from Bot"
+    #        }
+    #).insert(ignore_permissions=True)
 
     return ticket.name
 
