@@ -1,0 +1,13 @@
+{
+ "creation": "2022-08-22 10:55:49.391098",
+ "docstatus": 0,
+ "doctype": "Dashboard Chart Source",
+ "idx": 0,
+ "modified": "2022-08-22 10:55:49.391098",
+ "modified_by": "Administrator",
+ "module": "FrappeDesk",
+ "name": "Tickets Grouped Over Department",
+ "owner": "Administrator",
+ "source_name": "Tickets Grouped Over Department",
+ "timeseries": 0
+}
