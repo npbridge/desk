@@ -2,6 +2,13 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 const routes = [
   {
+    path: '/home',
+    name: 'HomePage',
+    beforeEnter(to, from, next) {
+      window.location.href = '/home'
+    },
+  },
+  {
     path: '/frappedesk/login',
     name: 'DeskLogin',
     // component: () => import('@/pages/auth/Login.vue'),
