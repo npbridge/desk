@@ -25,8 +25,8 @@
 					</div>
 				</div>
 				<div class="sm:w-3/12 truncate pr-10">
-					<div v-if="contact.phone && contact.phone.length > 0">
-						{{ contact.phone[0] }}
+					<div v-if="contact.department">
+						{{ contact.department }}
 					</div>
 				</div>
 			</router-link>

@@ -19,7 +19,7 @@
                     Email
                 </div>
                 <div class="sm:w-3/12">
-                    Phone
+                    Course
                 </div>
             </div>
         </div>
