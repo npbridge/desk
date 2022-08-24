@@ -68,7 +68,7 @@ export default {
       },
       logout: async () => {
         await call('logout')
-        this.$router.push({ path: '/' })
+        this.$router.push({ name: 'DeskLogin' })
       },
       resetPassword: async (email) => {
         console.log('reset password')
