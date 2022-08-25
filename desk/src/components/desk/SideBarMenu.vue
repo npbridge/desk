@@ -180,6 +180,20 @@ export default {
   mounted() {
     this.menuOptions = [
       {
+        label: 'Home Page',
+        icon: 'home',
+        to: {
+          path: '/home',
+        },
+      },
+      {
+        label: 'Dashboard',
+        icon: 'dashboard',
+        to: {
+          path: '/app/dashboard-view/Tickets%20Dashboard',
+        },
+      },
+      {
         label: 'Tickets',
         icon: 'ticket',
         expanded: true,
@@ -198,17 +212,23 @@ export default {
         to: {
           path: '/frappedesk/knowledge-base',
         },
-      },
-      {
-        label: 'Settings',
-        icon: 'settings',
-        to: {
-          path: '/frappedesk/settings',
-        },
-      },
+      }
     ]
 
     if (this.user.agent) {
+      const foundRoleInfo = this.user.doc.roles.find(role => role.role === 'Helpdesk Manager')
+          if (foundRoleInfo)  {
+            this.menuOptions.push(
+              {
+                label: 'Settings',
+                icon: 'settings',
+                to: {
+                  path: '/frappedesk/settings',
+                },
+              }
+          )
+        }
+
       this.menuOptions
         .find((option) => option.label == 'Tickets')
         .children.push(
@@ -291,7 +311,7 @@ export default {
 
     this.profileSettings = [
       {
-        label: 'View Website',
+        label: 'View home page',
         icon: 'external-link',
         style: 'text-gray-800',
         action: () => {

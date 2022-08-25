@@ -3,7 +3,7 @@ from frappedesk.frappedesk.doctype.ticket.ticket import create_communication_via
 
 @frappe.whitelist()
 def initial_agent_setup():
-	support_settings_doc = frappe.get_doc("Support Settings", "Support Settings")
+	support_settings_doc = frappe.get_doc("Frappe Desk Settings", "Frappe Desk Settings")
 	if support_settings_doc.initial_agent_set:
 		return
 	users = frappe.get_all("User", filters={"user_type": "System User"}, order_by="creation")
@@ -14,11 +14,15 @@ def initial_agent_setup():
 			agent.insert()
 			support_settings_doc.initial_agent_set = True
 			support_settings_doc.save()
+
+			if frappe.session.user == "Administrator":
+				frappe.local.login_manager.login_as(agent.user)
+			
 			return
 
 @frappe.whitelist()
 def create_initial_demo_ticket():
-	support_settings_doc = frappe.get_doc("Support Settings", "Support Settings")
+	support_settings_doc = frappe.get_doc("Frappe Desk Settings", "Frappe Desk Settings")
 	if support_settings_doc.initial_demo_ticket_created:
 		return    
 	ticket_count = len(frappe.get_all("Ticket"))
@@ -56,9 +60,6 @@ def create_initial_demo_ticket():
 			new_ticket_doc.insert()
 
 			create_communication_via_contact(new_ticket_doc.name, new_ticket_doc.description)
-
-			support_settings_doc.initial_demo_ticket_created = True
-			support_settings_doc.save()
-			return
-	else:
-		return
+	support_settings_doc.initial_demo_ticket_created = True
+	support_settings_doc.save()
+	return

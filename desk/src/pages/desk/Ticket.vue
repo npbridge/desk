@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div v-if="ticket" class="flex flex-col h-screen grow-0">
-			<div class="h-[72px] px-[20px]">
+			<div class="h-[72px] px-[20px] flex">
 				<router-link 
 					:to="(prevRoute && prevRoute.path === '/frappedesk/tickets') ? prevRoute : {path: '/frappedesk/tickets', query: {menu_filter: ticketSideBarFilter}}"
 					class="h-[20px] my-[26px] text-[12px] text-gray-600 stroke-gray-600 flex flex-row items-center space-x-1 hover:text-gray-700 hover:stroke-gray-700 select-none"
@@ -320,13 +320,16 @@ export default {
 			delay(1000).then(() => this.scrollConversationsToBottom = false)
 		},
 		handleShortcuts(e) {
-			if ((e.metaKey || e.ctrlKey) && e.keyCode == 13) {
+			if ((e.metaKey || e.ctrlKey) && e.keyCode === 13) {
 				if (!this.sendingDissabled) {
 					this.submit()
 				}
 			}
-			if ((e.metaKey || e.ctrlKey) && e.keyCode == 75) {
+			else if ((e.metaKey || e.ctrlKey) && e.keyCode === 75) {
 				this.$refs.replyEditor.insertLink()
+			}
+			else if (e.keyCode === 27) {
+				this.cancelEditing()
 			}
 		},
 		submit() {

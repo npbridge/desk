@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div v-if="initialized">
 		<SettingsTopPanel />
 		<div :style="{ height: viewportWidth > 768 ? 'calc(100vh - 55px)' : null }" class="flex">
 			<div class="w-[167px] border-r">
@@ -28,8 +28,18 @@ export default {
 	},
 	setup() {
 		const viewportWidth = inject('viewportWidth')
+		const user = inject('user')
+
 		return { 
-			viewportWidth 
+			viewportWidth ,
+			user
+		}
+	},
+	computed: {
+		initialized() {
+			const foundRoleInfo = this.user.doc.roles.find(role => role.role === 'Helpdesk Manager')
+			if (foundRoleInfo) return true
+			return false
 		}
 	},
 }

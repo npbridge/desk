@@ -9,6 +9,13 @@ const routes = [
     },
   },
   {
+    path: '/app/dashboard-view/Tickets%20Dashboard',
+    name: 'Dashboard',
+    beforeEnter(to, from, next) {
+      window.location.href = '/app/dashboard-view/Tickets%20Dashboard'
+    },
+  },
+  {
     path: '/frappedesk/login',
     name: 'DeskLogin',
     // component: () => import('@/pages/auth/Login.vue'),
