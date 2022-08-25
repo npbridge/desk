@@ -216,8 +216,8 @@ export default {
     ]
 
     if (this.user.agent) {
-      const foundRoleInfo = this.user.doc.roles.find(role => role.role === 'Helpdesk Agent')
-          if (!foundRoleInfo)  {
+      const foundRoleInfo = this.user.doc.roles.find(role => role.role === 'Helpdesk Manager')
+          if (foundRoleInfo)  {
             this.menuOptions.push(
               {
                 label: 'Settings',

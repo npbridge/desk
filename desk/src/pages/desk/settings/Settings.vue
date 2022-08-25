@@ -37,9 +37,9 @@ export default {
 	},
 	computed: {
 		initialized() {
-			const foundRoleInfo = this.user.doc.roles.find(role => role.role === 'Helpdesk Agent')
-			if (foundRoleInfo) return false
-			return true
+			const foundRoleInfo = this.user.doc.roles.find(role => role.role === 'Helpdesk Manager')
+			if (foundRoleInfo) return true
+			return false
 		}
 	},
 }
