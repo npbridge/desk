@@ -1,16 +1,17 @@
 <template>
-	<div class="border border-gray-300 rounded-[8px] p-[12px]" v-if="show">
+	<div v-if="show">
 		<slot name="main">
 			<slot v-if="editor" name="top-section" :editor="editor"></slot>
 			<div @click="editor?.commands.focus()">
 				<TextEditor
 					ref="textEditor"
-					class="overflow-y-scroll"
+					class="overflow-y-scroll cursor-text"
 					:class="editorClasses"
 					:content="content"
-					editor-class="w-full"
+					editor-class="w-full text-[13px]"
 					:placeholder="placeholder"
 					:editable="true"
+					:extensions="[CustomHardBreakExtention]"
 					@change="(val) => {
 						content = val 
 						this.$emit('change', val)
@@ -39,6 +40,7 @@
 
 <script>
 import { TextEditor } from 'frappe-ui'
+import { HardBreak } from '@tiptap/extension-hard-break'
 import { ref, computed, nextTick } from 'vue'
 
 export default {
@@ -87,6 +89,17 @@ export default {
 			setLink,
 			focusEditor,
 			editor
+		}
+	},
+	computed: {
+		CustomHardBreakExtention() {
+			return HardBreak.extend({
+				addKeyboardShortcuts () {
+					return {
+						Enter: () => this.editor.commands.setHardBreak()
+					}
+				}
+			})
 		}
 	}
 }

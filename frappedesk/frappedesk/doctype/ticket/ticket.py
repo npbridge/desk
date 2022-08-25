@@ -158,6 +158,12 @@ class Ticket(Document):
         for activity in activities:
             frappe.db.delete("Ticket Activity", activity)
 
+def set_descritption_from_communication(doc, type):
+	if doc.reference_doctype == "Ticket":
+		ticket_doc = frappe.get_doc("Ticket", doc.reference_name)
+		if not ticket_doc.via_customer_portal:
+			ticket_doc.description = doc.content
+
 @frappe.whitelist(allow_guest=True)
 def create_communication_via_contact(ticket, message, attachments=[]):
     ticket_doc = frappe.get_doc("Ticket", ticket)
@@ -439,11 +445,11 @@ def set_status(name, status):
 
 
 def auto_close_tickets():
-    """Auto-close replied support tickets after 7 days"""
-    auto_close_after_days = (
-        frappe.db.get_value("Support Settings", "Support Settings", "close_ticket_after_days")
-        or 7
-    )
+	"""Auto-close replied support tickets after 7 days"""
+	auto_close_after_days = (
+		frappe.db.get_value("Frappe Desk Settings", "Frappe Desk Settings", "close_ticket_after_days")
+		or 7
+	)
 
     tickets = frappe.db.sql(
         """ select name from tabTicket where status='Replied' and

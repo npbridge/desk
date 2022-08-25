@@ -1,4 +1,5 @@
 import frappe
+from frappe.permissions import add_permission
 from ..config.loginPage import app_data
 
 def before_install():
@@ -159,7 +160,7 @@ def add_default_holidy_list():
 	frappe.db.commit()
 
 def enable_track_service_level_agreement_in_support_settings():
-	support_settings = frappe.get_doc("Support Settings")
+	support_settings = frappe.get_doc("Frappe Desk Settings")
 	support_settings.track_service_level_agreement = True
 	support_settings.save()
 	frappe.db.commit()
@@ -237,6 +238,9 @@ def update_agent_role_permissions():
 		agent_role_doc.timeline = True
 		agent_role_doc.dashboard = True
 		agent_role_doc.save()
+
+		# Agents should be able to view private files uploaded from customer
+		add_permission("File", "Agent", 0)
 
 def add_default_assignment_rule():
 	if frappe.get_list("Assignment Rule", filters={"document_type": "Ticket"}):
