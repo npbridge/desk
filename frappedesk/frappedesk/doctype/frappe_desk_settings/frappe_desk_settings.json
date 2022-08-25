@@ -173,7 +173,6 @@
     "default": "0",
     "fieldname": "setup_complete",
     "fieldtype": "Check",
-    "hidden": 1,
     "label": "Setup Complete"
    },
    {
@@ -189,14 +188,12 @@
     "default": "0",
     "fieldname": "initial_agent_set",
     "fieldtype": "Check",
-    "hidden": 1,
     "label": "Initial Agent Set"
    },
    {
     "default": "0",
     "fieldname": "initial_demo_ticket_created",
     "fieldtype": "Check",
-    "hidden": 1,
     "label": "Initial Demo Ticket Created"
    },
    {
