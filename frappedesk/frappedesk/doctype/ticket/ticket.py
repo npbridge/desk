@@ -17,6 +17,8 @@ from frappe.utils.user import is_website_user
 from frappe.desk.form.assign_to import add as assign, clear as clear_all_assignments
 from frappedesk.frappedesk.doctype.ticket_activity.ticket_activity import log_ticket_activity
 
+from frappedesk.rocketchat.rocketchat import getResponse
+
 class Ticket(Document):
     def autoname(self):
         return self.name
@@ -158,12 +160,6 @@ class Ticket(Document):
         for activity in activities:
             frappe.db.delete("Ticket Activity", activity)
 
-def set_descritption_from_communication(doc, type):
-	if doc.reference_doctype == "Ticket":
-		ticket_doc = frappe.get_doc("Ticket", doc.reference_name)
-		if not ticket_doc.via_customer_portal:
-			ticket_doc.description = doc.content
-
 @frappe.whitelist(allow_guest=True)
 def create_communication_via_contact(ticket, message, attachments=[]):
     ticket_doc = frappe.get_doc("Ticket", ticket)
@@ -198,13 +194,14 @@ def create_communication_via_contact(ticket, message, attachments=[]):
         file_doc.attached_to_doctype = "Communication"
         file_doc.save(ignore_permissions=True)
 
+    botResponse = getResponse(communication.content)
     frappe.get_doc(
         {
             "doctype": "Comment",
             "comment_type": "Comment",
             "reference_doctype": "Ticket",
             "reference_name": communication.reference_name,
-            "content": "Response from Bot"
+            "content": botResponse
             }
     ).insert(ignore_permissions=True)
 
@@ -359,13 +356,14 @@ def get_all_conversations(ticket):
         # If there is no comment for any ticket then we are adding comment from BOT
         comment_count = frappe.db.count("Comment", {"reference_doctype": "Ticket", "reference_name": conversation.reference_name, "comment_type": "Comment"})
         if not comment_count:
+            botResponse = getResponse(conversation.content)
             frappe.get_doc(
                 {
                     "doctype": "Comment",
                     "comment_type": "Comment",
                     "reference_doctype": "Ticket",
                     "reference_name": conversation.reference_name,
-                    "content": "Response from Bot"
+                    "content": botResponse
                 }
             ).insert(ignore_permissions=True)
 
@@ -445,25 +443,25 @@ def set_status(name, status):
 
 
 def auto_close_tickets():
-	"""Auto-close replied support tickets after 7 days"""
-	auto_close_after_days = (
-		frappe.db.get_value("Frappe Desk Settings", "Frappe Desk Settings", "close_ticket_after_days")
-		or 7
-	)
+    """Auto-close replied support tickets after 7 days"""
+    auto_close_after_days = (
+        frappe.db.get_value("Support Settings", "Support Settings", "close_ticket_after_days")
+        or 7
+    )
 
-	tickets = frappe.db.sql(
+    tickets = frappe.db.sql(
         """ select name from tabTicket where status='Replied' and
         modified<DATE_SUB(CURDATE(), INTERVAL %s DAY) """,
         (auto_close_after_days),
         as_dict=True,
     )
 
-	for ticket in tickets:
-		doc = frappe.get_doc("Ticket", ticket.get("name"))
-		doc.status = "Closed"
-		doc.flags.ignore_permissions = True
-		doc.flags.ignore_mandatory = True
-		doc.save()
+    for ticket in tickets:
+        doc = frappe.get_doc("Ticket", ticket.get("name"))
+        doc.status = "Closed"
+        doc.flags.ignore_permissions = True
+        doc.flags.ignore_mandatory = True
+        doc.save()
 
 
 def has_website_permission(doc, ptype, user, verbose=False):
@@ -506,14 +504,14 @@ def make_ticket_from_communication(communication, ignore_communication_links=Fal
     link_communication_to_document(doc, "Ticket", ticket.name, ignore_communication_links)
 
     ## This should work to create ticket from email, but it is not getting triggered right now
-
+    #botResponse = getResponse(doc.content)
     #frappe.get_doc(
     #    {
     #        "doctype": "Comment",
     #        "comment_type": "Comment",
     #        "reference_doctype": "Ticket",
     #        "reference_name": doc.reference_name,
-    #        "content": "Response from Bot"
+    #        "content": botResponse
     #        }
     #).insert(ignore_permissions=True)
 
