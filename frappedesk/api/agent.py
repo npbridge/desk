@@ -40,7 +40,6 @@ def sent_invites(emails, send_welcome_mail_to_user=False):
 			}).insert()
 			if send_welcome_mail_to_user:
 				user.send_welcome_mail_to_user()
-				pass
 
 		frappe.get_doc({
 			"doctype": "Agent",
