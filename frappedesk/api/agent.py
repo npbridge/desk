@@ -27,7 +27,7 @@ def get_user():
 	}
 	
 @frappe.whitelist()
-def sent_invites(emails, send_welcome_mail_to_user=True):
+def sent_invites(emails, send_welcome_mail_to_user=False):
 	for email in emails:
 		if frappe.db.exists("User", email):
 			user = frappe.get_doc("User", email)
@@ -40,12 +40,7 @@ def sent_invites(emails, send_welcome_mail_to_user=True):
 			}).insert()
 			if send_welcome_mail_to_user:
 				user.send_welcome_mail_to_user()
-
-		for role in ["Helpdesk Agent"]:
-			user.append("roles", {
-				"role": role
-			})
-		user.save()
+				pass
 
 		frappe.get_doc({
 			"doctype": "Agent",
