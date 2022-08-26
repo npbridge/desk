@@ -16,8 +16,8 @@
 						<ErrorMessage :message="lastNameValidationError" />
 					</div>
 					<div class="space-y-1">
-						<Input label="Phone (optional)" type="text" v-model="phone" />
-						<ErrorMessage :message="phoneValidationError" />
+						<Input label="Course (optional)" type="text" v-model="course" />
+						<ErrorMessage :message="courseValidationError" />
 					</div>
 					<div class="flex float-right space-x-2">
 						<Button :loading="this.$resources.createContact.loading" appearance="primary" @click="createContact()">Create</Button>
@@ -44,7 +44,7 @@ export default {
 		const emailValidationError = ref('')
 		const firstNameValidationError = ref('')
 		const lastNameValidationError = ref('')
-		const phoneValidationError = ref('')
+		const courseValidationError = ref('')
 
 		const contacts = inject('contacts')
 
@@ -58,14 +58,14 @@ export default {
 			},
 		})
 
-		return { open, contacts, emailValidationError, firstNameValidationError, lastNameValidationError, phoneValidationError }
+		return { open, contacts, emailValidationError, firstNameValidationError, lastNameValidationError, courseValidationError }
 	},
 	data() {
 		return {
 			firstName: "",
 			lastName: "",
 			emailId: "",
-			phone: "",
+			course: "",
 		}
 	},
 	watch: {
@@ -75,8 +75,8 @@ export default {
 		firstName(newValue) {
 			this.validateFirstName(newValue)
 		},
-		phone(newValue) {
-			this.validatePhone(newValue)
+		course(newValue) {
+			this.validateCourse(newValue)
 		}
 	},
 	resources: {
@@ -87,7 +87,7 @@ export default {
 					this.emailId = ''
 					this.firstName = ''
 					this.lastName = ''
-					this.phone = ''
+					this.department = ''
 
 					this.$emit('contactCreated', data)
 				}
@@ -111,8 +111,8 @@ export default {
 				last_name: this.lastName,
 				email_ids: [{ email_id: this.emailId, is_primary: true }]
 			}
-			if (this.phone) {
-				doc.phone_nos = [{ phone: this.phone }] 
+			if (this.course) {
+				doc.department = this.course
 			}
 
 			this.$resources.createContact.submit({
@@ -122,7 +122,7 @@ export default {
 		validateInputs() {
 			let error = this.validateEmailInput(this.emailId)
 			error += this.validateFirstName(this.firstName)
-			error += this.validatePhone(this.phone)
+			error += this.validateCourse(this.course)
 			return error
 		},
 		validateEmailInput(value) {
@@ -154,15 +154,14 @@ export default {
 			}
 			return this.firstNameValidationError
 		},
-		validatePhone(value) {
-			this.phoneValidationError = ''
-			const reg = /[0-9]+/
+		validateCourse(value) {
+			this.courseValidationError = ''
 			if (!value) {
-				this.phoneValidationError = ''
-			} else if (!reg.test(value) || value.length < 10) {
-				this.phoneValidationError = 'Enter a valid phone number'
+				this.courseValidationError = 'Enter a valid course'
+			} else if (value.trim() == '') {
+				this.courseValidationError = 'Enter a valid course'
 			}
-			return this.phoneValidationError
+			return this.courseValidationError
 		}
 	}
 }
