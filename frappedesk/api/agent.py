@@ -41,7 +41,10 @@ def sent_invites(emails, send_welcome_mail_to_user=True):
 			if send_welcome_mail_to_user:
 				user.send_welcome_mail_to_user()
 
-		user.add_roles("Helpdesk Agent")
+		for role in ["Helpdesk Agent"]:
+			user.append("roles", {
+				"role": role
+			})
 		user.save()
 
 		frappe.get_doc({

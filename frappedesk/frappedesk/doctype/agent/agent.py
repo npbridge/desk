@@ -56,8 +56,11 @@ def create_agent(first_name, last_name, email, signature, team):
 		}).insert()
 		
 		user.send_welcome_mail_to_user()
-		
-	user.add_roles("Helpdesk Agent")
+
+	for role in ["Helpdesk Agent"]:
+		user.append("roles", {
+			"role": role
+		})
 	user.save()
 
 	return frappe.get_doc({
