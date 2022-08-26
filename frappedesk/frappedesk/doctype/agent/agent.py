@@ -45,7 +45,7 @@ def get_assignment_rule():
 @frappe.whitelist()
 def create_agent(first_name, last_name, email, signature, team):
 	if frappe.db.exists("User", email):
-		user = frappe.get_doc("User", email).add_roles("Helpdesk Agent")
+		user = frappe.get_doc("User", email)
 	else:
 		user = frappe.get_doc({
 			"doctype": "User",
@@ -53,9 +53,15 @@ def create_agent(first_name, last_name, email, signature, team):
 			"last_name": last_name,
 			"email": email,
 			"email_signature": signature
-		}).insert().add_roles("Helpdesk Agent")
+		}).insert()
 		
 		user.send_welcome_mail_to_user()
+
+	for role in ["Helpdesk Agent"]:
+			user.append("roles", {
+				"role": role
+			})
+	user.save()
 
 	return frappe.get_doc({
 		"doctype": "Agent",
