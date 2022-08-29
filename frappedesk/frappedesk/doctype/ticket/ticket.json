@@ -58,7 +58,8 @@
   "feedback_submitted",
   "satisfied",
   "customer_feedback",
-  "agent_remark"
+  "agent_remark",
+  "ticket_tag"
  ],
  "fields": [
   {
@@ -414,12 +415,18 @@
    "fieldtype": "Select",
    "label": "Agent Remark",
    "options": "Argent\nPoor Knowledge"
+  },
+  {
+   "fieldname": "ticket_tag",
+   "fieldtype": "Link",
+   "label": "Tag",
+   "options": "Ticket Tag"
   }
  ],
  "icon": "fa fa-issue",
  "idx": 7,
  "links": [],
- "modified": "2022-05-19 22:18:01.474617",
+ "modified": "2022-08-29 17:37:21.092907",
  "modified_by": "Administrator",
  "module": "FrappeDesk",
  "name": "Ticket",

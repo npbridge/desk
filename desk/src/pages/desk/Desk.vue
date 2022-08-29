@@ -41,6 +41,7 @@ export default {
 		const user = inject('user')
 
 		const ticketTypes = ref([])
+		const ticketTags = ref([])
 		const ticketPriorities = ref([])
 		const ticketStatuses = ref([])
 
@@ -66,6 +67,7 @@ export default {
 		provide('ticketSideBarFilter', ticketSideBarFilter)
 
 		provide('ticketTypes', ticketTypes)
+		provide('ticketTags', ticketTags)
 		provide('ticketPriorities', ticketPriorities)
 		provide('ticketStatuses', ticketStatuses)
 
@@ -82,6 +84,7 @@ export default {
 			user,
 
 			ticketTypes,
+			ticketTags,
 			ticketPriorities,
 			ticketStatuses,
 
@@ -125,14 +128,19 @@ export default {
 			this.$router.push({ path: '/support/tickets' })
 			return
 		}
-		this.$resources.frappedeskSettings.fetch()
-		this.$resources.defaultOutgoingEmailAccount.fetch()
-		;(this.ticketController.set = (ticketId, type, ref = null) => {
+		this.$resources.frappedeskSettings.fetch();
+		this.$resources.defaultOutgoingEmailAccount.fetch();
+		(this.ticketController.set = (ticketId, type, ref = null) => {
 			switch (type) {
 				case 'type':
 					return this.$resources.assignTicketType.submit({
 						ticket_id: ticketId,
 						type: ref,
+					})
+				case 'tag':
+					return this.$resources.assignTicketTag.submit({
+						ticket_id: ticketId,
+						tag: ref,
 					})
 				case 'status':
 					return this.$resources.assignTicketStatus.submit({
@@ -175,6 +183,11 @@ export default {
 					case 'type':
 						this.$resources.createTicketType.submit({
 							type: values,
+						})
+						break
+					case 'tag':
+						this.$resources.createTicketTag.submit({
+							tag: values,
 						})
 						break
 				}
@@ -401,6 +414,22 @@ export default {
 				},
 			}
 		},
+		tags() {
+			return {
+				method: 'frappe.client.get_list',
+				params: {
+					doctype: 'Ticket Tag',
+					pluck: 'name',
+				},
+				auto: this.user.has_desk_access,
+				onSuccess: (data) => {
+					this.ticketTags = data
+				},
+				onError: () => {
+					// TODO:
+				},
+			}
+		},
 		priorities() {
 			return {
 				method: 'frappe.client.get_list',
@@ -500,6 +529,15 @@ export default {
 				},
 			}
 		},
+		assignTicketTag() {
+			return {
+				method: 'frappedesk.api.ticket.assign_ticket_tag',
+				onSuccess: async (ticket) => {},
+				onError: () => {
+					// TODO:
+				},
+			}
+		},
 		assignTicketStatus() {
 			return {
 				method: 'frappedesk.api.ticket.assign_ticket_status',
@@ -534,6 +572,17 @@ export default {
 				method: 'frappedesk.api.ticket.check_and_create_ticket_type',
 				onSuccess: () => {
 					this.$resources.types.fetch()
+				},
+				onError: () => {
+					// TODO:
+				},
+			}
+		},
+		createTicketTag() {
+			return {
+				method: 'frappedesk.api.ticket.check_and_create_ticket_tag',
+				onSuccess: () => {
+					this.$resources.tags.fetch()
 				},
 				onError: () => {
 					// TODO:

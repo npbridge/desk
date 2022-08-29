@@ -140,6 +140,19 @@ def assign_ticket_type(ticket_id, type):
 		return ticket_doc
 
 @frappe.whitelist(allow_guest=True)
+def assign_ticket_tag(ticket_id, tag):
+	if ticket_id:
+		ticket_doc = frappe.get_doc("Ticket", ticket_id)
+		
+		if ticket_doc.ticket_tag != tag:
+			ticket_doc.ticket_tag = check_and_create_ticket_tag(tag).name
+			ticket_doc.save()
+			log_ticket_activity(ticket_id, f"tag set to {tag}")
+
+		return ticket_doc
+
+
+@frappe.whitelist(allow_guest=True)
 def assign_ticket_status(ticket_id, status):
 	if ticket_id:
 		ticket_doc = frappe.get_doc("Ticket", ticket_id)
@@ -259,6 +272,17 @@ def check_and_create_ticket_type(type):
 		ticket_type_doc = frappe.get_doc("Ticket Type", type)
 
 	return ticket_type_doc
+
+@frappe.whitelist(allow_guest=True)
+def check_and_create_ticket_tag(tag):
+	if not frappe.db.exists("Ticket Tag", tag):
+		ticket_tag_doc = frappe.new_doc("Ticket Tag")
+		ticket_tag_doc.name = ticket_tag_doc.description = tag
+		ticket_tag_doc.insert()
+	else:
+		ticket_tag_doc = frappe.get_doc("Ticket Tag", tag)
+
+	return ticket_tag_doc
 
 @frappe.whitelist(allow_guest=True)
 def get_all_ticket_templates():

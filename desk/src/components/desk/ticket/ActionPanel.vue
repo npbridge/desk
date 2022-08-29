@@ -171,6 +171,57 @@
 						</template>
 					</Autocomplete>
 				</div>
+				<div class="flex flex-col space-y-[8px]" :class="mandatoryFieldsNotSet && !ticket.ticket_tag ? 'error-animation' : ''">
+					<div class="flex flex-row justify-between text-gray-600 font-normal text-[12px]">
+						<div :class="(mandatoryFieldsNotSet && !ticket.ticket_tag) ? 'text-red-600' : 'text-gray-600'">Tag*</div>
+					</div>
+					<Autocomplete 
+						v-if="ticketTags"
+						:options="ticketTags.map(x => {
+							return {label: x.name , value: x.name}
+						})"
+						placeholder="Set tag"
+						:value="ticket.ticket_tag && !updatingTicketTag ? ticket.ticket_tag : ''" 
+						@change="(item) => {
+							if (item.value) {
+								updatingTicketTag = true;
+								ticketController.set(ticketId, 'tag', item.value).then(() => {
+									updatingTicketTag = false
+									$resources.ticket.fetch()
+	
+									$toast({
+										title: 'Ticket updated successfully.',
+										customIcon: 'circle-check',
+										appearance: 'success',
+									})
+								})
+							}
+						}"
+					>
+						<template #input>
+							<div class="flex flex-row space-x-1 items-center w-full">
+								<div class="grow">
+									<div v-if="ticket.ticket_tag && !updatingTicketTag" class="text-left">{{ ticket.ticket_tag}}</div>
+									<div v-else>
+										<LoadingText v-if="updatingTicketTag" />
+										<div v-else class="text-base text-left text-gray-400"> set tag </div>
+									</div>
+								</div>
+							</div>
+						</template>
+						<template #no-result-found>
+							<div 
+								role="button" 
+								class="hover:bg-gray-100 px-2.5 py-1.5 rounded-md text-base text-blue-500 font-semibold"
+								@click="() => {
+									this.openCreateNewTicketTagDialog = true
+								}"
+							>
+								Create new
+							</div>
+						</template>
+					</Autocomplete>
+				</div>
 				<div class="flex flex-col space-y-[8px]">
 					<div class="flex flex-row justify-between text-gray-600 font-normal text-[12px]">
 						<div>Team</div>
@@ -263,6 +314,17 @@
 				</div>
 			</template>
 		</Dialog>
+		<Dialog :options="{title: 'Create New Tag'}" v-model="openCreateNewTicketTagDialog">
+			<template #body-content>
+				<div class="space-y-4">
+					<Input type="text" v-model="newTag" placeholder="eg: Moodle" />
+					<div class="flex float-right space-x-2">
+						<Button @click="createAndAssignTicketTagFromDialog()">Create and Assign</Button>
+						<Button @click="createTicketTagFromDialog()" appearance="primary">Create</Button>
+					</div>
+				</div>
+			</template>
+		</Dialog>
 	</div>
 </template>
 
@@ -292,7 +354,9 @@ export default {
 	data() {
 		return {
 			openCreateNewTicketTypeDialog: false,
+			openCreateNewTicketTagDialog: false,
 			newType: "",
+			newTag: "",
 		}
 	},
 	setup() {
@@ -300,6 +364,7 @@ export default {
 
 		const user = inject('user')
 		const ticketTypes = inject('ticketTypes')
+		const ticketTags = inject('ticketTags')
 		const ticketPriorities = inject('ticketPriorities')
 		const ticketStatuses = inject('ticketStatuses')
 		const ticketController = inject('ticketController')
@@ -308,6 +373,7 @@ export default {
 		const agentGroups = inject('agentGroups')
 
 		const updatingTicketType = ref(false)
+		const updatingTicketTag = ref(false)
 		const updatingAssignee = ref(false)
 		const updatingPriority = ref(false)
 		const updatingStatus = ref(false)
@@ -325,6 +391,7 @@ export default {
 
 			user,
 			ticketTypes,
+			ticketTags,
 			ticketPriorities,
 			ticketStatuses,
 			ticketController,
@@ -333,6 +400,7 @@ export default {
 			agentGroups,
 
 			updatingTicketType,
+			updatingTicketTag,
 			updatingAssignee,
 			updatingPriority,
 			updatingStatus,
@@ -417,15 +485,41 @@ export default {
 				this.closeCreateNewTicketTypeDialog();
 			}
 		},
+		createAndAssignTicketTagFromDialog() {
+			if (this.newTag) {
+				this.updatingTicketTag = true
+				this.ticketController.set(this.ticketId, 'tag', this.newTag).then(() => {
+					this.updatingTicketTag= false
+					this.$resources.ticket.fetch()
+
+					this.$toast({
+						title: 'Ticket updated successfully.',
+						customIcon: 'circle-check',
+						appearance: 'success',
+					})
+				})
+				this.closeCreateNewTicketTagDialog();
+			}
+		},
 		createTicketTypeFromDialog() {
 			if (this.newType) {
 				this.ticketController.new('type', this.newType)
 				this.closeCreateNewTicketTypeDialog();
 			}
 		},
+		createTicketTagFromDialog() {
+			if (this.newTag) {
+				this.ticketController.new('tag', this.newTag)
+				this.closeCreateNewTicketTagDialog();
+			}
+		},
 		closeCreateNewTicketTypeDialog() {
 			this.newType = ""
 			this.openCreateNewTicketTypeDialog = false
+		},
+		closeCreateNewTicketTagDialog() {
+			this.newTag = ""
+			this.openCreateNewTicketTagDialog = false
 		},
 		updateStatus(status) {
 			this.mandatoryFieldsNotSet = false
