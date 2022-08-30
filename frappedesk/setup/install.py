@@ -15,7 +15,9 @@ def after_install():
 	add_on_ticket_create_script()
 	add_default_ticket_template()
 	add_default_agent_groups()
-	update_agent_role_permissions()
+	update_role_permissions("Agent")
+	update_role_permissions("Helpdesk Agent")
+	update_role_permissions("Helpdesk Manager")
 	add_default_assignment_rule()
 
 def set_login_page():
@@ -225,23 +227,39 @@ def add_on_ticket_create_script():
 		script_doc.script = "# Do Nothing"
 		script_doc.insert()
 
-def update_agent_role_permissions():
-	if frappe.db.exists("Role", "Agent"):
-		agent_role_doc = frappe.get_doc("Role", "Agent")
-		agent_role_doc.search_bar = True
-		agent_role_doc.notifications = True
-		agent_role_doc.list_sidebar = True
-		agent_role_doc.bulk_actions = True
-		agent_role_doc.view_switcher = True
-		agent_role_doc.form_sidebar = True
-		agent_role_doc.form_sidebar = True
-		agent_role_doc.timeline = True
-		agent_role_doc.dashboard = True
-		agent_role_doc.save()
+def update_role_permissions(role):
+	if not frappe.db.exists("Role", role):
+		new_role = frappe.new_doc("Role")
+		new_role.name = role
+		new_role.role_name = role
+	else:
+		role_doc = frappe.get_doc("Role", role)
+		role_doc.search_bar = True
+		role_doc.notifications = True
+		role_doc.list_sidebar = True
+		role_doc.bulk_actions = True
+		role_doc.view_switcher = True
+		role_doc.form_sidebar = True
+		role_doc.form_sidebar = True
+		role_doc.timeline = True
+		role_doc.dashboard = True
+		role_doc.save()
 
 		# Agents should be able to view private files uploaded from customer
-		add_permission("File", "Agent", 0)
+		add_permission("File", role, 0)
+		add_permission("Communication", role, 0)
+		
+		#Helpdesk Manager should be able to create new user and assign role to them 
+		if role == "Helpdesk Manager":
+			add_permission("User", role, 1)
+		add_permission("User", role, 0)
 
+		#Contact permissions - read 
+		add_permission("Contact", role, 0)
+
+		#Email account permission - read
+		add_permission("Email Account", role, 0)
+		
 def add_default_assignment_rule():
 	if frappe.get_list("Assignment Rule", filters={"document_type": "Ticket"}):
 		return

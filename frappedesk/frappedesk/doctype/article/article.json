@@ -136,7 +136,7 @@
  "index_web_pages_for_search": 1,
  "is_published_field": "published",
  "links": [],
- "modified": "2022-08-08 08:24:17.192038",
+ "modified": "2022-08-30 11:46:42.451319",
  "modified_by": "Administrator",
  "module": "FrappeDesk",
  "name": "Article",
@@ -163,6 +163,29 @@
    "read": 1,
    "report": 1,
    "role": "Agent",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Helpdesk Agent",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Helpdesk Manager",
    "share": 1,
    "write": 1
   }

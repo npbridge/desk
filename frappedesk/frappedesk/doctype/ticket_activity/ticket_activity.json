@@ -24,7 +24,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-04-04 14:04:46.664562",
+ "modified": "2022-08-30 11:48:57.577809",
  "modified_by": "Administrator",
  "module": "FrappeDesk",
  "name": "Ticket Activity",
@@ -52,6 +52,29 @@
    "read": 1,
    "report": 1,
    "role": "Agent",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Helpdesk Agent",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Helpdesk Manager",
    "share": 1,
    "write": 1
   }

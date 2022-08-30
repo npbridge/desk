@@ -18,7 +18,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-08-29 17:26:48.459263",
+ "modified": "2022-08-30 11:51:40.399313",
  "modified_by": "Administrator",
  "module": "FrappeDesk",
  "name": "Ticket Tag",
@@ -40,6 +40,7 @@
   },
   {
    "create": 1,
+   "delete": 1,
    "email": 1,
    "export": 1,
    "print": 1,
@@ -50,6 +51,7 @@
    "write": 1
   },
   {
+   "create": 1,
    "email": 1,
    "export": 1,
    "print": 1,

@@ -418,7 +418,7 @@
   },
   {
    "fieldname": "ticket_tag",
-   "fieldtype": "Link",
+   "fieldtype": "Select",
    "label": "Tag",
    "options": "Ticket Tag"
   }
@@ -426,7 +426,7 @@
  "icon": "fa fa-issue",
  "idx": 7,
  "links": [],
- "modified": "2022-08-29 17:37:21.092907",
+ "modified": "2022-08-30 11:46:00.929843",
  "modified_by": "Administrator",
  "module": "FrappeDesk",
  "name": "Ticket",
@@ -466,6 +466,31 @@
    "read": 1,
    "report": 1,
    "role": "Agent",
+   "select": 1,
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Helpdesk Agent",
+   "select": 1,
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Helpdesk Manager",
    "select": 1,
    "share": 1,
    "write": 1
