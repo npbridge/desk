@@ -247,18 +247,23 @@ def update_role_permissions(role):
 
 		# Agents should be able to view private files uploaded from customer
 		add_permission("File", role, 0)
-		add_permission("Communication", role, 0)
+
+		# Viewed without communication permission as of now
+		# add_permission("Communication", role, 0)
 		
 		#Helpdesk Manager should be able to create new user and assign role to them 
 		if role == "Helpdesk Manager":
-			add_permission("User", role, 1)
-		add_permission("User", role, 0)
+			add_permission("User", role, 1, "write")
+		add_permission("User", role, 0, "write")
 
 		#Contact permissions - read 
-		add_permission("Contact", role, 0)
+		add_permission("Contact", role, 0, "write")
 
 		#Email account permission - read
 		add_permission("Email Account", role, 0)
+
+		#Comment permission - read
+		add_permission("Comment", role, 0, "write")
 		
 def add_default_assignment_rule():
 	if frappe.get_list("Assignment Rule", filters={"document_type": "Ticket"}):
