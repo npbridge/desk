@@ -146,7 +146,7 @@ def assign_ticket_tag(ticket_id, tag):
 
 		tag_exists = False
 		for ticket_tag in ticket_doc.ticket_tag:
-			if ticket_tag.name == tag:
+			if ticket_tag.tag == tag:
 				tag_exists = True
 
 		if not tag_exists:

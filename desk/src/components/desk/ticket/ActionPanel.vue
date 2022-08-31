@@ -173,7 +173,7 @@
 				</div>
 				<div class="flex flex-col space-y-[8px]" :class="mandatoryFieldsNotSet && !ticket.ticket_tag ? 'error-animation' : ''">
 					<div class="flex flex-row justify-between text-gray-600 font-normal text-[12px]">
-						<div :class="(mandatoryFieldsNotSet && ticket.ticket_tag.length == 0 ) ? 'text-red-600' : 'text-gray-600'">Tags</div>
+						<div class="text-gray-600">Tags</div>
 					</div>
 
 					<div v-if="ticket.ticket_tag.length > 0" class="flex flex-row shrink-0 flex-wrap">
