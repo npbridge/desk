@@ -143,14 +143,35 @@ def assign_ticket_type(ticket_id, type):
 def assign_ticket_tag(ticket_id, tag):
 	if ticket_id:
 		ticket_doc = frappe.get_doc("Ticket", ticket_id)
-		
-		if ticket_doc.ticket_tag != tag:
-			ticket_doc.ticket_tag = check_and_create_ticket_tag(tag).name
+
+		tag_exists = False
+		for ticket_tag in ticket_doc.ticket_tag:
+			if ticket_tag.name == tag:
+				tag_exists = True
+
+		if not tag_exists:
+			check_and_create_ticket_tag(tag)
+			ticket_doc.append("ticket_tag", {
+					"tag": tag,
+				})
 			ticket_doc.save()
-			log_ticket_activity(ticket_id, f"tag set to {tag}")
+			log_ticket_activity(ticket_id, f"tag: {tag} added.")
 
 		return ticket_doc
 
+@frappe.whitelist(allow_guest=True)
+def delete_ticket_tag(ticket_id, tag):
+	ticket_doc = frappe.get_doc("Ticket", ticket_id)
+
+	for row in ticket_doc.ticket_tag:
+		if row.name == tag:
+			ticket_doc.remove(row)
+			ticket_doc.save()
+			break
+
+	log_ticket_activity(ticket_id, f"tag: {tag} removed.")
+
+	return ticket_doc
 
 @frappe.whitelist(allow_guest=True)
 def assign_ticket_status(ticket_id, status):
@@ -275,12 +296,12 @@ def check_and_create_ticket_type(type):
 
 @frappe.whitelist(allow_guest=True)
 def check_and_create_ticket_tag(tag):
-	if not frappe.db.exists("Ticket Tag", tag):
-		ticket_tag_doc = frappe.new_doc("Ticket Tag")
+	if not frappe.db.exists("Helpdesk Tag", tag):
+		ticket_tag_doc = frappe.new_doc("Helpdesk Tag")
 		ticket_tag_doc.name = ticket_tag_doc.description = tag
 		ticket_tag_doc.insert()
 	else:
-		ticket_tag_doc = frappe.get_doc("Ticket Tag", tag)
+		ticket_tag_doc = frappe.get_doc("Helpdesk Tag", tag)
 
 	return ticket_tag_doc
 

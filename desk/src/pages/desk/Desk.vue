@@ -191,6 +191,15 @@ export default {
 						})
 						break
 				}
+			}),
+			(this.ticketController.delete = (ticketId, type, values) => {
+				switch (type) {
+					case 'tag':
+						return this.$resources.deleteTicketTag.submit({
+							ticket_id: ticketId,
+							tag: values,
+						})
+				}
 			})
 		this.$socket.on('list_update', (data) => {
 			switch (data.doctype) {
@@ -418,7 +427,7 @@ export default {
 			return {
 				method: 'frappe.client.get_list',
 				params: {
-					doctype: 'Ticket Tag',
+					doctype: 'Helpdesk Tag',
 					pluck: 'name',
 				},
 				auto: this.user.has_desk_access,
@@ -536,6 +545,13 @@ export default {
 				onError: () => {
 					// TODO:
 				},
+			}
+		},
+		deleteTicketTag() {
+			return {
+				method: 'frappedesk.api.ticket.delete_ticket_tag',
+				onSuccess: async (ticket) => {},
+				onError: () => {}
 			}
 		},
 		assignTicketStatus() {

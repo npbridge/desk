@@ -15,6 +15,7 @@
   "priority",
   "cb00",
   "ticket_type",
+  "ticket_tag",
   "agent_group",
   "ticket_split_from",
   "sb_details",
@@ -58,8 +59,7 @@
   "feedback_submitted",
   "satisfied",
   "customer_feedback",
-  "agent_remark",
-  "ticket_tag"
+  "agent_remark"
  ],
  "fields": [
   {
@@ -418,15 +418,15 @@
   },
   {
    "fieldname": "ticket_tag",
-   "fieldtype": "Select",
-   "label": "Tag",
+   "fieldtype": "Table MultiSelect",
+   "label": "Ticket Tag ",
    "options": "Ticket Tag"
   }
  ],
  "icon": "fa fa-issue",
  "idx": 7,
  "links": [],
- "modified": "2022-08-30 11:46:00.929843",
+ "modified": "2022-08-31 10:48:37.804035",
  "modified_by": "Administrator",
  "module": "FrappeDesk",
  "name": "Ticket",

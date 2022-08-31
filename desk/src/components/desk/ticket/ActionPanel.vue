@@ -173,15 +173,30 @@
 				</div>
 				<div class="flex flex-col space-y-[8px]" :class="mandatoryFieldsNotSet && !ticket.ticket_tag ? 'error-animation' : ''">
 					<div class="flex flex-row justify-between text-gray-600 font-normal text-[12px]">
-						<div :class="(mandatoryFieldsNotSet && !ticket.ticket_tag) ? 'text-red-600' : 'text-gray-600'">Tag*</div>
+						<div :class="(mandatoryFieldsNotSet && ticket.ticket_tag.length == 0 ) ? 'text-red-600' : 'text-gray-600'">Tags</div>
+					</div>
+
+					<div v-if="ticket.ticket_tag.length > 0" class="flex flex-row shrink-0 flex-wrap">
+						<div v-for="tag in ticket.ticket_tag" :key="tag">
+							<div 
+							class="bg-white border px-[8px] rounded-[10px] h-fit w-fit border-[black] text-[black] mr-[0.2rem] mb-[0.2rem]" 
+							>
+								<div class="flex flex-row items-center h-[20px] space-x-[7px]">
+									<div class="text-[10px] uppercase grow">{{ tag.tag }}</div>
+									<div>
+										<FeatherIcon name="x-circle" class="h-3 stroke-black-500  cursor-pointer" @click="removeTag(tag.name)" />
+									</div>
+								</div>
+							</div>
+							</div>
 					</div>
 					<Autocomplete 
 						v-if="ticketTags"
 						:options="ticketTags.map(x => {
 							return {label: x.name , value: x.name}
 						})"
-						placeholder="Set tag"
-						:value="ticket.ticket_tag && !updatingTicketTag ? ticket.ticket_tag : ''" 
+						placeholder="Set tags"
+						:value="ticket.ticket_tag.length > 0  && !updatingTicketType ? ticket.ticket_tag[0].name : ''" 
 						@change="(item) => {
 							if (item.value) {
 								updatingTicketTag = true;
@@ -201,11 +216,8 @@
 						<template #input>
 							<div class="flex flex-row space-x-1 items-center w-full">
 								<div class="grow">
-									<div v-if="ticket.ticket_tag && !updatingTicketTag" class="text-left">{{ ticket.ticket_tag}}</div>
-									<div v-else>
-										<LoadingText v-if="updatingTicketTag" />
-										<div v-else class="text-base text-left text-gray-400"> set tag </div>
-									</div>
+									<LoadingText v-if="updatingTicketTag" />
+									<div v-else class="text-base text-left text-gray-400"> tags </div>
 								</div>
 							</div>
 						</template>
@@ -513,6 +525,19 @@ export default {
 				this.closeCreateNewTicketTagDialog();
 			}
 		},
+		removeTag(tag){
+			this.updatingTicketTag = true
+			this.ticketController.delete(this.ticketId, 'tag', tag).then(() => {
+				this.updatingTicketTag= false
+				this.$resources.ticket.fetch()
+
+				this.$toast({
+					title: 'Ticket updated successfully.',
+					customIcon: 'circle-check',
+					appearance: 'success',
+				})
+			})
+		}, 
 		closeCreateNewTicketTypeDialog() {
 			this.newType = ""
 			this.openCreateNewTicketTypeDialog = false
@@ -573,6 +598,9 @@ export default {
 </script>
 
 <style>
+	.flex-wrap{
+		flex-wrap: wrap;
+	}
 	.dot {
 		height: 21px;
 		width: 10.5px;
