@@ -195,6 +195,7 @@ def create_communication_via_contact(ticket, message, attachments=[]):
         file_doc.save(ignore_permissions=True)
 
     botResponse = getResponse(communication.content)
+    botResponse = "<p>" + botResponse.replace("\n", "<br>") + "</p>"
     frappe.get_doc(
         {
             "doctype": "Comment",
@@ -357,6 +358,7 @@ def get_all_conversations(ticket):
         comment_count = frappe.db.count("Comment", {"reference_doctype": "Ticket", "reference_name": conversation.reference_name, "comment_type": "Comment"})
         if not comment_count:
             botResponse = getResponse(conversation.content)
+            botResponse = "<p>" + botResponse.replace("\n", "<br>") + "</p>"
             frappe.get_doc(
                 {
                     "doctype": "Comment",
@@ -505,6 +507,7 @@ def make_ticket_from_communication(communication, ignore_communication_links=Fal
 
     ## This should work to create ticket from email, but it is not getting triggered right now
     #botResponse = getResponse(doc.content)
+    #botResponse = "<p>" + botResponse.replace("\n", "<br>") + "</p>"
     #frappe.get_doc(
     #    {
     #        "doctype": "Comment",
