@@ -171,7 +171,7 @@
 						</template>
 					</Autocomplete>
 				</div>
-				<div class="flex flex-col space-y-[8px]" :class="mandatoryFieldsNotSet && !ticket.ticket_tag ? 'error-animation' : ''">
+				<div class="flex flex-col space-y-[8px]">
 					<div class="flex flex-row justify-between text-gray-600 font-normal text-[12px]">
 						<div class="text-gray-600">Tags</div>
 					</div>
@@ -196,7 +196,7 @@
 							return {label: x.name , value: x.name}
 						})"
 						placeholder="Set tags"
-						:value="ticket.ticket_tag.length > 0  && !updatingTicketType ? ticket.ticket_tag[0].name : ''" 
+						:value="ticket.ticket_tag.length > 0  && !updatingTicketTag ? ticket.ticket_tag[0].name : ''" 
 						@change="(item) => {
 							if (item.value) {
 								updatingTicketTag = true;
