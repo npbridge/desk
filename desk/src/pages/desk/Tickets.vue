@@ -11,7 +11,8 @@
 					'priority', 
 					'name', 
 					'subject', 
-					'ticket_type', 
+					'ticket_type',
+					'ticket_tag', 
 					'status', 
 					'contact', 
 					'response_by', 
@@ -115,6 +116,7 @@ export default {
 		const toggleFilters = ref(false)
 
 		const ticketTypes = inject('ticketTypes')
+		const ticketTags = inject('ticketTags')
 		const ticketPriorities = inject('ticketPriorities')
 		const ticketStatuses = inject('ticketStatuses')
 		const agents = inject('agents')
@@ -127,6 +129,7 @@ export default {
 			filters,
 			toggleFilters,
 			ticketTypes,
+			ticketTags,
 			ticketPriorities,
 			ticketStatuses,
 			agents,
@@ -136,7 +139,7 @@ export default {
 	mounted() {
 		if (this.$route.query) {
 			for (const [key, value] of Object.entries(this.$route.query)) {
-				if (['ticket_type', 'contact', 'status', 'priority', '_assign'].includes(key)) {
+				if (['ticket_type', 'ticket_tag', 'contact', 'status', 'priority', '_assign'].includes(key)) {
 					const filter = {}
 					filter[key] = value
 					this.filters.push(filter)
@@ -155,7 +158,7 @@ export default {
 
 			newValue.forEach(filter => {
 				for (const [key, value] of Object.entries(filter)) {
-					if (['ticket_type', 'contact', 'status', 'priority', '_assign'].includes(key)) {
+					if (['ticket_type', 'ticket_tag', 'contact', 'status', 'priority', '_assign'].includes(key)) {
 						if (key == '_assign') {
 							query.menu_filter = 'all'
 						}
@@ -218,6 +221,7 @@ export default {
 		filterBoxOptions() {
 			return [
 				{label: "Type", name: "ticket_type", items: this.ticketTypes.map((item) => item.name)},
+				{label: "Tag", name: "ticket_tag", items: this.ticketTags.map((item) => item.name)},
 				{label: "Contact", name: "contact", items: this.contacts.map((item) => item.name)},
 				{label: "Status", name: "status", items: this.ticketStatuses},
 				{label: "Assignee", name: "_assign", items: this.agents.map((item) => item.name)},

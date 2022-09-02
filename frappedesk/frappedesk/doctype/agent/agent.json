@@ -35,7 +35,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-04-04 16:39:13.214711",
+ "modified": "2022-08-30 11:49:23.222014",
  "modified_by": "Administrator",
  "module": "FrappeDesk",
  "name": "Agent",
@@ -54,13 +54,28 @@
    "write": 1
   },
   {
+   "create": 1,
+   "delete": 1,
    "email": 1,
    "export": 1,
    "print": 1,
+   "read": 1,
    "report": 1,
-   "role": "All",
-   "select": 1,
-   "share": 1
+   "role": "Helpdesk Agent",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Helpdesk Manager",
+   "share": 1,
+   "write": 1
   }
  ],
  "search_fields": "agent_name",

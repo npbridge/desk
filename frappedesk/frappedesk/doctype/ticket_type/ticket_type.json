@@ -27,7 +27,7 @@
   }
  ],
  "links": [],
- "modified": "2022-04-19 17:43:29.080391",
+ "modified": "2022-08-30 11:50:03.982677",
  "modified_by": "Administrator",
  "module": "FrappeDesk",
  "name": "Ticket Type",
@@ -80,6 +80,29 @@
    "read": 1,
    "report": 1,
    "role": "Frappedesk Contact",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Helpdesk Agent",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Helpdesk Manager",
    "share": 1,
    "write": 1
   }

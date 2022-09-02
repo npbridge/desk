@@ -140,6 +140,45 @@ def assign_ticket_type(ticket_id, type):
 		return ticket_doc
 
 @frappe.whitelist(allow_guest=True)
+def assign_ticket_tag(ticket_id, tag):
+	if ticket_id:
+		ticket_doc = frappe.get_doc("Ticket", ticket_id)
+		if ticket_doc:
+			tag_exists = False
+			for ticket_tag in ticket_doc.ticket_tag:
+				if ticket_tag.tag == tag:
+					tag_exists = True
+					break
+
+			if not tag_exists:
+				ticket_tag_doc = check_and_create_ticket_tag(tag)
+				if ticket_tag_doc:
+					ticket_doc.append("ticket_tag", {
+							"tag": tag,
+						})
+					ticket_doc.save()
+					log_ticket_activity(ticket_id, f"tag: {tag} added.")
+
+			return ticket_doc
+
+@frappe.whitelist(allow_guest=True)
+def delete_ticket_tag(ticket_id, tag):
+	ticket_doc = frappe.get_doc("Ticket", ticket_id)
+
+	row_to_delete = None
+	for row in ticket_doc.ticket_tag:
+		if row.name == tag:
+			row_to_delete = row
+			break
+
+	if row_to_delete: 
+		ticket_doc.remove(row) 
+		ticket_doc.save()
+		log_ticket_activity(ticket_id, f"tag: {tag} removed.")
+
+	return ticket_doc
+
+@frappe.whitelist(allow_guest=True)
 def assign_ticket_status(ticket_id, status):
 	if ticket_id:
 		ticket_doc = frappe.get_doc("Ticket", ticket_id)
@@ -251,7 +290,8 @@ def get_other_tickets_of_contact(ticket_id):
 
 @frappe.whitelist(allow_guest=True)
 def check_and_create_ticket_type(type):
-	if not frappe.db.exists("Ticket Type", type):
+	type_doc = frappe.db.exists("Ticket Type", type)
+	if not type_doc:
 		ticket_type_doc = frappe.new_doc("Ticket Type")
 		ticket_type_doc.name = ticket_type_doc.description = type
 		ticket_type_doc.insert()
@@ -259,6 +299,18 @@ def check_and_create_ticket_type(type):
 		ticket_type_doc = frappe.get_doc("Ticket Type", type)
 
 	return ticket_type_doc
+
+@frappe.whitelist(allow_guest=True)
+def check_and_create_ticket_tag(tag):
+	tag_doc = frappe.db.exists("Helpdesk Tag", tag)
+	if not tag_doc:
+		ticket_tag_doc = frappe.new_doc("Helpdesk Tag")
+		ticket_tag_doc.name = ticket_tag_doc.description = tag
+		ticket_tag_doc.insert()
+	else:
+		ticket_tag_doc = frappe.get_doc("Helpdesk Tag", tag)
+
+	return ticket_tag_doc
 
 @frappe.whitelist(allow_guest=True)
 def get_all_ticket_templates():

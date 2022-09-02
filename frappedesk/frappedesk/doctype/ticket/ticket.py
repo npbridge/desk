@@ -36,7 +36,7 @@ class Ticket(Document):
         self.update_priority_based_on_ticket_type()
 
     def after_insert(self):
-        self.send_acknowledgement_email("Acknowledgement From Moodle Helpdesk", "acknowledgement", {"abc": "abc"}, now=True)
+        # self.send_acknowledgement_email("Acknowledgement From Moodle Helpdesk", "acknowledgement", {"abc": "abc"}, now=True)
         log_ticket_activity(self.name, "created")
 
     def send_acknowledgement_email(self, subject, template, add_args, now=None):
