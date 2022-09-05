@@ -157,6 +157,11 @@ export default {
 						ticket_id: ticketId,
 						contact: ref,
 					})
+				case 'contact_notes':
+					return this.$resources.updateContactNotes.submit({
+						contact: ticketId,
+						notes: ref
+					})
 				case 'agent':
 					return this.$resources.assignTicketToAgent.submit({
 						ticket_id: ticketId,
@@ -404,6 +409,18 @@ export default {
 			return {
 				method: 'frappedesk.api.ticket.update_contact',
 				onSuccess: async (ticket) => {
+					// TODO:
+				},
+				onError: (error) => {
+					// TODO:
+					console.log(error)
+				},
+			}
+		},
+		updateContactNotes() {
+			return {
+				method: 'frappedesk.api.ticket.update_contact_notes',
+				onSuccess: async (contact) => {
 					// TODO:
 				},
 				onError: (error) => {

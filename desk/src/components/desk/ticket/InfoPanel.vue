@@ -33,7 +33,7 @@
 								/>
 							</div>
 						</div>
-						<div class="flex flex-row items-center space-x-[12px]">
+						<div v-if="ticket.contact.department" class="flex flex-row items-center space-x-[12px]">
 							<FeatherIcon
 								name="book"
 								class="stroke-gray-500"
@@ -65,7 +65,7 @@
 						<div
 							v-if="ticket.contact.email_ids.length > 0"
 							class="flex space-x-[12px] items-center"
-						>
+							>
 							<FeatherIcon
 								name="mail"
 								class="stroke-gray-500"
@@ -84,6 +84,9 @@
 								</div>
 							</div>
 						</div>
+						<div class="flex flex-row items-center space-x-[12px]">
+							<Input label="Notes" type="textarea" :value="contactNotes" class="text-gray-600" @change="updateNotes" />
+						</div> 
 					</div>
 					<div v-else>
 						<div v-if="!updatingContact" class="flex flex-row-reverse">
@@ -422,7 +425,11 @@ export default {
 			if (this.ticket.contact) { 
 				return this.ticket.contact.department || 'Not available'
 			}
-
+		},
+		contactNotes(){
+			if (this.ticket.contact) { 
+				return this.ticket.contact.notes || ''
+			}
 		},
 		filterdContacts() {
 			return this.query === ''
@@ -467,6 +474,9 @@ export default {
 		},
 	},
 	methods: {
+		updateNotes(note) {
+			this.ticketController.set(this.ticket.contact.name, 'contact_notes', note)
+		},
 		updateContact() {
 			this.editingContact = false
 			this.updatingContact = true

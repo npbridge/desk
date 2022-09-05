@@ -79,6 +79,17 @@ def update_contact(ticket_id, contact):
 		
 		return ticket_doc
 
+@frappe.whitelist(allow_guest=True)
+def update_contact_notes(contact, notes):
+	frappe.log_error("updating contact", f"{contact}, {notes}")
+	if contact:
+		contact_doc = frappe.get_doc("Contact", contact)
+		if notes and contact_doc.notes != notes:
+			contact_doc.notes = notes
+			contact_doc.save()
+
+		return contact_doc
+
 def get_agent_assigned_to_ticket(ticket_id):
 	agents = []
 	assignee_list = frappe.db.get_value("Ticket", ticket_id, "_assign")
