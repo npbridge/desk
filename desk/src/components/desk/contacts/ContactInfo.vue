@@ -129,7 +129,7 @@ export default {
 			})
 		},
 		cancel() {
-			this.$router.go()
+			this.$router.push({ name: 'Contacts' })
 		}
 	}
 }
