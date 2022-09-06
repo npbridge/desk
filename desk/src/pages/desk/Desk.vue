@@ -490,7 +490,6 @@ export default {
 				},
 				auto: this.user.has_desk_access,
 				onSuccess: (data) => {
-					console.log(data, "courses data")
 					this.contactCourses = data
 				},
 				onError: (error) => {

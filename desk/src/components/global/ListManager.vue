@@ -62,6 +62,8 @@ export default {
         manager.value.loadPage(manager.value.start + options.value.limit)
       },
       getPage: (page) => {
+        // options.value.start_page = page
+        // manager.value.currPage = page
         manager.value.loadPage(options.value.limit * (page - 1))
       },
       loadPage: (start) => {
@@ -70,6 +72,7 @@ export default {
             query: {...route.query, page: Math.ceil(start / options.value.limit) + 1}
           })
         } else {
+          console.log("I am being called")
           clearList()
           manager.value.currPage = Math.floor(manager.value.start / options.value.limit) + 1
           resources.value.list.update({
@@ -90,6 +93,7 @@ export default {
         clearList()
         if (newOptions.filters) options.value.filters = newOptions.filters
         if (newOptions.order_by) options.value.order_by = newOptions.order_by
+        if (newOptions.count) options.value.limit = newOptions.count
 
         manager.value.currPage = parseInt(route.query.page ? route.query.page : 1)
         manager.value.getPage(manager.value.currPage)
@@ -215,6 +219,7 @@ export default {
   },
   resources: {
     list() {
+      console.log("called list")
       return {
         type: 'list',
         doctype: this.manager.options?.doctype,
@@ -269,20 +274,22 @@ export default {
       if (!this.options.route_query_pagination) return
       if (this.$route.query.page) {
         let page = this.$route.query.page
+        let count = this.$route.query.count
         if (page <= 0) {
           return this.$router.push({
             query: {...this.$route.query, page: 1}
           })
         }
-        const start = this.options.limit * (page - 1)
-
+        const start = count* (page - 1)
+        console.log("start is ", count* (page - 1))
         this.clearList()
         this.manager.start = start
-        this.manager.currPage = Math.floor(this.manager.start / this.options.limit) + 1
+        this.manager.currPage = Math.floor(this.manager.start / count) + 1
+        console.log("curr page is set to ", Math.floor(this.manager.start / count) + 1)
         this.$resources.list.update({
           ...this.manager.options,
           start: this.manager.start,
-          limit: this.options.limit
+          limit: count
         })
       }
     },

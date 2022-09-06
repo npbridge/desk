@@ -21,7 +21,7 @@
 					'_assign', 
 					'_seen'
 				],
-				limit: 20,
+				limit: paginationCount,
 				order_by: 'modified desc',
 				filters: initialFilters,
 				start_page: initialPage,
@@ -57,6 +57,7 @@
 										</div>
 									</template>
 								</Dropdown>
+								
 							</div>
 							<div v-else class="flex items-center space-x-3">
 								<div>
@@ -71,6 +72,21 @@
 									</div>
 								</Button>
 								<Button icon-left="plus" appearance="primary" @click="() => {showNewTicketDialog = true}">Add Ticket</Button>
+								<Dropdown
+									placement="right" 
+									:options="paginationOptionsAsDropdown()" 
+								>
+									<template v-slot="{ togglePagination }">
+										<div class="flex flex-col">
+											<Button  @click="togglePagination" class="cursor-pointer">
+												<div class="flex items-center space-x-2">
+													<div >{{ paginationCount }}</div>
+													<FeatherIcon name="chevron-down" /> 
+												</div>
+											</Button>
+										</div>
+									</template>
+								</Dropdown>
 							</div>
 						</div>
 					</div>
@@ -89,19 +105,22 @@ import FilterBox from '@/components/desk/global/FilterBox.vue'
 import TicketList from '@/components/desk/tickets/TicketList.vue'
 import ListManager from '@/components/global/ListManager.vue'
 import CustomIcons from '@/components/desk/global/CustomIcons.vue'
+import FeatherIcon from 'frappe-ui/src/components/FeatherIcon.vue'
 
 export default {
 	name: 'Tickets',
 	components: {
-		NewTicketDialog,
-		Dropdown,
-		FilterBox,
-		ListManager,
-		TicketList,
-		CustomIcons
-	},
+    NewTicketDialog,
+    Dropdown,
+    FilterBox,
+    ListManager,
+    TicketList,
+    CustomIcons,
+    FeatherIcon
+},
 	data() {
 		return {
+			paginationCount: 2,
 			initialFilters: [],
 			initialPage: 1
 		}
@@ -214,6 +233,7 @@ export default {
 				}
 			} else {
 				this.initialFilters = finalFilters
+				this.paginationCount = parseInt(this.$route.query.count ? this.$route.query.count : 1)
 				this.initialPage = parseInt(this.$route.query.page ? this.$route.query.page : 1)
 				this.listManagerInitialised = true
 			}
@@ -281,6 +301,35 @@ export default {
 				return null;
 			}
 		},
+		updatePaginationCount(count){
+			this.paginationCount = count
+			this.$router.push({
+				query: {...this.$route.query, page: 1, count: count}
+			})
+			this.$refs.ticketList.manager.update({count: count})
+		},
+		paginationOptionsAsDropdown() {
+			const paginationOptions = [2, 5, 10]
+			let options = [];
+			options.push({
+					group: 'Pagination',
+					hideLabel: true,
+					items: paginationOptions.map(paginationOption => {
+						return {
+							label: paginationOption,
+							handler: () => {
+								this.updatePaginationCount(paginationOption)
+								this.$refs.ticketList.manager.reload()
+							}
+						}
+					})
+					
+				})
+			
+				
+			return options;
+		},
+
 	},
 	resources: {
 		bulkAssignTicketStatus() {
