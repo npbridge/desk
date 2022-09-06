@@ -16,6 +16,8 @@ from frappe.utils import date_diff, get_datetime, now_datetime, time_diff_in_sec
 from frappe.utils.user import is_website_user
 from frappe.desk.form.assign_to import add as assign, clear as clear_all_assignments
 from frappedesk.frappedesk.doctype.ticket_activity.ticket_activity import log_ticket_activity
+from frappe.utils import get_url
+from frappe.utils.user import get_user_fullname
 
 from frappedesk.rocketchat.rocketchat import getResponse
 
@@ -35,15 +37,40 @@ class Ticket(Document):
 	def before_insert(self):
 		self.update_priority_based_on_ticket_type()
 
-	def after_insert(self):
-		log_ticket_activity(self.name, "created")
+    def after_insert(self):
+        # self.send_acknowledgement_email("Acknowledgement From Moodle Helpdesk", "acknowledgement", {"abc": "abc"}, now=True)
+        log_ticket_activity(self.name, "created")
 
-	def update_priority_based_on_ticket_type(self):
-		if (self.ticket_type):
-			ticket_type_doc = frappe.get_doc("Ticket Type", self.ticket_type)
-			if (ticket_type_doc.priority):
-				self.priority = ticket_type_doc.priority
-				self.save()
+    def send_acknowledgement_email(self, subject, template, add_args, now=None):
+        contact = frappe.get_doc("Contact", self.contact)
+        user_name = contact.first_name or 'Learner'
+        resolution_date = self.resolution_by or 'next working day.'
+        message = f"Dear {user_name},\n\
+            We have received your email and will get back to you by {resolution_date}.\n\n\
+            Regards,\nMoodle Help Desk"
+
+        if contact:
+            send_to = contact.email_id
+        else:
+            send_to = "ashish@npbridge.com"
+            message = "User contact not found."
+
+        frappe.sendmail(recipients=send_to,
+            sender="helpdesk@npbridge.com",
+            subject="Acknowledgement From Moodle Help Desk",
+            message=message,
+            delayed=False,
+            retry=3,
+            reference_doctype= "Ticket",
+            reference_name= self.name,
+            )
+
+    def update_priority_based_on_ticket_type(self):
+        if (self.ticket_type):
+            ticket_type_doc = frappe.get_doc("Ticket Type", self.ticket_type)
+            if (ticket_type_doc.priority):
+                self.priority = ticket_type_doc.priority
+                self.save()
 
 	def set_contact(self, email_id, save=False):
 		import email.utils

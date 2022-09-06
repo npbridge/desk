@@ -15,6 +15,7 @@
   "priority",
   "cb00",
   "ticket_type",
+  "ticket_tag",
   "agent_group",
   "ticket_split_from",
   "sb_details",
@@ -414,12 +415,18 @@
    "fieldtype": "Select",
    "label": "Agent Remark",
    "options": "Argent\nPoor Knowledge"
+  },
+  {
+   "fieldname": "ticket_tag",
+   "fieldtype": "Table MultiSelect",
+   "label": "Ticket Tag ",
+   "options": "Ticket Tag"
   }
  ],
  "icon": "fa fa-issue",
  "idx": 7,
  "links": [],
- "modified": "2022-05-19 22:18:01.474617",
+ "modified": "2022-08-31 10:48:37.804035",
  "modified_by": "Administrator",
  "module": "FrappeDesk",
  "name": "Ticket",
@@ -459,6 +466,31 @@
    "read": 1,
    "report": 1,
    "role": "Agent",
+   "select": 1,
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Helpdesk Agent",
+   "select": 1,
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Helpdesk Manager",
    "select": 1,
    "share": 1,
    "write": 1

@@ -41,6 +41,8 @@ export default {
 		const user = inject('user')
 
 		const ticketTypes = ref([])
+		const ticketTags = ref([])
+		const contactCourses = ref([])
 		const ticketPriorities = ref([])
 		const ticketStatuses = ref([])
 
@@ -66,6 +68,8 @@ export default {
 		provide('ticketSideBarFilter', ticketSideBarFilter)
 
 		provide('ticketTypes', ticketTypes)
+		provide('ticketTags', ticketTags)
+		provide('contactCourses', contactCourses)
 		provide('ticketPriorities', ticketPriorities)
 		provide('ticketStatuses', ticketStatuses)
 
@@ -82,6 +86,8 @@ export default {
 			user,
 
 			ticketTypes,
+			ticketTags,
+			contactCourses,
 			ticketPriorities,
 			ticketStatuses,
 
@@ -125,14 +131,24 @@ export default {
 			this.$router.push({ path: '/support/tickets' })
 			return
 		}
-		this.$resources.frappedeskSettings.fetch()
-		this.$resources.defaultOutgoingEmailAccount.fetch()
-		;(this.ticketController.set = (ticketId, type, ref = null) => {
+		this.$resources.frappedeskSettings.fetch();
+		this.$resources.defaultOutgoingEmailAccount.fetch();
+		(this.ticketController.set = (ticketId, type, ref = null) => {
 			switch (type) {
 				case 'type':
 					return this.$resources.assignTicketType.submit({
 						ticket_id: ticketId,
 						type: ref,
+					})
+				case 'tag':
+					return this.$resources.assignTicketTag.submit({
+						ticket_id: ticketId,
+						tag: ref,
+					})
+				case 'course':
+					return this.$resources.assignContactCourse.submit({
+						contact: ticketId,
+						course: ref,
 					})
 				case 'status':
 					return this.$resources.assignTicketStatus.submit({
@@ -148,6 +164,11 @@ export default {
 					return this.$resources.updateTicketContact.submit({
 						ticket_id: ticketId,
 						contact: ref,
+					})
+				case 'contact_notes':
+					return this.$resources.updateContactNotes.submit({
+						contact: ticketId,
+						notes: ref
 					})
 				case 'agent':
 					return this.$resources.assignTicketToAgent.submit({
@@ -177,6 +198,30 @@ export default {
 							type: values,
 						})
 						break
+					case 'tag':
+						this.$resources.createTicketTag.submit({
+							tag: values,
+						})
+						break
+					case 'course':
+						this.$resources.createContactCourse.submit({
+							course: values,
+						})
+						break
+				}
+			}),
+			(this.ticketController.delete = (ticketId, type, values) => {
+				switch (type) {
+					case 'tag':
+						return this.$resources.deleteTicketTag.submit({
+							ticket_id: ticketId,
+							tag: values,
+						})
+					case 'course':
+						return this.$resources.deleteContactCourse.submit({
+							contact: ticketId,
+							course: values,
+						})
 				}
 			})
 		this.$socket.on('list_update', (data) => {
@@ -243,7 +288,10 @@ export default {
                         customIcon: 'circle-check',
                         appearance: 'success',
                     })
-                }
+                },
+				onError: (error) => {
+					console.log(error)
+				}
             }
         },
 		skipHelpdeskNameSetup() {
@@ -369,8 +417,9 @@ export default {
 				onSuccess: () => {
 					// TODO:
 				},
-				onError: () => {
+				onError: (error) => {
 					// TODO:
+					console.log(error)
 				},
 			}
 		},
@@ -380,8 +429,21 @@ export default {
 				onSuccess: async (ticket) => {
 					// TODO:
 				},
-				onError: () => {
+				onError: (error) => {
 					// TODO:
+					console.log(error)
+				},
+			}
+		},
+		updateContactNotes() {
+			return {
+				method: 'frappedesk.api.ticket.update_contact_notes',
+				onSuccess: async (contact) => {
+					// TODO:
+				},
+				onError: (error) => {
+					// TODO:
+					console.log(error)
 				},
 			}
 		},
@@ -396,7 +458,43 @@ export default {
 				onSuccess: (data) => {
 					this.ticketTypes = data
 				},
-				onError: () => {
+				onError: (error) => {
+					// TODO:
+					console.log(error)
+				},
+			}
+		},
+		tags() {
+			return {
+				method: 'frappe.client.get_list',
+				params: {
+					doctype: 'Helpdesk Tag',
+					pluck: 'name',
+				},
+				auto: this.user.has_desk_access,
+				onSuccess: (data) => {
+					this.ticketTags = data
+				},
+				onError: (error) => {
+					console.log(error)
+					// TODO:
+				},
+			}
+		},
+		courses() {
+			return {
+				method: 'frappe.client.get_list',
+				params: {
+					doctype: 'Course',
+					pluck: 'name',
+				},
+				auto: this.user.has_desk_access,
+				onSuccess: (data) => {
+					console.log(data, "courses data")
+					this.contactCourses = data
+				},
+				onError: (error) => {
+					console.log(error)
 					// TODO:
 				},
 			}
@@ -411,8 +509,9 @@ export default {
 				onSuccess: (data) => {
 					this.ticketPriorities = data
 				},
-				onError: () => {
+				onError: (error) => {
 					// TODO:
+					console.log(error)
 				},
 			}
 		},
@@ -423,8 +522,9 @@ export default {
 				onSuccess: (data) => {
 					this.ticketStatuses = data
 				},
-				onError: () => {
+				onError: (error) => {
 					// TODO:
+					console.log(error)
 				},
 			}
 		},
@@ -440,8 +540,9 @@ export default {
 				onSuccess: (data) => {
 					this.contacts = data
 				},
-				onError: () => {
+				onError: (error) => {
 					// TODO:
+					console.log(error)
 				},
 			}
 		},
@@ -460,8 +561,9 @@ export default {
 				onSuccess: (data) => {
 					this.agents = data
 				},
-				onError: () => {
+				onError: (error) => {
 					// TODO:
+					console.log(error)
 				},
 			}
 		},
@@ -475,8 +577,9 @@ export default {
 				onSuccess: (data) => {
 					this.agentGroups = data
 				},
-				onError: () => {
+				onError: (error) => {
 					// TODO:
+					console.log(error)
 				},
 			}
 		},
@@ -486,8 +589,9 @@ export default {
 				onSuccess: async () => {
 					this.$event.emit('update_ticket_list')
 				},
-				onError: () => {
+				onError: (error) => {
 					// TODO:
+					console.log(error)
 				},
 			}
 		},
@@ -495,9 +599,48 @@ export default {
 			return {
 				method: 'frappedesk.api.ticket.assign_ticket_type',
 				onSuccess: async (ticket) => {},
-				onError: () => {
+				onError: (error) => {
+					// TODO:
+					console.log(error)
+				},
+			}
+		},
+		assignTicketTag() {
+			return {
+				method: 'frappedesk.api.ticket.assign_ticket_tag',
+				onSuccess: async (ticket) => {},
+				onError: (error) => {
+					console.log(error)
 					// TODO:
 				},
+			}
+		},
+		assignContactCourse() {
+			return {
+				method: 'frappedesk.api.ticket.assign_contact_course',
+				onSuccess: async (contact) => {},
+				onError: (error) => {
+					console.log(error)
+					// TODO:
+				},
+			}
+		},
+		deleteTicketTag() {
+			return {
+				method: 'frappedesk.api.ticket.delete_ticket_tag',
+				onSuccess: async (ticket) => {},
+				onError: (error) => {
+					console.log(error)
+				}
+			}
+		},
+		deleteContactCourse() {
+			return {
+				method: 'frappedesk.api.ticket.delete_contact_course',
+				onSuccess: async (contact) => {},
+				onError: (error) => {
+					console.log(error)
+				}
 			}
 		},
 		assignTicketStatus() {
@@ -506,7 +649,8 @@ export default {
 				onSuccess: async () => {
 					this.$event.emit('update_ticket_list')
 				},
-				onError: () => {
+				onError: (error) => {
+					console.log(error)
 					// TODO:
 				},
 			}
@@ -515,7 +659,8 @@ export default {
 			return {
 				method: 'frappedesk.api.ticket.assign_ticket_priority',
 				onSuccess: async (ticket) => {},
-				onError: () => {
+				onError: (error) => {
+					console.log(error)
 					// TODO:
 				},
 			}
@@ -524,7 +669,8 @@ export default {
 			return {
 				method: 'frappedesk.api.ticket.assign_ticket_group',
 				onSuccess: async (ticket) => {},
-				onError: () => {
+				onError: (error) => {
+					console.log(error)
 					// TODO:
 				},
 			}
@@ -535,7 +681,32 @@ export default {
 				onSuccess: () => {
 					this.$resources.types.fetch()
 				},
-				onError: () => {
+				onError: (error) => {
+					console.log(error)
+					// TODO:
+				},
+			}
+		},
+		createTicketTag() {
+			return {
+				method: 'frappedesk.api.ticket.check_and_create_ticket_tag',
+				onSuccess: () => {
+					this.$resources.tags.fetch()
+				},
+				onError: (error) => {
+					console.log(error)
+					// TODO:
+				},
+			}
+		},
+		createContactCourse() {
+			return {
+				method: 'frappedesk.api.ticket.check_and_create_contact_course',
+				onSuccess: () => {
+					this.$resources.courses.fetch()
+				},
+				onError: (error) => {
+					console.log(error)
 					// TODO:
 				},
 			}
@@ -544,7 +715,9 @@ export default {
 			return {
 				method: 'frappedesk.api.ticket.set_ticket_notes',
 				onSuccess: async (ticket) => {},
-				onError: () => {},
+				onError: (error) => {
+					console.log(error)
+				},
 			}
 		},
 	},

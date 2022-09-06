@@ -77,9 +77,9 @@
 		</div>
 		<div class="px-[19px] py-[28px] h-full overflow-y-auto">
 			<div class="text-base space-y-[12px]">
-				<div v-if="user.agent">
+				<!-- <div v-if="user.agent">
 					<router-link class="hover:underline" :to="{ path: '/support/impersonate', query: {contact: ticket.raised_by, ticketId: ticket.name}}" target="_blank">See on Support Portal</router-link>
-				</div>
+				</div> -->
 				<div class="flex flex-col space-y-[8px]">
 					<div class="text-gray-600 font-normal text-[12px]">Assignee</div>
 					<Autocomplete 
@@ -164,6 +164,69 @@
 								class="hover:bg-gray-100 px-2.5 py-1.5 rounded-md text-base text-blue-500 font-semibold"
 								@click="() => {
 									this.openCreateNewTicketTypeDialog = true
+								}"
+							>
+								Create new
+							</div>
+						</template>
+					</Autocomplete>
+				</div>
+				<div class="flex flex-col space-y-[8px]">
+					<div class="flex flex-row justify-between text-gray-600 font-normal text-[12px]">
+						<div class="text-gray-600">Tags</div>
+					</div>
+
+					<div v-if="ticket.ticket_tag.length > 0" class="flex flex-row shrink-0 flex-wrap">
+						<div v-for="tag in ticket.ticket_tag" :key="tag">
+							<div 
+							class="bg-white border px-[8px] rounded-[10px] h-fit w-fit border-[black] text-[black] mr-[0.2rem] mb-[0.2rem]" 
+								>
+								<div class="flex flex-row items-center h-[20px] space-x-[7px]">
+									<div class="text-[10px] uppercase grow">{{ tag.tag }}</div>
+									<div>
+										<FeatherIcon name="x-circle" class="h-3 stroke-black-500  cursor-pointer" @click="removeTag(tag.name)" />
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<Autocomplete 
+						v-if="ticketTags"
+						:options="ticketTags.map(x => {
+							return {label: x.name , value: x.name}
+						})"
+						placeholder="Set tags"
+						:value="ticket.ticket_tag.length > 0  && !updatingTicketTag ? ticket.ticket_tag[0].name : ''" 
+						@change="(item) => {
+							if (item.value) {
+								updatingTicketTag = true;
+								ticketController.set(ticketId, 'tag', item.value).then(() => {
+									updatingTicketTag = false
+									$resources.ticket.fetch()
+	
+									$toast({
+										title: 'Ticket updated successfully.',
+										customIcon: 'circle-check',
+										appearance: 'success',
+									})
+								})
+							}
+						}"
+					>
+						<template #input>
+							<div class="flex flex-row space-x-1 items-center w-full">
+								<div class="grow">
+									<LoadingText v-if="updatingTicketTag" />
+									<div v-else class="text-base text-left text-gray-400"> tags </div>
+								</div>
+							</div>
+						</template>
+						<template #no-result-found>
+							<div 
+								role="button" 
+								class="hover:bg-gray-100 px-2.5 py-1.5 rounded-md text-base text-blue-500 font-semibold"
+								@click="() => {
+									this.openCreateNewTicketTagDialog = true
 								}"
 							>
 								Create new
@@ -263,6 +326,17 @@
 				</div>
 			</template>
 		</Dialog>
+		<Dialog :options="{title: 'Create New Tag'}" v-model="openCreateNewTicketTagDialog">
+			<template #body-content>
+				<div class="space-y-4">
+					<Input type="text" v-model="newTag" placeholder="eg: Moodle" />
+					<div class="flex float-right space-x-2">
+						<Button @click="createAndAssignTicketTagFromDialog()">Create and Assign</Button>
+						<Button @click="createTicketTagFromDialog()" appearance="primary">Create</Button>
+					</div>
+				</div>
+			</template>
+		</Dialog>
 	</div>
 </template>
 
@@ -292,7 +366,9 @@ export default {
 	data() {
 		return {
 			openCreateNewTicketTypeDialog: false,
+			openCreateNewTicketTagDialog: false,
 			newType: "",
+			newTag: "",
 		}
 	},
 	setup() {
@@ -300,6 +376,7 @@ export default {
 
 		const user = inject('user')
 		const ticketTypes = inject('ticketTypes')
+		const ticketTags = inject('ticketTags')
 		const ticketPriorities = inject('ticketPriorities')
 		const ticketStatuses = inject('ticketStatuses')
 		const ticketController = inject('ticketController')
@@ -308,6 +385,7 @@ export default {
 		const agentGroups = inject('agentGroups')
 
 		const updatingTicketType = ref(false)
+		const updatingTicketTag = ref(false)
 		const updatingAssignee = ref(false)
 		const updatingPriority = ref(false)
 		const updatingStatus = ref(false)
@@ -325,6 +403,7 @@ export default {
 
 			user,
 			ticketTypes,
+			ticketTags,
 			ticketPriorities,
 			ticketStatuses,
 			ticketController,
@@ -333,6 +412,7 @@ export default {
 			agentGroups,
 
 			updatingTicketType,
+			updatingTicketTag,
 			updatingAssignee,
 			updatingPriority,
 			updatingStatus,
@@ -417,15 +497,54 @@ export default {
 				this.closeCreateNewTicketTypeDialog();
 			}
 		},
+		createAndAssignTicketTagFromDialog() {
+			if (this.newTag) {
+				this.updatingTicketTag = true
+				this.ticketController.set(this.ticketId, 'tag', this.newTag).then(() => {
+					this.updatingTicketTag= false
+					this.$resources.ticket.fetch()
+
+					this.$toast({
+						title: 'Ticket updated successfully.',
+						customIcon: 'circle-check',
+						appearance: 'success',
+					})
+				})
+				this.closeCreateNewTicketTagDialog();
+			}
+		},
 		createTicketTypeFromDialog() {
 			if (this.newType) {
 				this.ticketController.new('type', this.newType)
 				this.closeCreateNewTicketTypeDialog();
 			}
 		},
+		createTicketTagFromDialog() {
+			if (this.newTag) {
+				this.ticketController.new('tag', this.newTag)
+				this.closeCreateNewTicketTagDialog();
+			}
+		},
+		removeTag(tag){
+			this.updatingTicketTag = true
+			this.ticketController.delete(this.ticketId, 'tag', tag).then(() => {
+				this.updatingTicketTag= false
+				this.$resources.ticket.fetch()
+
+				this.$toast({
+					title: 'Ticket updated successfully.',
+					customIcon: 'circle-check',
+					appearance: 'success',
+				})
+			})
+		}, 
 		closeCreateNewTicketTypeDialog() {
 			this.newType = ""
 			this.openCreateNewTicketTypeDialog = false
+		},
+		closeCreateNewTicketTagDialog() {
+			this.newTag = ""
+			this.openCreateNewTicketTagDialog = false
 		},
 		updateStatus(status) {
 			this.mandatoryFieldsNotSet = false
@@ -479,6 +598,9 @@ export default {
 </script>
 
 <style>
+	.flex-wrap{
+		flex-wrap: wrap;
+	}
 	.dot {
 		height: 21px;
 		width: 10.5px;

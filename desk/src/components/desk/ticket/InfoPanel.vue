@@ -33,7 +33,66 @@
 								/>
 							</div>
 						</div>
-						<div class="flex flex-row items-center space-x-[12px]">
+						<div class="flex flex-col space-y-[8px]">
+							<div class="flex flex-row justify-between text-gray-600 font-normal text-[12px]">
+								<div class="text-gray-600">Courses</div>
+							</div>
+						<div v-if="ticket.contact.course.length > 0 " class="flex flex-row shrink-0 flex-wrap">
+							<div v-for="course in ticket.contact.course" :key="course">
+								<div 
+								class="bg-white border px-[8px] rounded-[10px] h-fit w-fit border-[black] text-[black] mr-[0.2rem] mb-[0.2rem]" 
+									>
+									<div class="flex flex-row items-center h-[20px] space-x-[7px]">
+										<div class="text-[10px] uppercase grow">{{ course.course }} </div>
+											<div>
+												<FeatherIcon name="x-circle" class="h-3 stroke-black-500  cursor-pointer" @click="removeCourse(course.name)" />
+											</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<Autocomplete 
+						v-if="contactCourses"
+						:options="contactCourses.map(x => {
+							return {label: x.name , value: x.name}
+						})"
+						placeholder="Set courses"
+						:value="ticket.contact.course.length > 0  ? ticket.contact.course[0].name : ''" 
+						@change="(item) => {
+							if (item.value) {
+								ticketController.set(ticket.contact.name, 'course', item.value).then(() => {
+									$resources.ticket.fetch()
+	
+									$toast({
+										title: 'Ticket updated successfully.',
+										customIcon: 'circle-check',
+										appearance: 'success',
+									})
+								})
+							}
+						}"
+							>
+							<template #input>
+								<div class="flex flex-row space-x-1 items-center w-full">
+									<div class="grow">
+										<div class="text-base text-left text-gray-400"> courses </div>
+									</div>
+								</div>
+							</template>
+							<template #no-result-found>
+								<div 
+									role="button" 
+									class="hover:bg-gray-100 px-2.5 py-1.5 rounded-md text-base text-blue-500 font-semibold"
+									@click="() => {
+										this.openCreateNewContactCourseDialog = true
+									}"
+								>
+									Create new
+								</div>
+							</template>
+						</Autocomplete>
+						</div> 
+						<div v-if="ticket.contact.department" class="flex flex-row items-center space-x-[12px]">
 							<FeatherIcon
 								name="book"
 								class="stroke-gray-500"
@@ -46,7 +105,7 @@
 						<div
 							v-if="ticket.contact.phone_nos.length > 0"
 							class="flex space-x-[12px] items-center"
-						>
+							>
 							<FeatherIcon
 								name="phone"
 								class="stroke-gray-500"
@@ -65,7 +124,7 @@
 						<div
 							v-if="ticket.contact.email_ids.length > 0"
 							class="flex space-x-[12px] items-center"
-						>
+							>
 							<FeatherIcon
 								name="mail"
 								class="stroke-gray-500"
@@ -84,6 +143,9 @@
 								</div>
 							</div>
 						</div>
+						<div class="flex flex-row items-center space-x-[12px]">
+							<Input label="Notes" type="textarea" :value="contactNotes" class="text-gray-600" @change="updateNotes" />
+						</div> 
 					</div>
 					<div v-else>
 						<div v-if="!updatingContact" class="flex flex-row-reverse">
@@ -342,6 +404,17 @@
 				}
 			"
 		/>
+		<Dialog :options="{title: 'Create New Course'}" v-model="openCreateNewContactCourseDialog">
+			<template #body-content>
+				<div class="space-y-4">
+					<Input type="text" v-model="newCourse" placeholder="eg: Course-1" />
+					<div class="flex float-right space-x-2">
+						<Button @click="createAndAssignContactCourseFromDialog()">Create and Assign</Button>
+						<Button @click="createContactCourseFromDialog()" appearance="primary">Create</Button>
+					</div>
+				</div>
+			</template>
+		</Dialog>
 	</div>
 </template>
 
@@ -358,6 +431,8 @@ import {
 } from '@headlessui/vue'
 import NewContactDialog from '@/components/desk/global/NewContactDialog.vue'
 import { inject, ref } from 'vue'
+import Autocomplete from '@/components/global/Autocomplete.vue'
+
 
 export default {
 	name: 'InfoPanel',
@@ -374,6 +449,13 @@ export default {
 		ComboboxOption,
 		ComboboxOptions,
 		NewContactDialog,
+		Autocomplete
+	},
+	data() {
+		return {
+			openCreateNewContactCourseDialog: false,
+			newCourse: "",
+		}
 	},
 	setup() {
 		const viewportWidth = inject('viewportWidth')
@@ -389,6 +471,8 @@ export default {
 		const contacts = inject('contacts')
 		const ticketController = inject('ticketController')
 
+		const contactCourses = inject('contactCourses')
+
 		const showOtherTicketsOfContacts = ref(false)
 
 		return {
@@ -403,6 +487,7 @@ export default {
 			contacts,
 			ticketController,
 			showOtherTicketsOfContacts,
+			contactCourses
 		}
 	},
 	computed: {
@@ -422,7 +507,11 @@ export default {
 			if (this.ticket.contact) { 
 				return this.ticket.contact.department || 'Not available'
 			}
-
+		},
+		contactNotes(){
+			if (this.ticket.contact) { 
+				return this.ticket.contact.notes || ''
+			}
 		},
 		filterdContacts() {
 			return this.query === ''
@@ -467,6 +556,44 @@ export default {
 		},
 	},
 	methods: {
+		createAndAssignContactCourseFromDialog() {
+			if (this.newCourse) {
+				this.ticketController.set(this.ticket.contact.name, 'course', this.newCourse).then(() => {
+					this.$resources.ticket.fetch()
+
+					this.$toast({
+						title: 'Ticket updated successfully.',
+						customIcon: 'circle-check',
+						appearance: 'success',
+					})
+				})
+				this.closeCreateNewContactCourseDialog();
+			}
+		},
+		createContactCourseFromDialog() {
+			if (this.newCourse) {
+				this.ticketController.new('course', this.newCourse)
+				this.closeCreateNewContactCourseDialog();
+			}
+		},
+		removeCourse(course){
+			this.ticketController.delete(this.ticket.contact.name, 'course', course).then(() => {
+				this.$resources.ticket.fetch()
+
+				this.$toast({
+					title: 'Ticket updated successfully.',
+					customIcon: 'circle-check',
+					appearance: 'success',
+				})
+			})
+		}, 
+		closeCreateNewContactCourseDialog() {
+			this.newCourse = ""
+			this.openCreateNewContactCourseDialog = false
+		},
+		updateNotes(note) {
+			this.ticketController.set(this.ticket.contact.name, 'contact_notes', note)
+		},
 		updateContact() {
 			this.editingContact = false
 			this.updatingContact = true
