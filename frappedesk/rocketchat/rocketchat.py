@@ -72,6 +72,7 @@ def getResponse(msg, msgID=None, history={}):
 		response = "<p>" + response.replace("\n", "<br>") + "</p>"
 		return response
 	else:
-		logger.debug(f"Vela can't respond this time, Please try after some time")
-
+		response = "Bot can't respond this time, Please try after some time"
+		logger.debug(f"{response}")
+		return response
 
