@@ -180,7 +180,7 @@
 						<div v-for="tag in ticket.ticket_tag" :key="tag">
 							<div 
 							class="bg-white border px-[8px] rounded-[10px] h-fit w-fit border-[black] text-[black] mr-[0.2rem] mb-[0.2rem]" 
-							>
+								>
 								<div class="flex flex-row items-center h-[20px] space-x-[7px]">
 									<div class="text-[10px] uppercase grow">{{ tag.tag }}</div>
 									<div>
@@ -188,7 +188,7 @@
 									</div>
 								</div>
 							</div>
-							</div>
+						</div>
 					</div>
 					<Autocomplete 
 						v-if="ticketTags"
