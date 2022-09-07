@@ -74,7 +74,7 @@
 							</div>
 						</div>
 					</div>
-					<TicketList :manager="manager" />
+					<TicketList :manager="manager" :ticketsWithTags="ticketsWithTags" :filterTicketsWithTags="filterTicketsWithTags" />
 				</div>
 			</template>
 		</ListManager>
@@ -103,7 +103,9 @@ export default {
 	data() {
 		return {
 			initialFilters: [],
-			initialPage: 1
+			initialPage: 1,
+			ticketsWithTags: [],
+			filterTicketsWithTags: false
 		}
 	},
 	setup() {
@@ -175,8 +177,14 @@ export default {
 		}
 	},
 	methods: {
+		fetchTicketsWithTags(tags) {
+			this.$resources.fetchTicketsWithTags.submit({
+				tags: tags
+			})
+		},
 		applyFiltersToList() {
 			const finalFilters = {}
+			this.filterTicketsWithTags = false
 			const menuFilter = this.$route.query.menu_filter
 			if (this.user.agent) {
 				const sideBarFilters = {
@@ -205,7 +213,12 @@ export default {
 			}
 			this.filters.forEach(filter => {
 				for (const [key, value] of Object.entries(filter)) {
-					finalFilters[key] = (key === '_assign') ?  ['like', `%${value}%`] : ['=', value]
+					if (key === 'ticket_tag') {
+						this.fetchTicketsWithTags(value)
+					}
+					else {
+						finalFilters[key] = (key === '_assign') ?  ['like', `%${value}%`] : ['=', value]
+					}
 				}
 			})
 			if (this.listManagerInitialised) {
@@ -283,6 +296,22 @@ export default {
 		},
 	},
 	resources: {
+		fetchTicketsWithTags() {
+			return {
+				method: 'frappedesk.api.ticket.fetch_ticket_with_tags',
+				onSuccess: (tickets) => {
+					this.filterTicketsWithTags = true
+					this.ticketsWithTags = tickets
+					// this.$refs.ticketList.selectedItems = []
+					// this.$refs.ticketList.manager.reload()
+
+					// this.$event.emit('update_ticket_list')
+				},
+				onError: (err) => {
+					console.log(err)
+				}
+			}
+		},
 		bulkAssignTicketStatus() {
 			return {
 				method: 'frappedesk.api.ticket.bulk_assign_ticket_status',

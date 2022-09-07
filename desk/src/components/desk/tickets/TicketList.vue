@@ -109,7 +109,14 @@
 			<div v-else>
 				<div v-if="manager.list.length > 0">
 					<div v-for="(ticket, index) in manager.list" :key="ticket.name">
-						<TicketListItem :class="index == 0 ? 'mt-[9px] mb-[2px]' : 'my-[2px]'" :ticket="ticket" @toggle-select="manager.select(ticket)" :selected="manager.itemSelected(ticket)" />
+						<div v-if="filterTicketsWithTags"> 
+								<div v-if="ticketsWithTags.includes(ticket.name)">
+									<TicketListItem :class="index == 0 ? 'mt-[9px] mb-[2px]' : 'my-[2px]'" :ticket="ticket" @toggle-select="manager.select(ticket)" :selected="manager.itemSelected(ticket)" />
+								</div>
+						</div>
+						<div v-else>
+							<TicketListItem :class="index == 0 ? 'mt-[9px] mb-[2px]' : 'my-[2px]'" :ticket="ticket" @toggle-select="manager.select(ticket)" :selected="manager.itemSelected(ticket)" />
+						</div>
 					</div>
 				</div>
 				<div v-else>
@@ -136,7 +143,7 @@ import ListPageController from '@/components/global/ListPageController.vue'
 
 export default {
 	name: 'TicketList',
-	props: ['manager'],
+	props: ['manager', 'ticketsWithTags', 'filterTicketsWithTags'],
 	components: {
 		TicketListItem,
 		TicketListItemSkeleton,

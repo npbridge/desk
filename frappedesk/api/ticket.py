@@ -341,6 +341,11 @@ def get_contact(ticket_id):
 	return None
 
 @frappe.whitelist(allow_guest=True)
+def fetch_ticket_with_tags(tags): 
+	ticket_tag_doctype = frappe.get_list("Ticket Tag", fields = ['parent'], filters={'tag':('in', tags)}, parent_doctype="Ticket")
+	return [tag.parent for tag in ticket_tag_doctype]
+
+@frappe.whitelist(allow_guest=True)
 def get_conversations(ticket_id):
 	return get_all_conversations(ticket_id)
 
