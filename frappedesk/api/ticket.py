@@ -341,6 +341,12 @@ def get_contact(ticket_id):
 	return None
 
 @frappe.whitelist(allow_guest=True)
+def get_contact_by_name(contact):
+	if contact:
+		contact_doc = frappe.get_doc("Contact", contact)
+		return contact_doc
+
+@frappe.whitelist(allow_guest=True)
 def fetch_ticket_with_tags(tags): 
 	ticket_tag_doctype = frappe.get_list("Ticket Tag", fields = ['parent'], filters={'tag':('in', tags)}, parent_doctype="Ticket")
 	return [tag.parent for tag in ticket_tag_doctype]
@@ -350,8 +356,8 @@ def get_conversations(ticket_id):
 	return get_all_conversations(ticket_id)
 
 @frappe.whitelist(allow_guest=True)
-def submit_conversation_via_agent(ticket_id, message, attachments):
-	return create_communication_via_agent(ticket_id, message, attachments)
+def submit_conversation_via_agent(ticket_id, cc, bcc,  message, attachments):
+	return create_communication_via_agent(ticket_id, cc, bcc, message, attachments)
 
 @frappe.whitelist(allow_guest=True)
 def submit_conversation_via_contact(ticket_id, message, attachments):
