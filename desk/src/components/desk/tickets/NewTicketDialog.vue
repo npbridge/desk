@@ -206,6 +206,7 @@ export default {
 			}).then(() => {
 				this.isCreating = false
 				this.$emit('ticketCreated')
+				this.$router.go()
 			})
 		},
 		validateInputs() {

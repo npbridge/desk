@@ -4,21 +4,57 @@
 			<template #body-content>
 				<div class="space-y-4">
 					<div class="space-y-1">
-						<Input label="Email Id" type="email" v-model="emailId" />
-						<ErrorMessage :message="emailValidationError" />
-					</div>
-					<div class="space-y-1">
 						<Input label="First Name" type="text" v-model="firstName" />
 						<ErrorMessage :message="firstNameValidationError" />
+					</div>
+					<div class="space-y-1">
+					<div class="flex flex-row justify-between text-gray-600 font-normal text-[12px]">
+						<div class="text-gray-600">Course</div>
+					</div>
+					<Autocomplete 
+						v-if="contactCourses"
+						:options="contactCourses.map(x => {
+							return {label: x.name , value: x.name}
+						})"
+						placeholder="Assign courses"
+						:value="course" 
+						@change="(item) => {
+							item && item.value && (course = item.value)
+						}"
+							>
+							<template #input>
+								<div class="flex flex-row space-x-1 items-center w-full">
+									<div class="grow">
+										<div v-if="course" class="text-base text-left text-black-400">{{ course }}</div>
+										<div v-else class="text-base text-left text-gray-400"> courses </div>
+									</div>
+								</div>
+							</template>
+							<!-- <template #no-result-found>
+								<div 
+									role="button" 
+									class="hover:bg-gray-100 px-2.5 py-1.5 rounded-md text-base text-blue-500 font-semibold"
+									@click="() => {
+										this.openCreateNewContactCourseDialog = true
+									}"
+								>
+									Create new
+								</div>
+							</template> -->
+						</Autocomplete>
+						<ErrorMessage :message="courseValidationError" />
 					</div>
 					<div class="space-y-1">
 						<Input label="Last Name (optional)" type="text" v-model="lastName" />
 						<ErrorMessage :message="lastNameValidationError" />
 					</div>
 					<div class="space-y-1">
-						<Input label="Course (optional)" type="text" v-model="course" />
-						<ErrorMessage :message="courseValidationError" />
+						<Input label="Email Id" type="email" v-model="emailId" />
+						<ErrorMessage :message="emailValidationError" />
 					</div>
+					<!-- <div class="space-y-1"> -->
+						
+					<!-- </div> -->
 					<div class="flex float-right space-x-2">
 						<Button :loading="this.$resources.createContact.loading" appearance="primary" @click="createContact()">Create</Button>
 					</div>
@@ -31,6 +67,7 @@
 <script>
 import { Input, Dialog, ErrorMessage } from 'frappe-ui'
 import { computed, ref, inject } from 'vue'
+import Autocomplete from '@/components/global/Autocomplete.vue'
 
 export default {
 	name: 'NewContactDialog',
@@ -47,6 +84,7 @@ export default {
 		const courseValidationError = ref('')
 
 		const contacts = inject('contacts')
+		const contactCourses = inject('contactCourses')
 
 		let open = computed({
 			get: () => props.modelValue,
@@ -58,14 +96,14 @@ export default {
 			},
 		})
 
-		return { open, contacts, emailValidationError, firstNameValidationError, lastNameValidationError, courseValidationError }
+		return { open, contacts, emailValidationError, firstNameValidationError, lastNameValidationError, courseValidationError, contactCourses }
 	},
 	data() {
 		return {
 			firstName: "",
 			lastName: "",
 			emailId: "",
-			course: "",
+			course: ""
 		}
 	},
 	watch: {
@@ -87,9 +125,10 @@ export default {
 					this.emailId = ''
 					this.firstName = ''
 					this.lastName = ''
-					this.department = ''
+					this.course = ''
 
 					this.$emit('contactCreated', data)
+					this.$router.go()
 				}
 			}
 		}
@@ -97,7 +136,8 @@ export default {
 	components: {
 		Input,
 		Dialog,
-		ErrorMessage
+		ErrorMessage,
+		Autocomplete
 	},
 	methods: {
 		createContact() {
@@ -109,15 +149,31 @@ export default {
 				doctype: 'Contact',
 				first_name: this.firstName,
 				last_name: this.lastName,
-				email_ids: [{ email_id: this.emailId, is_primary: true }]
-			}
-			if (this.course) {
-				doc.department = this.course
+				email_ids: [{ email_id: this.emailId, is_primary: true }],
+				course: [{course: this.course}]
 			}
 
 			this.$resources.createContact.submit({
 				doc
 			})
+		},
+		coursesAsDropdownOptions() {
+			let options = [];
+			let coursesOptions = []
+			this.contactCourses.forEach(course => {
+				coursesOptions.push({
+						label: course.name,
+						handler: () => {
+							this.course = course.name
+						},
+					});
+				});
+			options.push({
+				group: 'All Courses',
+				hideLabel: true,
+				items: coursesOptions,
+			})
+			return options
 		},
 		validateInputs() {
 			let error = this.validateEmailInput(this.emailId)
@@ -157,8 +213,6 @@ export default {
 		validateCourse(value) {
 			this.courseValidationError = ''
 			if (!value) {
-				this.courseValidationError = 'Enter a valid course'
-			} else if (value.trim() == '') {
 				this.courseValidationError = 'Enter a valid course'
 			}
 			return this.courseValidationError
