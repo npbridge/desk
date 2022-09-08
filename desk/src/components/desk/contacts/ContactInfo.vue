@@ -28,6 +28,26 @@
 						</div>
 					</div>
 				</div>
+				<div class="block">
+					<span class=" text-sm leading-4 text-gray-700 mb-2">
+						Courses
+					</span>
+					<div v-if="values?.course?.length > 0 " class="flex flex-row shrink-0 flex-wrap">
+						<div v-for="course in values?.course" :key="course">
+							<div 
+							class="bg-white border px-[8px] rounded-[10px] h-fit w-fit border-[black] text-[black] mr-[0.2rem] mb-[0.2rem]" 
+								>
+								<div class="flex flex-row items-center h-[20px] space-x-[2px]">
+									<div class="text-[11px] uppercase grow">{{ course.course }} </div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div v-else>
+						<div class="text-sm leading-4 text-black-700">No Courses Added</div>
+					</div>
+				</div>
+
                 <Input class="grow" label="E-mail" type="text" :value="values?.email" @change="(val) => values.email = val"/>
                 <Input class="grow" label="Phone" type="text" :value="values?.phone" @change="(val) => values.phone = val"/>
 				<div class="w-full flex flex-row">
@@ -73,7 +93,6 @@ export default {
 			if (this.$resources.contact.setValue.loading) {
 				return this.values || null
 			}
-
 			return {
 				contactName: this.contactDoc ? `${this.contactDoc?.first_name} ${this.contactDoc?.last_name}` : null,
 				profilePicture: this.contactDoc?.image || null,
@@ -81,6 +100,7 @@ export default {
 				lastName: this.contactDoc?.last_name || null,
 				email: this.contactDoc && this.contactDoc.email_ids.length > 0 ? this.contactDoc.email_ids[0].email_id : null,
 				phone: this.contactDoc && this.contactDoc.phone_nos.length > 0 ? this.contactDoc.phone_nos[0].phone : null,
+				course: this.contactDoc && this.contactDoc.course.length > 0 ? this.contactDoc.course : null,
 			}
 		},
 	},
