@@ -100,7 +100,7 @@ export default {
 				lastName: this.contactDoc?.last_name || null,
 				email: this.contactDoc && this.contactDoc.email_ids.length > 0 ? this.contactDoc.email_ids[0].email_id : null,
 				phone: this.contactDoc && this.contactDoc.phone_nos.length > 0 ? this.contactDoc.phone_nos[0].phone : null,
-				course: this.contactDoc && this.contactDoc.course.length > 0 ? this.contactDoc.course : null,
+				course: this.contactDoc && this.contactDoc.course && this.contactDoc.course.length > 0 ? this.contactDoc.course : null,
 			}
 		},
 	},
