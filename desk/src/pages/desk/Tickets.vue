@@ -233,7 +233,7 @@ export default {
 				}
 			} else {
 				this.initialFilters = finalFilters
-				this.paginationCount = parseInt(this.$route.query.count ? this.$route.query.count : 1)
+				this.paginationCount = parseInt(this.$route.query.count ? this.$route.query.count : 20)
 				this.initialPage = parseInt(this.$route.query.page ? this.$route.query.page : 1)
 				this.listManagerInitialised = true
 			}
@@ -306,10 +306,9 @@ export default {
 			this.$router.push({
 				query: {...this.$route.query, page: 1, count: count}
 			})
-			this.$refs.ticketList.manager.update({count: count})
 		},
 		paginationOptionsAsDropdown() {
-			const paginationOptions = [2, 5, 10]
+			const paginationOptions = [20, 50, 100]
 			let options = [];
 			options.push({
 					group: 'Pagination',
@@ -319,7 +318,6 @@ export default {
 							label: paginationOption,
 							handler: () => {
 								this.updatePaginationCount(paginationOption)
-								this.$refs.ticketList.manager.reload()
 							}
 						}
 					})
