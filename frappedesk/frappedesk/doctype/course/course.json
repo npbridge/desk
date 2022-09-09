@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "field:description",
+ "autoname": "format:{description}-{#####}",
  "creation": "2022-09-05 16:02:22.305352",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -19,12 +19,12 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-09-05 16:46:13.093353",
+ "modified": "2022-09-09 11:14:14.678553",
  "modified_by": "Administrator",
  "module": "FrappeDesk",
  "name": "Course",
  "name_case": "Title Case",
- "naming_rule": "By fieldname",
+ "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [
   {
