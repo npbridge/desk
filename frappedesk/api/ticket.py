@@ -238,6 +238,20 @@ def assign_ticket_status(ticket_id, status):
 		return ticket_doc
 
 @frappe.whitelist(allow_guest=True)
+def mark_as_unread(ticket_id):
+		
+			
+	if ticket_id:
+		ticket_doc = frappe.get_doc("Ticket", ticket_id)
+		_seen = json.loads(ticket_doc._seen or "[]")
+		_seen = [user for user in _seen if frappe.session.user != user]
+		ticket_doc.db_set("_seen", json.dumps(_seen), update_modified=False)
+		
+		log_ticket_activity(ticket_id, f"Ticket marked as unread ")
+
+		return ticket_doc
+
+@frappe.whitelist(allow_guest=True)
 def set_ticket_notes(ticket_id, notes):
 	if ticket_id:
 		ticket_doc = frappe.get_doc("Ticket", ticket_id)
@@ -256,6 +270,15 @@ def bulk_assign_ticket_status(ticket_ids, status):
 		ticket_docs = []
 		for ticket_id in ticket_ids:
 			ticket_doc = assign_ticket_status(ticket_id, status)
+			ticket_docs.append(ticket_doc)
+		return ticket_docs
+
+@frappe.whitelist(allow_guest=True)
+def bulk_mark_as_unread(ticket_ids):
+	if ticket_ids:
+		ticket_docs = []
+		for ticket_id in ticket_ids:
+			ticket_doc = mark_as_unread(ticket_id)
 			ticket_docs.append(ticket_doc)
 		return ticket_docs
 

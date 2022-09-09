@@ -12,7 +12,6 @@
 					'name', 
 					'subject', 
 					'ticket_type',
-					'ticket_tag', 
 					'status', 
 					'contact', 
 					'response_by', 
@@ -22,7 +21,7 @@
 					'_assign', 
 					'_seen'
 				],
-				limit: 20,
+				limit: paginationCount,
 				order_by: 'modified desc',
 				filters: initialFilters,
 				start_page: initialPage,
@@ -41,6 +40,7 @@
 								class="flex space-x-3"
 							>
 								<Button :loading="$resources.bulkAssignTicketStatus.loading" @click="markSelectedTicketsAsClosed()">Mark as Closed</Button>
+								<Button :loading="$resources.bulkMarkAsUnread.loading" @click="markSelectedTicketsAsUnread()">Mark as Unread</Button>
 								<Dropdown
 									v-if="agents"
 									placement="right" 
@@ -57,6 +57,7 @@
 										</div>
 									</template>
 								</Dropdown>
+								
 							</div>
 							<div v-else class="flex items-center space-x-3">
 								<div>
@@ -71,6 +72,21 @@
 									</div>
 								</Button>
 								<Button icon-left="plus" appearance="primary" @click="() => {showNewTicketDialog = true}">Add Ticket</Button>
+								<Dropdown
+									placement="right" 
+									:options="paginationOptionsAsDropdown()" 
+								>
+									<template v-slot="{ togglePagination }">
+										<div class="flex flex-col">
+											<Button  @click="togglePagination" class="cursor-pointer">
+												<div class="flex items-center space-x-2">
+													<div >{{ paginationCount }}</div>
+													<FeatherIcon name="chevron-down" class="h-4 w-4"/> 
+												</div>
+											</Button>
+										</div>
+									</template>
+								</Dropdown>
 							</div>
 						</div>
 					</div>
@@ -89,19 +105,22 @@ import FilterBox from '@/components/desk/global/FilterBox.vue'
 import TicketList from '@/components/desk/tickets/TicketList.vue'
 import ListManager from '@/components/global/ListManager.vue'
 import CustomIcons from '@/components/desk/global/CustomIcons.vue'
+import FeatherIcon from 'frappe-ui/src/components/FeatherIcon.vue'
 
 export default {
 	name: 'Tickets',
 	components: {
-		NewTicketDialog,
-		Dropdown,
-		FilterBox,
-		ListManager,
-		TicketList,
-		CustomIcons
-	},
+    NewTicketDialog,
+    Dropdown,
+    FilterBox,
+    ListManager,
+    TicketList,
+    CustomIcons,
+    FeatherIcon
+},
 	data() {
 		return {
+			paginationCount: 20,
 			initialFilters: [],
 			initialPage: 1
 		}
@@ -214,6 +233,7 @@ export default {
 				}
 			} else {
 				this.initialFilters = finalFilters
+				this.paginationCount = parseInt(this.$route.query.count ? this.$route.query.count : 20)
 				this.initialPage = parseInt(this.$route.query.page ? this.$route.query.page : 1)
 				this.listManagerInitialised = true
 			}
@@ -234,6 +254,10 @@ export default {
 				ticket_ids: Object.keys(this.$refs.ticketList.selectedItems),
 				status: 'Closed'
 			})
+		},
+		markSelectedTicketsAsUnread() {
+			this.$resources.bulkMarkAsUnread.submit({
+				ticket_ids: Object.keys(this.$refs.ticketList.selectedItems)})
 		},
 		agentsAsDropdownOptions() {
 			let agentItems = [];
@@ -277,6 +301,33 @@ export default {
 				return null;
 			}
 		},
+		updatePaginationCount(count){
+			this.paginationCount = count
+			this.$router.push({
+				query: {...this.$route.query, page: 1, count: count}
+			})
+		},
+		paginationOptionsAsDropdown() {
+			const paginationOptions = [20, 50, 100]
+			let options = [];
+			options.push({
+					group: 'Pagination',
+					hideLabel: true,
+					items: paginationOptions.map(paginationOption => {
+						return {
+							label: paginationOption,
+							handler: () => {
+								this.updatePaginationCount(paginationOption)
+							}
+						}
+					})
+					
+				})
+			
+				
+			return options;
+		},
+
 	},
 	resources: {
 		bulkAssignTicketStatus() {
@@ -298,6 +349,32 @@ export default {
 				onError: () => {
 					this.$toast({
 						title: 'Unable to mark tickets as closed.',
+						customIcon: 'circle-fail',
+						appearance: 'danger',
+					})
+				}
+			}
+		},
+		bulkMarkAsUnread() {
+			return {
+				method: 'frappedesk.api.ticket.bulk_mark_as_unread',
+				onSuccess: () => {
+					this.$refs.ticketList.selectedItems = []
+					this.$refs.ticketList.manager.reload()
+					this.$router.go()
+
+					this.$toast({
+						title: 'Tickets marked as unread.',
+						customIcon: 'circle-check',
+						appearance: 'success',
+					})
+
+					this.$event.emit('update_ticket_list')
+
+				},
+				onError: () => {
+					this.$toast({
+						title: 'Unable to mark tickets as unread.',
 						customIcon: 'circle-fail',
 						appearance: 'danger',
 					})
