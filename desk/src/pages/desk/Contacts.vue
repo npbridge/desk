@@ -12,6 +12,7 @@
 						'last_name',
 						'email_ids.email_id as email',
 						'phone_nos.phone as phone',
+						'notes',
 						'department'
 					],
 					group: ['email', 'phone'],

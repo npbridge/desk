@@ -79,6 +79,16 @@ def update_contact(ticket_id, contact):
 		
 		return ticket_doc
 
+@frappe.whitelist(allow_guest=True)
+def update_contact_notes(contact, notes):
+	if contact:
+		contact_doc = frappe.get_doc("Contact", contact)
+		if notes and contact_doc.notes != notes:
+			contact_doc.notes = notes
+			contact_doc.save()
+
+		return contact_doc
+
 def get_agent_assigned_to_ticket(ticket_id):
 	agents = []
 	assignee_list = frappe.db.get_value("Ticket", ticket_id, "_assign")
@@ -162,6 +172,27 @@ def assign_ticket_tag(ticket_id, tag):
 			return ticket_doc
 
 @frappe.whitelist(allow_guest=True)
+def assign_contact_course(contact, course):
+	if contact:
+		contact_doc = frappe.get_doc("Contact", contact)
+		if contact_doc:
+			course_exists = False
+			for contact_course in contact_doc.course:
+				if contact_course.course == course:
+					course_exists = True
+					break
+
+			if not course_exists:
+				contact_course_doc = check_and_create_contact_course(course)
+				if contact_course_doc:
+					contact_doc.append("course", {
+							"course": course,
+						})
+					contact_doc.save()
+
+			return contact_doc
+
+@frappe.whitelist(allow_guest=True)
 def delete_ticket_tag(ticket_id, tag):
 	ticket_doc = frappe.get_doc("Ticket", ticket_id)
 
@@ -177,6 +208,22 @@ def delete_ticket_tag(ticket_id, tag):
 		log_ticket_activity(ticket_id, f"tag: {tag} removed.")
 
 	return ticket_doc
+
+@frappe.whitelist(allow_guest=True)
+def delete_contact_course(contact, course):
+	contact_doc = frappe.get_doc("Contact", contact)
+
+	row_to_delete = None
+	for row in contact_doc.course:
+		if row.name == course:
+			row_to_delete = row
+			break
+
+	if row_to_delete: 
+		contact_doc.remove(row) 
+		contact_doc.save()
+
+	return contact_doc
 
 @frappe.whitelist(allow_guest=True)
 def assign_ticket_status(ticket_id, status):
@@ -311,6 +358,18 @@ def check_and_create_ticket_tag(tag):
 		ticket_tag_doc = frappe.get_doc("Helpdesk Tag", tag)
 
 	return ticket_tag_doc
+
+@frappe.whitelist(allow_guest=True)
+def check_and_create_contact_course(course):
+	course_doc = frappe.db.exists("Course", course)
+	if not course_doc:
+		contact_course_doc = frappe.new_doc("Course")
+		contact_course_doc.name = contact_course_doc.description = course
+		contact_course_doc.insert()
+	else:
+		contact_course_doc = frappe.get_doc("Course", course)
+
+	return contact_course_doc
 
 @frappe.whitelist(allow_guest=True)
 def get_all_ticket_templates():

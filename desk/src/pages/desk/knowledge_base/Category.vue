@@ -11,7 +11,8 @@
 						'author',
 						'author.full_name as author_name',
 						'views',
-						'modified'
+						'modified',
+						'published'
 					],
 					filters: [['category', '=', subCategory]],
 					order_by: 'modified desc',

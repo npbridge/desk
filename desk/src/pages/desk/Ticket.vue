@@ -354,6 +354,7 @@ export default {
 
 			this.content = ""
 			this.attachments = []
+			this.$router.go()
 		},
 		submitComment() {
 			this.tempTextEditorData.attachments = this.attachments
@@ -371,6 +372,7 @@ export default {
 
 			this.content = ""
 			this.attachments = []
+			this.$router.go()
 		},
 		getNextTicket() {
 

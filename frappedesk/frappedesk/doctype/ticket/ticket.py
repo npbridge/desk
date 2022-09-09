@@ -47,17 +47,17 @@ class Ticket(Document):
             We have received your email and will get back to you by {resolution_date}.\n\n\
             Regards,\nMoodle Help Desk"
 
-        if contact: 
+        if contact:
             send_to = contact.email_id
-        else: 
+        else:
             send_to = "ashish@npbridge.com"
             message = "User contact not found."
 
         frappe.sendmail(recipients=send_to,
-            sender="helpdesk@npbridge.com", 
+            sender="helpdesk@npbridge.com",
             subject="Acknowledgement From Moodle Help Desk",
             message=message,
-            delayed=False, 
+            delayed=False,
             retry=3,
             reference_doctype= "Ticket",
             reference_name= self.name,
@@ -186,10 +186,10 @@ class Ticket(Document):
             frappe.db.delete("Ticket Activity", activity)
 
 def set_descritption_from_communication(doc, type):
-	if doc.reference_doctype == "Ticket":
-		ticket_doc = frappe.get_doc("Ticket", doc.reference_name)
-		if not ticket_doc.via_customer_portal:
-			ticket_doc.description = doc.content
+    if doc.reference_doctype == "Ticket":
+        ticket_doc = frappe.get_doc("Ticket", doc.reference_name)
+        if not ticket_doc.via_customer_portal:
+            ticket_doc.description = doc.content
 
 @frappe.whitelist(allow_guest=True)
 def create_communication_via_contact(ticket, message, attachments=[]):
@@ -472,25 +472,25 @@ def set_status(name, status):
 
 
 def auto_close_tickets():
-	"""Auto-close replied support tickets after 7 days"""
-	auto_close_after_days = (
-		frappe.db.get_value("Frappe Desk Settings", "Frappe Desk Settings", "close_ticket_after_days")
-		or 7
-	)
+    """Auto-close replied support tickets after 7 days"""
+    auto_close_after_days = (
+        frappe.db.get_value("Frappe Desk Settings", "Frappe Desk Settings", "close_ticket_after_days")
+        or 7
+    )
 
-	tickets = frappe.db.sql(
+    tickets = frappe.db.sql(
         """ select name from tabTicket where status='Replied' and
         modified<DATE_SUB(CURDATE(), INTERVAL %s DAY) """,
         (auto_close_after_days),
         as_dict=True,
     )
 
-	for ticket in tickets:
-		doc = frappe.get_doc("Ticket", ticket.get("name"))
-		doc.status = "Closed"
-		doc.flags.ignore_permissions = True
-		doc.flags.ignore_mandatory = True
-		doc.save()
+    for ticket in tickets:
+        doc = frappe.get_doc("Ticket", ticket.get("name"))
+        doc.status = "Closed"
+        doc.flags.ignore_permissions = True
+        doc.flags.ignore_mandatory = True
+        doc.save()
 
 
 def has_website_permission(doc, ptype, user, verbose=False):
