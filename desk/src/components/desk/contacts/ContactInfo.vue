@@ -44,7 +44,7 @@
 						</div>
 					</div>
 					<div v-else>
-						<div class="text-sm leading-4 text-black-700">No Courses Added</div>
+						<div class="text-sm leading-4 text-black-700">''</div>
 					</div>
 				</div>
 
