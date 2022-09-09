@@ -120,7 +120,7 @@ export default {
 },
 	data() {
 		return {
-			paginationCount: 2,
+			paginationCount: 20,
 			initialFilters: [],
 			initialPage: 1
 		}
