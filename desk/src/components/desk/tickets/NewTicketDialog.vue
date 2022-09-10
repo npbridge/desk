@@ -138,7 +138,7 @@ export default {
 		const contactValidationError = ref('')
 		const subjectValidationError = ref('')
 		const descriptionValidationError = ref('')
-
+		
 		let open = computed({
 			get: () => props.modelValue,
 			set: (val) => {
@@ -161,7 +161,7 @@ export default {
 			subjectValidationError, 
 			descriptionValidationError, 
 			open, 
-			ticketController 
+			ticketController,
 		}
 	},
 	data() {
@@ -205,8 +205,7 @@ export default {
 				description: this.descriptionContent
 			}).then(() => {
 				this.isCreating = false
-				this.$emit('ticketCreated')
-				this.$router.go()
+				this.$emit('list_update', 'Ticket')
 			})
 		},
 		validateInputs() {
