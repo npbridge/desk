@@ -70,7 +70,8 @@ def getResponse(msg, msgID=None, history={}):
 		response_index = message_index - 1
 		response = history['messages'][response_index]['msg']
 		response = "<p>" + response.replace("\n", "<br>") + "</p>"
-		return response
+		confidence = history['messages'][response_index]['confidence']
+		return {'response': response, 'confidence': confidence}
 	else:
 		response = "Bot can't respond this time, Please try after some time"
 		logger.debug(f"{response}")
