@@ -37,35 +37,10 @@ class Ticket(Document):
         self.update_priority_based_on_ticket_type()
 
     def after_insert(self):
-        create_comment_via_bot(self)
-        # self.send_acknowledgement_email("Acknowledgement From Moodle Helpdesk", "acknowledgement", {"abc": "abc"}, now=True)
+        create_communication_via_bot(self)
         log_ticket_activity(self.name, "created")
 
-    def send_acknowledgement_email(self, subject, template, add_args, now=None):
-        contact = frappe.get_doc("Contact", self.contact)
-        user_name = contact.first_name or 'Learner'
-        resolution_date = self.resolution_by or 'next working day.'
-        message = f"Dear {user_name},\n\
-            We have received your email and will get back to you by {resolution_date}.\n\n\
-            Regards,\nMoodle Help Desk"
-
-        if contact:
-            send_to = contact.email_id
-        else:
-            send_to = "ashish@npbridge.com"
-            message = "User contact not found."
-
-        frappe.sendmail(recipients=send_to,
-            sender="helpdesk@npbridge.com",
-            subject="Acknowledgement From Moodle Help Desk",
-            message=message,
-            delayed=False,
-            retry=3,
-            reference_doctype= "Ticket",
-            reference_name= self.name,
-            )
-
-    def create_comment_via_bot(self):
+    def create_communication_via_bot(self):
         botSettings = frappe.db.get_value("Frappe Desk Settings", "Frappe Desk Settings", ["threshold_limit", "use_bot_answers"])
         ## If use_bot_answers==TRUE, bot responses are available for every ticket
         if botSettings.use_bot_answers:
@@ -77,26 +52,22 @@ class Ticket(Document):
                 create_communication_via_agent(self.reference_name, botResponse['response'], attachments=None)
             else:
                 ## Creating a comment
-                frappe.get_doc(
-                    {
-                        "doctype": "Comment",
-                        "comment_type": "Comment",
-                        "reference_doctype": "Ticket",
-                        "reference_name": self.reference_name,
-                        "content": botResponse['response']
-                    }
-                ).insert(ignore_permissions=True)
+                create_comment_via_bot(self.reference_name, botResponse['response'])
         else:
             ## Creating a comment
-            frappe.get_doc(
-                {
-                    "doctype": "Comment",
-                    "comment_type": "Comment",
-                    "reference_doctype": "Ticket",
-                    "reference_name": self.reference_name,
-                    "content": botResponse['response']
-                }
-            ).insert(ignore_permissions=True)
+            create_comment_via_bot(self.reference_name, botResponse['response'])
+
+    def create_comment_via_bot(reference_name, response):
+        frappe.get_doc(
+            {
+                "doctype": "Comment",
+                "comment_type": "Comment",
+                "reference_doctype": "Ticket",
+                "reference_name": reference_name,
+                "content": response,
+                "comment_by": "Bot"
+            }
+        ).insert(ignore_permissions=True)
 
     def update_priority_based_on_ticket_type(self):
         if (self.ticket_type):
@@ -262,7 +233,7 @@ def create_communication_via_contact(ticket, message, attachments=[]):
 
 
 @frappe.whitelist(allow_guest=True)
-def create_communication_via_agent(ticket, cc, bcc, message, attachments=None):
+def create_communication_via_agent(ticket, message, cc=None, bcc=None, attachments=None):
     ticket_doc = frappe.get_doc("Ticket", ticket)
     last_ticket_communication_doc = frappe.get_last_doc("Communication", filters={"reference_name":[ "=", ticket_doc.name]})
 

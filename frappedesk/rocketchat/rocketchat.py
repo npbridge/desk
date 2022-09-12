@@ -75,5 +75,5 @@ def getResponse(msg, msgID=None, history={}):
 	else:
 		response = "Bot can't respond this time, Please try after some time"
 		logger.debug(f"{response}")
-		return response
+		return {'response': response, 'confidence': 0}
 
