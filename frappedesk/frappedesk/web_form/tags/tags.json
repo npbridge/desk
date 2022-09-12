@@ -1,0 +1,52 @@
+{
+ "allow_comments": 0,
+ "allow_delete": 1,
+ "allow_edit": 1,
+ "allow_incomplete": 0,
+ "allow_multiple": 1,
+ "allow_print": 0,
+ "apply_document_permissions": 1,
+ "button_label": "Save",
+ "creation": "2022-09-09 11:11:19.355010",
+ "custom_css": ".navbar {\n    background-color: #022646;\n    color: #FFFFFF;\n}\n\n.navbar-brand > span {\n    color: #FFFFFF !important;\n}\n\n.navbar-brand > span:hover {\n    color: #FEB32A !important;\n}\n\n.nav-link {\n    color: #FFFFFF !important;\n}\n\n.nav-link:hover {\n    color: #FEB32A !important;\n}\n\n.navbar-light .navbar-brand:hover, .navbar-light .navbar-brand:focus {\n  color: #FEB32A;\n}\n.navbar-light .navbar-brand {\n    color: #FFFFFF;\n}\n\n.navbar-light .navbar-toggler {\n  color: #FFFFFF;\n}\n\n.btn.btn-primary {\n    background-color: #022646;\n    color: #FFFFFF;\n}\n\n.btn.btn-primary:hover {\n    color: #FEB32A;\n}\n\n.navbar-light .navbar-toggler .icon {\n  stroke: white;\n}",
+ "doc_type": "Helpdesk Tag",
+ "docstatus": 0,
+ "doctype": "Web Form",
+ "idx": 0,
+ "is_standard": 1,
+ "list_columns": [
+  {
+   "fieldname": "description",
+   "fieldtype": "Small Text",
+   "label": "Description"
+  }
+ ],
+ "list_title": "Tags",
+ "login_required": 1,
+ "max_attachment_size": 0,
+ "modified": "2022-09-09 12:47:35.842142",
+ "modified_by": "jahnavi@npbridge.com",
+ "module": "FrappeDesk",
+ "name": "tags",
+ "owner": "jahnavi@npbridge.com",
+ "published": 1,
+ "route": "tags",
+ "show_attachments": 0,
+ "show_list": 1,
+ "show_sidebar": 0,
+ "title": "Tags",
+ "web_form_fields": [
+  {
+   "allow_read_on_all_link_options": 0,
+   "fieldname": "description",
+   "fieldtype": "Small Text",
+   "hidden": 0,
+   "label": "Description",
+   "max_length": 0,
+   "max_value": 0,
+   "read_only": 0,
+   "reqd": 0,
+   "show_in_filter": 0
+  }
+ ]
+}
