@@ -205,7 +205,7 @@ export default {
 				description: this.descriptionContent
 			}).then(() => {
 				this.isCreating = false
-				this.$emit('list_update', 'Ticket')
+				this.$emit('ticketCreated')
 			})
 		},
 		validateInputs() {
