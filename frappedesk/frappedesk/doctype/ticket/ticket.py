@@ -236,7 +236,7 @@ def create_communication_via_contact(ticket, message, attachments=[]):
     ).insert(ignore_permissions=True)
 
 @frappe.whitelist(allow_guest=True)
-def create_communication_via_agent(ticket, cc, bcc, message, attachments=None):
+def create_communication_via_agent(ticket, message, cc=None, bcc=None, attachments=None):
     ticket_doc = frappe.get_doc("Ticket", ticket)
     last_ticket_communication_doc = frappe.get_last_doc("Communication", filters={"reference_name":[ "=", ticket_doc.name]})
 
