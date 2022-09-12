@@ -43,16 +43,11 @@ class Ticket(Document):
     def create_communication_via_bot(self):
         botSettings = frappe.db.get_value("Frappe Desk Settings", "Frappe Desk Settings", ["threshold_limit", "use_bot_answers"])
         ## If use_bot_answers==TRUE, bot responses are available for every ticket
-        if botSettings.use_bot_answers:
-            botResponse = getResponse(user_message)
+        botResponse = getResponse(self.description)
+        if botSettings.use_bot_answers and botResponse['confidence'] >= botSettings.threshold_limit:
             ## If threshold_limit >= set limit => Send Mail
             ## If thershold_limit < set_limit => Comment
-            if botResponse['confidence'] >= botSettings.threshold_limit:
-                ## Creating a reply to the user
-                create_communication_via_agent(self.reference_name, botResponse['response'], attachments=None)
-            else:
-                ## Creating a comment
-                create_comment_via_bot(self.reference_name, botResponse['response'])
+            create_communication_via_agent(self.reference_name, botResponse['response'], attachments=None)
         else:
             ## Creating a comment
             create_comment_via_bot(self.reference_name, botResponse['response'])
