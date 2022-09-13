@@ -28,5 +28,5 @@ def threshold_limit():
 @frappe.whitelist(allow_guest=True)
 def use_bot_answers():
     flag = frappe.get_doc("Frappe Desk Settings").use_bot_answers
-    return flag if flag else ''
+    return flag 
 
