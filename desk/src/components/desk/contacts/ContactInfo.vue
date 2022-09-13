@@ -43,9 +43,7 @@
 							</div>
 						</div>
 					</div>
-					<div v-else>
-						<div class="text-sm leading-4 text-black-700">''</div>
-					</div>
+					
 				</div>
 
                 <Input class="grow" label="E-mail" type="text" :value="values?.email" @change="(val) => values.email = val"/>
