@@ -3,7 +3,7 @@
 		<div class="flex flex-row justify-between">
 			<div class="flex flex-row items-center space-x-[8px]" v-if="user">
 				<CustomAvatar :imageURL="user.user_image" :label="user.full_name" size="sm" />
-				<div class="truncate text-[14px] font-normal max-w-[200px]">{{ comment.comment_by? comment.comment_by: user.full_name }}
+				<div class="truncate text-[14px] font-normal max-w-[200px]">{{ comment.comment_by ? comment.comment_by : user.full_name }}
 					<span class="text-[11px] text-gray-900 bg-[#FDF9F2] shadow font-normal border border-gray-400 rounded-[6px] px-[10px] py-[2px]" data-v-177b47bf="">Comment</span>
 				</div>
 			</div>
