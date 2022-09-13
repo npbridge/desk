@@ -48,6 +48,7 @@
 
                 <Input class="grow" label="E-mail" type="text" :value="values?.email" @change="(val) => values.email = val"/>
                 <Input class="grow" label="Phone" type="text" :value="values?.phone" @change="(val) => values.phone = val"/>
+				<Input class="grow" label="Notes" type="textarea" :value="values?.notes" @change="(val) => values.notes = val"/>
 				<div class="w-full flex flex-row">
 					<div>
 						<Button @click="cancel()">Cancel</Button>
@@ -99,6 +100,7 @@ export default {
 				email: this.contactDoc && this.contactDoc.email_ids.length > 0 ? this.contactDoc.email_ids[0].email_id : null,
 				phone: this.contactDoc && this.contactDoc.phone_nos.length > 0 ? this.contactDoc.phone_nos[0].phone : null,
 				course: this.contactDoc && this.contactDoc.course && this.contactDoc.course.length > 0 ? this.contactDoc.course : null,
+				notes: this.contactDoc?.notes || null,
 			}
 		},
 	},
@@ -132,6 +134,7 @@ export default {
 		save() {
             let firstName = ''
             let lastName = ''
+			let notes = ''
             if (this.tempContactName.split(' ').length > 1) {
                 firstName = this.tempContactName.split(' ')[0]
                 lastName = this.tempContactName.slice(firstName.length + 1, this.tempContactName.length)
@@ -143,7 +146,8 @@ export default {
                 first_name: firstName,
                 last_name: lastName,
 				email_ids: this.values.email ? [{ email_id: this.values.email }] : [],
-                phone_nos: this.values.phone ? [{ phone: this.values.phone }] : []
+                phone_nos: this.values.phone ? [{ phone: this.values.phone }] : [],
+				notes: notes
 			})
 		},
 		cancel() {
