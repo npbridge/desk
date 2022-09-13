@@ -37,32 +37,8 @@ class Ticket(Document):
         self.update_priority_based_on_ticket_type()
 
     def after_insert(self):
-        create_communication_via_bot(self)
         log_ticket_activity(self.name, "created")
 
-    def create_communication_via_bot(self):
-        botSettings = frappe.db.get_value("Frappe Desk Settings", "Frappe Desk Settings", ["threshold_limit", "use_bot_answers"])
-        ## If use_bot_answers==TRUE, bot responses are available for every ticket
-        botResponse = getResponse(self.description)
-        if botSettings.use_bot_answers and botResponse['confidence'] >= botSettings.threshold_limit:
-            ## If threshold_limit >= set limit => Send Mail
-            ## If thershold_limit < set_limit => Comment
-            create_communication_via_agent(self.reference_name, botResponse['response'], attachments=None)
-        else:
-            ## Creating a comment
-            create_comment_via_bot(self.reference_name, botResponse['response'])
-
-    def create_comment_via_bot(reference_name, response):
-        frappe.get_doc(
-            {
-                "doctype": "Comment",
-                "comment_type": "Comment",
-                "reference_doctype": "Ticket",
-                "reference_name": reference_name,
-                "content": response,
-                "comment_by": "Bot"
-            }
-        ).insert(ignore_permissions=True)
 
     def update_priority_based_on_ticket_type(self):
         if (self.ticket_type):
@@ -191,6 +167,29 @@ def set_descritption_from_communication(doc, type):
         ticket_doc = frappe.get_doc("Ticket", doc.reference_name)
         if not ticket_doc.via_customer_portal:
             ticket_doc.description = doc.content
+
+def create_communication_via_bot(doc, type):
+    if doc.reference_doctype == "Ticket" and doc.sent_or_received == "Received":
+        threshold_limit = frappe.db.get_single_value('Frappe Desk Settings', 'threshold_limit')
+        use_bot_answers = frappe.db.get_single_value('Frappe Desk Settings', 'use_bot_answers')
+        ## If use_bot_answers==TRUE, bot responses are available for every ticket
+        botResponse = getResponse(doc.content)
+        if use_bot_answers and botResponse['confidence'] >= threshold_limit:
+            ## If threshold_limit >= set limit => Send Mail
+            ## If thershold_limit < set_limit => Comment
+            create_communication_via_agent(ticket=doc.reference_name, message=botResponse['response'], cc=None, bcc=None, attachments=[])
+        else:
+            ## Creating a comment
+            comment_id = frappe.get_doc(
+                {
+                    "doctype": "Comment",
+                    "comment_type": "Comment",
+                    "reference_doctype": "Ticket",
+                    "reference_name": doc.reference_name,
+                    "content": botResponse['response'],
+                    "comment_by": "Bot"
+                }
+            ).insert(ignore_permissions=True)
 
 @frappe.whitelist(allow_guest=True)
 def create_communication_via_contact(ticket, message, attachments=[]):

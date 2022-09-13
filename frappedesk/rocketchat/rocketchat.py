@@ -5,16 +5,16 @@ from dotenv import load_dotenv
 load_dotenv()
 import frappe
 from frappe.utils import logger
-logger.set_log_level("WARNING")
+logger.set_log_level("DEBUG")
 logger = frappe.logger("api", allow_site=True, file_count=50)
-
+import time
 
 headers = {
 	"content-type": "application/json"
 }
 endPoints = {
 	"sendMessage": os.getenv('SEND_MESSAGE_END_POINT'),
-	"history": os.getenv('HISTORY_ENDPOINT')+os.getenv('ROOM_ID')+"?token="+os.getenv('TOKEN')
+	"history": os.getenv('HISTORY_ENDPOINT')+os.getenv('ROOM_ID')
 }
 
 data = {
@@ -24,7 +24,6 @@ data = {
 }
 params = {
 	"token": "",
-	"rid": ""
 }
 
 def sendMessages(msg, postData=data, headers=headers):
@@ -44,11 +43,10 @@ def sendMessages(msg, postData=data, headers=headers):
 		return False
 
 	res = res.json()
-	return res['message']['_id']
+	return res['message']['_id'] if (type(res) is dict and 'message' in res and '_id' in res['message']) else None
 
 def getHistory(params=params, headers=headers):
 	params["token"] = os.getenv('TOKEN')
-	params["rid"] = os.getenv('ROOM_ID')
 	try:
 		res = requests.get(endPoints["history"], params=params, headers=headers)
 	except requests.exceptions.Timeout as errt:
@@ -63,9 +61,10 @@ def getHistory(params=params, headers=headers):
 	return res.json()
 
 def getResponse(msg, msgID=None, history={}):
-	msgID = sendMessages(msg)
+	msgID = sendMessages(msg) if msg else None
+	time.sleep(1)
 	history = getHistory()
-	if messageID and history:
+	if msgID and 'messages' in history:
 		message_index = next((index for (index, d) in enumerate(history['messages']) if d["_id"] == msgID), None)
 		response_index = message_index - 1
 		response = history['messages'][response_index]['msg']
