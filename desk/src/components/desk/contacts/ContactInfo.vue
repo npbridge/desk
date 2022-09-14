@@ -104,10 +104,6 @@
 </template>
 
 <script>
-// get all contact courses - Done
-// add autocomplete template  - Done
-// add create new template  - Done
-// add required functions
 import { ref } from 'vue'
 import { FeatherIcon, Input } from 'frappe-ui'
 import CustomAvatar from '@/components/global/CustomAvatar.vue'
