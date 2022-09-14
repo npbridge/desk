@@ -8,6 +8,7 @@ from frappe.utils import logger
 logger.set_log_level("DEBUG")
 logger = frappe.logger("api", allow_site=True, file_count=50)
 import time
+import re
 
 headers = {
 	"content-type": "application/json"
@@ -27,6 +28,7 @@ params = {
 }
 
 def sendMessages(msg, postData=data, headers=headers):
+	msg = re.sub('<[^<]+?>', '', msg)
 	postData["msg"] = msg
 	postData["token"] = os.getenv('TOKEN')
 	postData["rid"] = os.getenv('ROOM_ID')
@@ -34,13 +36,13 @@ def sendMessages(msg, postData=data, headers=headers):
 		res = requests.post(endPoints["sendMessage"], data=json.dumps(postData), headers=headers)
 	except requests.exceptions.Timeout as errt:
 		logger.debug(f"Rocket Chat Timeout Error: {errt}")
-		return False
+		return None
 	except requests.exceptions.TooManyRedirects as errr:
 		logger.debug(f"Rocket Chat Too Many Redirect: {errr}")
-		return False
+		return None
 	except requests.exceptions.RequestException as e:
 		logger.debug(f"Rocket Chat Exception: {e}")
-		return False
+		return None
 
 	res = res.json()
 	return res['message']['_id'] if (type(res) is dict and 'message' in res and '_id' in res['message']) else None
@@ -51,13 +53,13 @@ def getHistory(params=params, headers=headers):
 		res = requests.get(endPoints["history"], params=params, headers=headers)
 	except requests.exceptions.Timeout as errt:
 		logger.debug(f"Rocket Chat Timeout Error: {errt}")
-		return False
+		return None
 	except requests.exceptions.TooManyRedirects as errr:
 		logger.debug(f"Rocket Chat Too Many Redirect: {errr}")
-		return False
+		return None
 	except requests.exceptions.RequestException as e:
 		logger.debug(f"Rocket Chat Exception: {e}")
-		return False
+		return None
 	return res.json()
 
 def getResponse(msg, msgID=None, history={}):
