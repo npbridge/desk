@@ -32,7 +32,7 @@
 					<div class="flex flex-row justify-between text-gray-600 font-normal text-[12px]">
 						<div class="text-gray-600">Courses</div>
 					</div>
-					<div v-if="values?.course?.length > 0 " class="flex flex-row shrink-0 flex-wrap">
+					<div v-if="values?.course?.length > 0 " class="flex flex-row flex-wrap">
 						<div v-for="course in values?.course" :key="course">
 							<div 
 							class="bg-white border px-[8px] rounded-[10px] h-fit w-fit border-[black] text-[black] mr-[0.2rem] mb-[0.2rem]" 
