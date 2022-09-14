@@ -5,7 +5,7 @@
   >
     <div class="mb-[38.4px] pl-[22px] cursor-pointer mr-[15px]">
       <img
-        src="https://www.col.org/wp-content/uploads/2021/08/col-logo-stacked-color-1.png"
+        src="https://socialprimes.com/assets/images/npbridge_dark.svg"
         @click="
           () => {
             $router.push({ name: 'HomePage' })
