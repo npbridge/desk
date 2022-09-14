@@ -24,7 +24,7 @@
  "list_title": "Courses ",
  "login_required": 1,
  "max_attachment_size": 0,
- "modified": "2022-09-14 12:13:38.661133",
+ "modified": "2022-09-14 12:16:56.905176",
  "modified_by": "jahnavi@npbridge.com",
  "module": "FrappeDesk",
  "name": "courses",
@@ -34,7 +34,9 @@
  "show_attachments": 0,
  "show_list": 1,
  "show_sidebar": 0,
- "success_message": "",
+ "success_message": "Course list updated successfully! You will be redirected to ticketing system now. ",
+ "success_title": "Courses Updated",
+ "success_url": "/frappedesk",
  "title": "Courses",
  "web_form_fields": [
   {
