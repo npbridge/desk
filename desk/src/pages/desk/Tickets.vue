@@ -80,7 +80,7 @@
 										<div class="flex flex-col">
 											<Button  @click="togglePagination" class="cursor-pointer">
 												<div class="flex items-center space-x-2">
-													<div >{{ paginationCount }}</div>
+													<div >{{ paginationCount }} / page</div>
 													<FeatherIcon name="chevron-down" class="h-4 w-4"/> 
 												</div>
 											</Button>
