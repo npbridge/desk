@@ -34,8 +34,8 @@
 					</div>
 					<div v-if="values?.course?.length > 0 " class="flex flex-row flex-wrap">
 						<div v-for="course in values?.course" :key="course">
-							<div 
-							class="bg-white border px-[8px] rounded-[10px] h-fit w-fit border-[black] text-[black] mr-[0.2rem] mb-[0.2rem]" 
+							<div
+							class="bg-white border px-[8px] rounded-[10px] h-fit w-fit border-[black] text-[black] mr-[0.2rem] mb-[0.2rem]"
 								>
 								<div class="flex flex-row items-center h-[20px] space-x-[2px]">
 									<div class="text-[11px] uppercase grow">{{ course.course }} </div>
@@ -46,13 +46,13 @@
 							</div>
 						</div>
 					</div>
-					<Autocomplete 
+					<Autocomplete
 						v-if="contactCourses"
 						:options="contactCourses.map(x => {
 							return {label: x.name , value: x.name}
 						})"
 						placeholder="Set courses"
-						:value="values?.course?.length > 0  ? values.course[0].name : ''" 
+						:value="values?.course?.length > 0  ? values.course[0].name : ''"
 						@change="assignNewCourse"
 						>
 							<template #input>
@@ -63,8 +63,8 @@
 								</div>
 							</template>
 							<template #no-result-found>
-								<div 
-									role="button" 
+								<div
+									role="button"
 									class="hover:bg-gray-100 px-2.5 py-1.5 rounded-md text-base text-blue-500 font-semibold"
 									@click="() => {
 										this.openCreateNewContactCourseDialog = true
@@ -262,8 +262,8 @@ export default {
 		createContactCourseFromDialog() {
 			if (this.newCourse) {
 				this.$resources.createContactCourse.submit({
-						course: this.newCourse,
-					})
+					course: this.newCourse,
+				})
 				this.closeCreateNewContactCourseDialog();
 			}
 		},
@@ -278,7 +278,7 @@ export default {
 					appearance: 'success',
 				})
 			})
-		}, 
+		},
 		closeCreateNewContactCourseDialog() {
 			this.newCourse = ""
 			this.openCreateNewContactCourseDialog = false
@@ -288,23 +288,23 @@ export default {
 			this.tempContactName = this.values.contactName
 		},
 		save() {
-            let firstName = ''
-            let lastName = ''
-            if (this.tempContactName.split(' ').length > 1) {
-                firstName = this.tempContactName.split(' ')[0]
-                lastName = this.tempContactName.slice(firstName.length + 1, this.tempContactName.length)
-            } else {
-                firstName = this.tempContactName
-            }
+			let firstName = ''
+			let lastName = ''
+			if (this.tempContactName.split(' ').length > 1) {
+				firstName = this.tempContactName.split(' ')[0]
+				lastName = this.tempContactName.slice(firstName.length + 1, this.tempContactName.length)
+			} else {
+				firstName = this.tempContactName
+			}
 
 			this.$resources.contact.setValue.submit({
-                first_name: firstName,
-                last_name: lastName,
+				first_name: firstName,
+				last_name: lastName,
 				email_ids: this.values.email ? [{ email_id: this.values.email }] : [],
-                phone_nos: this.values.phone ? [{ phone: this.values.phone }] : [],
+				phone_nos: this.values.phone ? [{ phone: this.values.phone }] : [],
 				notes: this.values.notes ? this.values.notes: null
 			})
-			
+
 		},
 		cancel() {
 			this.$router.push({ name: 'Contacts' })
