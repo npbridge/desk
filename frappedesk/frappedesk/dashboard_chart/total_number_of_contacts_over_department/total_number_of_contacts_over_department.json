@@ -1,6 +1,6 @@
 {
  "based_on": "",
- "chart_name": "Total Number Of Contacts Grouped Over Department",
+ "chart_name": "Total Number Of Contacts Over Department",
  "chart_type": "Custom",
  "creation": "2022-08-22 11:24:07.116412",
  "docstatus": 0,
@@ -15,7 +15,7 @@
  "modified": "2022-08-22 11:24:07.116412",
  "modified_by": "Administrator",
  "module": "FrappeDesk",
- "name": "Total Number Of Contacts Grouped Over Department",
+ "name": "Total Number Of Contacts Over Department",
  "number_of_groups": 0,
  "owner": "Administrator",
  "parent_document_type": "",

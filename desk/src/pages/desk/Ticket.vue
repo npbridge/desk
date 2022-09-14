@@ -57,13 +57,17 @@
 											<span class="text-gray-700">to</span>
 											<div class="bg-gray-50 rounded-[6px] px-[10px] py-[4px]">{{ ticket.raised_by }}</div>
 										</div>
-										<span class="text-gray-700">Cc</span>
-										<div class="bg-gray-50 rounded-[6px] px-[10px] py-[4px]">
-											<Input label="" type="text" v-model="cc" />
+										<div class="flex flex-row space-x-2 items-center">
+											<span class="text-gray-700">cc</span>
+											<div class="bg-gray-50 rounded-[6px] px-[10px] py-[4px]">
+												<Input label="" type="text" v-model="cc" />
+											</div>
 										</div>
-										<span class="text-gray-700">Bcc</span>
-										<div class="bg-gray-50 rounded-[6px] px-[10px] py-[4px]">
-											<Input label="" type="text" v-model="bcc" />
+										<div class="flex flex-row space-x-2 items-center">
+											<span class="text-gray-700">bcc</span>
+											<div class="bg-gray-50 rounded-[6px] px-[10px] py-[4px]">
+												<Input label="" type="text" v-model="bcc" />
+											</div>
 										</div>
 											
 										

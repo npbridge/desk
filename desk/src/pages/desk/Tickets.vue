@@ -390,7 +390,6 @@ export default {
 				onSuccess: () => {
 					this.$refs.ticketList.selectedItems = []
 					this.$refs.ticketList.manager.reload()
-					this.$router.go()
 
 					this.$toast({
 						title: 'Tickets marked as unread.',
