@@ -18,13 +18,13 @@
   {
    "fieldname": "description",
    "fieldtype": "Small Text",
-   "label": "Description"
+   "label": "Tag Name"
   }
  ],
  "list_title": "Tags",
  "login_required": 1,
  "max_attachment_size": 0,
- "modified": "2022-09-09 12:47:35.842142",
+ "modified": "2022-09-14 12:14:05.075390",
  "modified_by": "jahnavi@npbridge.com",
  "module": "FrappeDesk",
  "name": "tags",
@@ -41,7 +41,7 @@
    "fieldname": "description",
    "fieldtype": "Small Text",
    "hidden": 0,
-   "label": "Description",
+   "label": "Tag Name",
    "max_length": 0,
    "max_value": 0,
    "read_only": 0,

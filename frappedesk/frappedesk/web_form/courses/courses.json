@@ -18,13 +18,13 @@
   {
    "fieldname": "description",
    "fieldtype": "Data",
-   "label": "Description"
+   "label": "Course Name"
   }
  ],
  "list_title": "Courses ",
  "login_required": 1,
  "max_attachment_size": 0,
- "modified": "2022-09-09 12:45:49.829255",
+ "modified": "2022-09-14 12:13:38.661133",
  "modified_by": "jahnavi@npbridge.com",
  "module": "FrappeDesk",
  "name": "courses",
@@ -42,7 +42,7 @@
    "fieldname": "description",
    "fieldtype": "Data",
    "hidden": 0,
-   "label": "Description",
+   "label": "Course Name",
    "max_length": 0,
    "max_value": 0,
    "read_only": 0,
