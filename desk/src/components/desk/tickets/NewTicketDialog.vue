@@ -138,7 +138,7 @@ export default {
 		const contactValidationError = ref('')
 		const subjectValidationError = ref('')
 		const descriptionValidationError = ref('')
-
+		
 		let open = computed({
 			get: () => props.modelValue,
 			set: (val) => {
@@ -161,7 +161,7 @@ export default {
 			subjectValidationError, 
 			descriptionValidationError, 
 			open, 
-			ticketController 
+			ticketController,
 		}
 	},
 	data() {

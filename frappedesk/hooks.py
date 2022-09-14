@@ -26,6 +26,7 @@ doc_events = {
 		],
 		"after_insert": [
 			"frappedesk.frappedesk.doctype.ticket.ticket.set_descritption_from_communication",
+			"frappedesk.frappedesk.doctype.ticket.ticket.create_communication_via_bot",
 		]
 	},
 	"Contact": {"on_trash": "frappedesk.frappedesk.doctype.ticket.ticket.update_ticket",},

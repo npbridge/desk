@@ -415,7 +415,7 @@ export default {
 			return {
 				method: 'frappedesk.api.ticket.create_new',
 				onSuccess: () => {
-					// TODO:
+					this.$router.go()
 				},
 				onError: (error) => {
 					// TODO:
@@ -490,7 +490,6 @@ export default {
 				},
 				auto: this.user.has_desk_access,
 				onSuccess: (data) => {
-					console.log(data, "courses data")
 					this.contactCourses = data
 				},
 				onError: (error) => {

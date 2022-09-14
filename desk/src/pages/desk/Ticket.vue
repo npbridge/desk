@@ -44,7 +44,7 @@
 							ref="replyEditor"
 							:show="editing"
 							v-on:keydown="handleShortcuts($event)"
-							@click="$refs.replyEditor.focusEditor()"
+							@click=""
 							:content="content" 
 							@change="(val) => { content = val }"
 							:placeholder="editingType == 'reply' ? 'Type a response' : 'Type a comment'" 
@@ -57,6 +57,20 @@
 											<span class="text-gray-700">to</span>
 											<div class="bg-gray-50 rounded-[6px] px-[10px] py-[4px]">{{ ticket.raised_by }}</div>
 										</div>
+										<div class="flex flex-row space-x-2 items-center">
+											<span class="text-gray-700">cc</span>
+											<div class="bg-gray-50 rounded-[6px] px-[10px] py-[4px]">
+												<Input label="" type="text" v-model="cc" />
+											</div>
+										</div>
+										<div class="flex flex-row space-x-2 items-center">
+											<span class="text-gray-700">bcc</span>
+											<div class="bg-gray-50 rounded-[6px] px-[10px] py-[4px]">
+												<Input label="" type="text" v-model="bcc" />
+											</div>
+										</div>
+											
+										
 									</div>
 									<div v-else class="flex flex-row items-center space-x-2">
 										<span class="text-gray-700">as</span>
@@ -188,6 +202,8 @@ export default {
 			editing: false,
 			scrollConversationsToBottom: false,
 			content: "",
+			cc: "",
+			bcc: "",
 			prevRoute: null
 
 		}
@@ -252,6 +268,7 @@ export default {
 					}
 					this.tempTextEditorData = {}
 					this.editing = false
+					this.$router.go()
 				},
 				onError: () => {
 					this.content = this.tempTextEditorData.content
@@ -265,6 +282,7 @@ export default {
 				onSuccess: () => {
 					this.tempTextEditorData = {}
 					this.editing = false
+					this.$router.go()
 				},
 				onError: () => {
 					this.content = this.tempTextEditorData.content
@@ -306,7 +324,7 @@ export default {
 			this.editing = true
 			this.editingType = type
 			this.delayedConversationScroll()
-			this.$refs.replyEditor.focusEditor()
+			// this.$refs.replyEditor.focusEditor()
 		},
 		cancelEditing() {
 			this.editing = false
@@ -348,13 +366,14 @@ export default {
 
 			this.$resources.submitConversation.submit({
 				ticket_id: this.ticketId,
+				cc: this.cc,
+				bcc: this.bcc,
 				message: this.content,
 				attachments: this.attachments.map(x => x.name)
 			})
 
 			this.content = ""
 			this.attachments = []
-			this.$router.go()
 		},
 		submitComment() {
 			this.tempTextEditorData.attachments = this.attachments
@@ -372,7 +391,6 @@ export default {
 
 			this.content = ""
 			this.attachments = []
-			this.$router.go()
 		},
 		getNextTicket() {
 

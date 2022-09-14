@@ -25,8 +25,18 @@
 					</div>
 				</div>
 				<div class="sm:w-3/12 truncate pr-10">
-					<div v-if="contact.department">
-						{{ contact.department }}
+					<div v-if="contactFetched">
+						<div v-if="contactFetched.course.length > 0 " class="flex flex-row shrink-0 flex-wrap">
+							<div v-for="course in contactFetched.course" :key="course">
+								<div 
+								class="bg-white border px-[8px] rounded-[10px] h-fit w-fit border-[black] text-[black] mr-[0.2rem] mb-[0.2rem]" 
+									>
+									<div class="flex flex-row items-center h-[20px] space-x-[7px]">
+										<div class="text-[10px] uppercase grow">{{ course.course }} </div>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</router-link>
@@ -59,6 +69,22 @@ export default {
 		return {
 			fullName,
 		}
+	},
+	computed: {
+		contactFetched() {
+			return this.$resources.contactFetched.data || null
+		}
+	},
+	resources: {
+		contactFetched() {
+			return {
+				method: 'frappedesk.api.ticket.get_contact_by_name',
+				params: {
+					contact: this.contact.name,
+				},
+				auto: true
+			}
+		},
 	},
 }
 </script>

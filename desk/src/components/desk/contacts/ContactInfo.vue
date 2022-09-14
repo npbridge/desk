@@ -28,8 +28,27 @@
 						</div>
 					</div>
 				</div>
+				<div class="block">
+					<span class=" text-sm leading-4 text-gray-700 mb-2">
+						Courses
+					</span>
+					<div v-if="values?.course?.length > 0 " class="flex flex-row shrink-0 flex-wrap">
+						<div v-for="course in values?.course" :key="course">
+							<div 
+							class="bg-white border px-[8px] rounded-[10px] h-fit w-fit border-[black] text-[black] mr-[0.2rem] mb-[0.2rem]" 
+								>
+								<div class="flex flex-row items-center h-[20px] space-x-[2px]">
+									<div class="text-[11px] uppercase grow">{{ course.course }} </div>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+				</div>
+
                 <Input class="grow" label="E-mail" type="text" :value="values?.email" @change="(val) => values.email = val"/>
                 <Input class="grow" label="Phone" type="text" :value="values?.phone" @change="(val) => values.phone = val"/>
+				<Input class="grow" label="Notes" type="textarea" :value="values?.notes" @change="(val) => values.notes = val"/>
 				<div class="w-full flex flex-row">
 					<div>
 						<Button @click="cancel()">Cancel</Button>
@@ -73,7 +92,6 @@ export default {
 			if (this.$resources.contact.setValue.loading) {
 				return this.values || null
 			}
-
 			return {
 				contactName: this.contactDoc ? `${this.contactDoc?.first_name} ${this.contactDoc?.last_name}` : null,
 				profilePicture: this.contactDoc?.image || null,
@@ -81,6 +99,8 @@ export default {
 				lastName: this.contactDoc?.last_name || null,
 				email: this.contactDoc && this.contactDoc.email_ids.length > 0 ? this.contactDoc.email_ids[0].email_id : null,
 				phone: this.contactDoc && this.contactDoc.phone_nos.length > 0 ? this.contactDoc.phone_nos[0].phone : null,
+				course: this.contactDoc && this.contactDoc.course && this.contactDoc.course.length > 0 ? this.contactDoc.course : null,
+				notes: this.contactDoc?.notes || null,
 			}
 		},
 	},
@@ -114,6 +134,7 @@ export default {
 		save() {
             let firstName = ''
             let lastName = ''
+			let notes = ''
             if (this.tempContactName.split(' ').length > 1) {
                 firstName = this.tempContactName.split(' ')[0]
                 lastName = this.tempContactName.slice(firstName.length + 1, this.tempContactName.length)
@@ -125,7 +146,8 @@ export default {
                 first_name: firstName,
                 last_name: lastName,
 				email_ids: this.values.email ? [{ email_id: this.values.email }] : [],
-                phone_nos: this.values.phone ? [{ phone: this.values.phone }] : []
+                phone_nos: this.values.phone ? [{ phone: this.values.phone }] : [],
+				notes: notes
 			})
 		},
 		cancel() {
