@@ -415,7 +415,7 @@ export default {
 			return {
 				method: 'frappedesk.api.ticket.create_new',
 				onSuccess: () => {
-					// TODO:
+					this.$router.go()
 				},
 				onError: (error) => {
 					// TODO:

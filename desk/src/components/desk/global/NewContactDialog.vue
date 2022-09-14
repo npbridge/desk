@@ -128,7 +128,7 @@ export default {
 					this.course = ''
 
 					this.$emit('contactCreated', data)
-					this.$router.go()
+				 	this.$router.go()
 				}
 			}
 		}

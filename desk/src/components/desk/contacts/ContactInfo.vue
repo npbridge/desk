@@ -77,8 +77,9 @@
 				</div>
 
 
-                <Input class="grow" label="E-mail" type="text" :value="values?.email" @change="(val) => values.email = val"/>
-                <Input class="grow" label="Phone" type="text" :value="values?.phone" @change="(val) => values.phone = val"/>
+        <Input class="grow" label="E-mail" type="text" :value="values?.email" @change="(val) => values.email = val"/>
+        <Input class="grow" label="Phone" type="text" :value="values?.phone" @change="(val) => values.phone = val"/>
+				<Input class="grow" label="Notes" type="textarea" :value="values?.notes" @change="(val) => values.notes = val"/>
 				<div class="w-full flex flex-row">
 					<div>
 						<Button @click="cancel()">Cancel</Button>
@@ -152,6 +153,7 @@ export default {
 				email: this.contactDoc && this.contactDoc.email_ids.length > 0 ? this.contactDoc.email_ids[0].email_id : null,
 				phone: this.contactDoc && this.contactDoc.phone_nos.length > 0 ? this.contactDoc.phone_nos[0].phone : null,
 				course: this.contactDoc && this.contactDoc.course && this.contactDoc.course.length > 0 ? this.contactDoc.course : null,
+				notes: this.contactDoc?.notes || null,
 			}
 		},
 	},
@@ -296,7 +298,6 @@ export default {
 			} else {
 				firstName = this.tempContactName
 			}
-
 			this.$resources.contact.setValue.submit({
 				first_name: firstName,
 				last_name: lastName,

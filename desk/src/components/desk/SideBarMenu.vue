@@ -207,6 +207,12 @@ export default {
         },
       },
       {
+        label: 'Content',
+        icon: 'content',
+        expanded: false,
+        children: [],
+      },
+      {
         label: 'Knowledge Base',
         icon: 'knowledge-base',
         to: {
@@ -304,6 +310,31 @@ export default {
                   page: 1,
                 }
               },
+            },
+          },
+        ]
+      )
+
+      this.menuOptions
+      .find((option) => option.label == 'Content')
+      .children.push(
+        ...[
+          {
+            label: 'Auto Reply Template',
+            to: {
+              path: '/auto-reply-template/Moodle Help Desk',
+            },
+          },
+          {
+            label: 'Courses Data',
+            to: {
+              path: '/courses/list',
+            },
+          },
+          {
+            label: 'Tags Data',
+            to: {
+              path: '/tags/list',
             },
           },
         ]

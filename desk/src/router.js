@@ -16,6 +16,27 @@ const routes = [
     },
   },
   {
+    path: '/auto-reply-template/Moodle Help Desk',
+    name: 'Auto Reply Template',
+    beforeEnter(to, from, next) {
+      window.location.href = '/auto-reply-template/Moodle Help Desk'
+    },
+  },
+  {
+    path: '/courses/list',
+    name: 'Courses',
+    beforeEnter(to, from, next) {
+      window.location.href = '/courses/list'
+    },
+  },
+  {
+    path: '/tags/list',
+    name: 'Tags',
+    beforeEnter(to, from, next) {
+      window.location.href = '/tags/list'
+    },
+  },
+  {
     path: '/frappedesk/login',
     name: 'DeskLogin',
     // component: () => import('@/pages/auth/Login.vue'),

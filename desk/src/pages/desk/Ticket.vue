@@ -282,6 +282,7 @@ export default {
 				onSuccess: () => {
 					this.tempTextEditorData = {}
 					this.editing = false
+					this.$router.go()
 				},
 				onError: () => {
 					this.content = this.tempTextEditorData.content
@@ -390,7 +391,6 @@ export default {
 
 			this.content = ""
 			this.attachments = []
-			this.$router.go()
 		},
 		getNextTicket() {
 
