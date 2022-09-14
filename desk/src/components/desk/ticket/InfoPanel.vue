@@ -44,55 +44,12 @@
 									>
 									<div class="flex flex-row items-center h-[20px] space-x-[7px]">
 										<div class="text-[10px] uppercase grow">{{ course.course }} </div>
-											<div>
-												<FeatherIcon name="x-circle" class="h-3 stroke-black-500  cursor-pointer" @click="removeCourse(course.name)" />
-											</div>
 									</div>
 								</div>
 							</div>
 						</div>
-						<Autocomplete 
-						v-if="contactCourses"
-						:options="contactCourses.map(x => {
-							return {label: x.name , value: x.name}
-						})"
-						placeholder="Set courses"
-						:value="ticket.contact.course.length > 0  ? ticket.contact.course[0].name : ''" 
-						@change="(item) => {
-							if (item.value) {
-								ticketController.set(ticket.contact.name, 'course', item.value).then(() => {
-									$resources.ticket.fetch()
-	
-									$toast({
-										title: 'Ticket updated successfully.',
-										customIcon: 'circle-check',
-										appearance: 'success',
-									})
-								})
-							}
-						}"
-							>
-							<template #input>
-								<div class="flex flex-row space-x-1 items-center w-full">
-									<div class="grow">
-										<div class="text-base text-left text-gray-400"> courses </div>
-									</div>
-								</div>
-							</template>
-							<template #no-result-found>
-								<div 
-									role="button" 
-									class="hover:bg-gray-100 px-2.5 py-1.5 rounded-md text-base text-blue-500 font-semibold"
-									@click="() => {
-										this.openCreateNewContactCourseDialog = true
-									}"
-								>
-									Create new
-								</div>
-							</template>
-						</Autocomplete>
-						</div> 
-						<div
+					</div> 
+					<div
 							v-if="ticket.contact.phone_nos.length > 0"
 							class="flex space-x-[12px] items-center"
 							>

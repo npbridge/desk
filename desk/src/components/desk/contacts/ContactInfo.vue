@@ -23,8 +23,8 @@
 					<div class="flex flex-row space-x-[8px] items-center">
 						<CustomAvatar :label="values?.contactName" size="2xl" :imageURL="values?.profilePicture" />
 						<div class="flex flex-row space-x-[8px]">
-							<Button>Upload new</Button>
-							<Button>Remove</Button>
+							<!-- <Button>Upload new</Button>
+							<Button>Remove</Button> -->
 						</div>
 					</div>
 				</div>

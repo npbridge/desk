@@ -80,7 +80,10 @@ export default {
 						{ label: doc.published ? 'Unpublish' : 'Publish', appearance: doc.published ? 'secondary' : 'primary', handler: () => {
 							this.editMode = false
 							this.$resources.article.setValue.submit({published: !doc.published})
-						}}
+						}},
+						{ label: 'Delete', appearance:'danger', handler: () => {
+							this.$resources.deleteArticle.submit({doctype: 'Article', name: doc.name}) 
+						}},
 					]
 					this.$event.emit('toggle_navbar_actions', ({type: doc.published ? 'Published Article' : 'Draft Article', actions}))
 				}
@@ -129,6 +132,22 @@ export default {
 				onError: (err) => {
 					this.$toast({
 						title: 'Error while creating article',
+						text: err,
+						customIcon: 'circle-fail',
+						appearance: 'danger',
+					})
+				}
+			 }
+		},
+		deleteArticle() {
+			return {
+				method: 'frappe.client.delete',
+				onSuccess: (doc) => {
+					this.$router.push({path: '/frappedesk/knowledge-base/'})
+				},
+				onError: (err) => {
+					this.$toast({
+						title: 'Error while deleting article',
 						text: err,
 						customIcon: 'circle-fail',
 						appearance: 'danger',
