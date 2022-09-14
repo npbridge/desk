@@ -93,8 +93,9 @@ export default {
 			if (this.$resources.contact.setValue.loading) {
 				return this.values || null
 			}
+			this.tempContactName = this.contactDoc ? `${this.contactDoc?.first_name} ${this.contactDoc && this.contactDoc.last_name ? this.contactDoc.last_name: ''}` : null
 			return {
-				contactName: this.contactDoc ? `${this.contactDoc?.first_name} ${this.contactDoc?.last_name}` : null,
+				contactName: this.contactDoc ? `${this.contactDoc?.first_name} ${this.contactDoc && this.contactDoc.last_name ? this.contactDoc.last_name: ''}` : null,
 				profilePicture: this.contactDoc?.image || null,
 				firstName: this.contactDoc?.first_name || null,
 				lastName: this.contactDoc?.last_name || null,
@@ -145,8 +146,10 @@ export default {
                 first_name: firstName,
                 last_name: lastName,
 				email_ids: this.values.email ? [{ email_id: this.values.email }] : [],
-                phone_nos: this.values.phone ? [{ phone: this.values.phone }] : []
+                phone_nos: this.values.phone ? [{ phone: this.values.phone }] : [],
+				notes: this.values.notes ? this.values.notes: null
 			})
+			
 		},
 		cancel() {
 			this.$router.push({ name: 'Contacts' })
