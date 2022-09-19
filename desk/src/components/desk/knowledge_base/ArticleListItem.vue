@@ -23,12 +23,12 @@
 						class="truncate max-w-fit lg:w-80 md:w-52 sm:w-40"
 					>
 						{{ article.title }}
-						<span  v-if="article.published"
-							class="bg-white border px-[8px] rounded-[10px] h-fit w-fit border-[orange] text-[orange] ml-[0.5rem]" 
-							>
-							<span class="items-center h-[20px] space-x-[7px]">
-								<span class="text-[10px] uppercase grow">Published</span>
-							</span>
+					</div>
+					<div  v-if="article.published"
+						class="bg-white border px-[8px] rounded-[10px] h-fit w-fit border-[orange] text-[orange] ml-[0.5rem]" 
+						>
+						<span class="items-center h-[20px] space-x-[7px]">
+							<span class="text-[10px] uppercase grow">Published</span>
 						</span>
 					</div>
 					
