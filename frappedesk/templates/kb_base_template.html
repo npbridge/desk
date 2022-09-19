@@ -38,7 +38,7 @@
 			<div class="col-12 col-lg-2 d-flex justify-content-end">
                 <ul class="navbar-nav d-flex">
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        {{ render_item({'label': 'Submit a Ticket', 'url': '/support/tickets'}, parent=True) }}
+                        <!-- {{ render_item({'label': 'Submit a Ticket', 'url': '/support/tickets'}, parent=True) }} -->
                     </div>
                 </ul>
 			</div>
@@ -70,13 +70,13 @@
         <div class="footer-info">
             <div class="row">
                 <div class="footer-col-left col-sm-6 col-12">
-                    {% set helpdesk_name = frappe.get_doc("Frappe Desk Settings").helpdesk_name %}
-                    {% if helpdesk_name %}
+                    <!-- {% set helpdesk_name = frappe.get_doc("Frappe Desk Settings").helpdesk_name %} -->
+                    <!-- {% if helpdesk_name %} -->
                     <!-- <div class="ql-editor read-mode"><p>© {{ helpdesk_name }}. 2022</p></div> -->
-                    {% endif %}
+                    <!-- {% endif %} -->
                 </div>
                 <div class="footer-col-right col-sm-6 col-12 footer-powered">
-                    <a class="text-muted" href="https://www.npbridge.com/" target="_blank">Powered by NPBridge Solutios</a>
+                    <a class="text-muted" href="https://www.npbridge.com/" target="_blank">Powered by NPBridge Solutions</a>
                 </div>
             </div>
         </div>
