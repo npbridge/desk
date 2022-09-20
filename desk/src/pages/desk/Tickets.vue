@@ -19,7 +19,8 @@
 					'agreement_status', 
 					'modified', 
 					'_assign', 
-					'_seen'
+					'_seen',
+					'_liked_by'
 				],
 				limit: paginationCount,
 				order_by: 'modified desc',
@@ -41,6 +42,7 @@
 							>
 								<Button :loading="$resources.bulkAssignTicketStatus.loading" @click="markSelectedTicketsAsClosed()">Mark as Closed</Button>
 								<Button :loading="$resources.bulkMarkAsUnread.loading" @click="markSelectedTicketsAsUnread()">Mark as Unread</Button>
+								<Button :loading="$resources.bulkMarkAsUnread.loading" @click="followSelectedTickets()">Follow</Button>
 								<Dropdown
 									v-if="agents"
 									placement="right" 
@@ -272,6 +274,10 @@ export default {
 			this.$resources.bulkMarkAsUnread.submit({
 				ticket_ids: Object.keys(this.$refs.ticketList.selectedItems)})
 		},
+		followSelectedTickets() {
+			this.$resources.bulkFollowTickets.submit({
+				ticket_ids: Object.keys(this.$refs.ticketList.selectedItems)})
+		},
 		agentsAsDropdownOptions() {
 			let agentItems = [];
 			if (this.agents) {
@@ -383,6 +389,32 @@ export default {
 					})
 				}
 			}
+		},
+		bulkFollowTickets(){
+			return {
+				method: 'frappedesk.api.ticket.bulk_follow',
+				onSuccess: () => {
+					this.$refs.ticketList.selectedItems = []
+					this.$refs.ticketList.manager.reload()
+
+					this.$toast({
+						title: 'Tickets Followed.',
+						customIcon: 'circle-check',
+						appearance: 'success',
+					})
+
+					this.$event.emit('update_ticket_list')
+
+				},
+				onError: () => {
+					this.$toast({
+						title: 'Unable to follow tickets.',
+						customIcon: 'circle-fail',
+						appearance: 'danger',
+					})
+				}
+			}
+			
 		},
 		bulkMarkAsUnread() {
 			return {
