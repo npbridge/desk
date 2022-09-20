@@ -1,0 +1,16 @@
+<div>
+	<h2><strong>Daily Summary of Followed Tickets</strong></h2>
+    
+    {% for ticket_group_activity in activities %}
+        <h3> Ticket#{{ ticket_group_activity.ticket }}</h3><br>
+        {% for activity in ticket_group_activity.content %}
+        <div style="margin-bottom: 10px;">
+            <div
+                style="background: #F3F5F8; padding: 10px; border-radius: 4px; border: 1px solid #E5E9EE;"
+            >
+                {{ activity.action }} by {{ activity.modified_by}}
+            </div>
+        {% endfor %}
+    {% endfor %}
+	</div>
+</div>
