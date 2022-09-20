@@ -44,6 +44,4 @@ def mail_ticket_updates():
 				subject=f"Daily Ticket Summary",
 				template="daily_summary",
 				args={"activities" : activity_data },
-				# remove now = true
-				now=True,
 			)
