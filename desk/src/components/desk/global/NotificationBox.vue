@@ -148,11 +148,11 @@
     }
 .notifications-list {
     width: 450px;
-	padding: 0px 10px;
-	min-height: 560px;
-	border: none;
-	position: absolute;
-	box-shadow: 0px 1px 4px rgba(17, 43, 66, 0.1), 0px 2px 6px rgba(17, 43, 66, 0.08);
+    padding: 0px 10px;
+    min-height: 560px;
+    border: none;
+    position: absolute;
+    box-shadow: 0px 1px 4px rgba(17, 43, 66, 0.1), 0px 2px 6px rgba(17, 43, 66, 0.08);
 }
 .notifications-list .notification-list-header {
     margin: 0px 10px;
@@ -175,20 +175,20 @@
 import { inject } from 'vue'
 
 export default {
-	name: 'NotificationBox',
-	components: {
-	},
-	data() {
-		return {
-			notifications: [],
-		}
-	},
-	setup() {
-		const user = inject('user')
-		return { 
+    name: 'NotificationBox',
+    components: {
+    },
+    data() {
+        return {
+            notifications: [],
+        }
+    },
+    setup() {
+        const user = inject('user')
+        return { 
             user
-		}
-	},
+        }
+    },
     methods: {
         getDateDiff(date) {
             const currentDate = new Date()
@@ -198,27 +198,27 @@ export default {
             return diffDays
         }
     },
-	resources: {
+    resources: {
         notifications() {
-			return {
-				method: 'frappe.client.get_list',
-				params: {
-					doctype: 'Notification Log',
-					fields: ['*'],
-					order_by: 'creation desc',
-				},
-				auto: true,
-				onSuccess: (data) => {
-					if (data){
+            return {
+                method: 'frappe.client.get_list',
+                params: {
+                    doctype: 'Notification Log',
+                    fields: ['*'],
+                    order_by: 'creation desc',
+                },
+                auto: true,
+                onSuccess: (data) => {
+                    if (data){
                         data.forEach(notif => {
                             const diffDays = this.getDateDiff(notif.creation.split(" ")[0])
                             notif["diffDays"] = diffDays
                             this.notifications.push(notif)
                         })
                     }
-				}
-			}
-		},
+                }
+            }
+        },
     },
 }
 </script>
