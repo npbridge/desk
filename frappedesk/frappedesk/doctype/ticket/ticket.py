@@ -310,6 +310,7 @@ def create_communication_via_agent(ticket, message, cc=None, bcc=None, attachmen
                     recipients=[ticket_doc.raised_by],
                     cc=cc,
                     bcc=bcc,
+                    expose_recipients="header",
                     reference_doctype='Ticket',
                     reference_name=ticket_doc.name,
                     communication=communication.name,
@@ -328,6 +329,7 @@ def create_communication_via_agent(ticket, message, cc=None, bcc=None, attachmen
                     recipients=[ticket_doc.raised_by],
                     cc=cc,
                     bcc=bcc,
+                    expose_recipients="header",
                     reference_doctype='Ticket',
                     reference_name=ticket_doc.name,
                     communication=communication.name,
@@ -356,7 +358,7 @@ def update_ticket_status_via_customer_portal(ticket, new_status):
 
 @frappe.whitelist()
 def get_all_conversations(ticket):
-    conversations = frappe.db.get_all("Communication", filters={"reference_doctype": ["=", "Ticket"], "reference_name": ["=", ticket]}, order_by="creation asc", fields=["name", "content", "creation", "sent_or_received", "sender", "reference_name"])
+    conversations = frappe.db.get_all("Communication", filters={"reference_doctype": ["=", "Ticket"], "reference_name": ["=", ticket]}, order_by="creation asc", fields=["name", "content", "creation", "sent_or_received", "sender", "reference_name", "cc", "bcc"])
 
     for conversation in conversations:
         if frappe.db.exists("Agent", conversation.sender):
