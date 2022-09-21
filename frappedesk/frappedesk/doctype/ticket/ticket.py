@@ -356,7 +356,7 @@ def update_ticket_status_via_customer_portal(ticket, new_status):
 
 @frappe.whitelist()
 def get_all_conversations(ticket):
-    conversations = frappe.db.get_all("Communication", filters={"reference_doctype": ["=", "Ticket"], "reference_name": ["=", ticket]}, order_by="creation asc", fields=["name", "content", "creation", "sent_or_received", "sender", "reference_name"])
+    conversations = frappe.db.get_all("Communication", filters={"reference_doctype": ["=", "Ticket"], "reference_name": ["=", ticket]}, order_by="creation asc", fields=["name", "content", "creation", "sent_or_received", "sender", "reference_name", "cc", "bcc"])
 
     for conversation in conversations:
         if frappe.db.exists("Agent", conversation.sender):

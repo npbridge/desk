@@ -17,6 +17,8 @@
 						>
 							<ConversationCard 
 								:userName="getUserName(conversation)" 
+								:cc="conversation.cc"
+								:bcc="conversation.bcc"
 								:profilePicUrl="conversation.sender.image ? conversation.sender.image : conversation.sender.user_image" 
 								:time="conversation.creation" 
 								:message="conversation.content"
@@ -86,7 +88,7 @@ export default {
 			}
 		}
 	},
-	computed: {
+	computed: { 
 		conversations() {
 			this.$nextTick(() => {
 				this.autoScrollToBottom();

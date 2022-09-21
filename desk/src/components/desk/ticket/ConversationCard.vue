@@ -3,7 +3,39 @@
 		<div class="flex flex-row justify-between">
 			<div class="flex flex-row items-center space-x-[8px]">
 				<CustomAvatar :label="userName" :imageURL="profilePicUrl" size="sm" />
-				<div class="truncate text-[14px] font-normal max-w-[200px]">{{ userName }}</div>
+				<div class="h-full">
+					<div
+						class="flex flex-col select-none"
+					>
+						<div
+							class="shrink-0 flex flex-row items-center cursor-pointer"
+							@click="
+								() => {
+									showCcBcc = !showCcBcc
+								}
+							"
+						>
+							<div class="truncate text-[14px] font-normal max-w-[200px]">{{ userName }}</div>
+							<FeatherIcon
+								class="h-[15px] w-[15px] stroke-gray-500 ml-[0.125rem]"
+								:name="showCcBcc ? 'chevron-up' : 'chevron-down'"
+							/>
+						</div>
+						<div
+							v-if="showCcBcc"
+							class="overflow-y-scroll"
+							:style="{
+								height:
+									viewportWidth > 768
+										? `calc(100vh - ${getOffsetHeight}px)`
+										: null,
+							}"
+							>
+							<div class="prose prose-p:my-1 text-[13px] text-gray-700" style="border: 0px;" >cc: {{ cc }}</div>
+							<div class="prose prose-p:my-1 text-[13px] text-gray-700" style="border: 0px;" >bcc: {{ bcc }}</div>
+						</div>
+					</div>
+				</div>
 			</div>
 			<a :title="$dayjs(time)" class="text-gray-500 text-[12px] select-none">{{ $dayjs.longFormating($dayjs(time).fromNow()) }}</a>
 		</div>
@@ -27,10 +59,11 @@
 import { FeatherIcon } from 'frappe-ui'
 import CustomAvatar from '@/components/global/CustomAvatar.vue'
 import { remove_script_and_style } from '@/utils'
+import { ref } from 'vue'
 
 export default {
 	name: 'ConversationCard',
-	props: ['userName', 'profilePicUrl', 'time', 'message', 'color', 'attachments'],
+	props: ['userName', 'profilePicUrl', 'time', 'message', 'color', 'attachments', 'cc', 'bcc'],
 	components: {
 		FeatherIcon,
 		CustomAvatar
@@ -42,6 +75,11 @@ export default {
 			}
 			return ''
 		}
+	},
+	setup() {
+		const showCcBcc = ref(false)
+
+		return {showCcBcc}
 	}
 }
 </script>
