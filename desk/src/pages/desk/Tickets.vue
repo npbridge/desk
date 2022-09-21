@@ -60,11 +60,16 @@
 								
 							</div>
 							<div v-else class="flex items-center space-x-3">
+								<div v-if="showNotificationBox"> 
+									<NotificationBoxVue />
+								</div>
+								<Button @click="() => {showNotificationBox = !showNotificationBox}">
+									<CustomIcons height="18" width="18" name="notificationBell" />
+								</Button>	
 								<div>
 									<FilterBox class="mt-6" v-if="toggleFilters" @close="() => { toggleFilters = false }" :options="filterBoxOptions()" v-model="filters"/>
 								</div>
-								<div class="stroke-blue-500 fill-blue-500 w-0 h-0 block"></div>
-								<Button :class="Object.keys(filters).length == 0 ? 'bg-gray-100 text-gray-600' : 'bg-blue-100 text-blue-500 hover:bg-blue-300'" @click="() => { toggleFilters = !toggleFilters }">
+								<Button :style="{ marginLeft: 0 }" :class="Object.keys(filters).length == 0 ? 'bg-gray-100 text-gray-600' : 'bg-blue-100 text-blue-500 hover:bg-blue-300 '" @click="() => { toggleFilters = !toggleFilters }">
 									<div class="flex items-center space-x-2">
 										<CustomIcons height="18" width="18" name="filter" :class="Object.keys(filters).length > 0 ? 'stroke-blue-500 fill-blue-500' : 'stroke-black'" />
 										<div>Add Filters</div>
@@ -97,6 +102,7 @@
 		<NewTicketDialog v-model="showNewTicketDialog" @ticket-created="() => {showNewTicketDialog = false}"/>
 	</div>
 </template>
+
 <script>
 import { Dropdown } from 'frappe-ui'
 import { inject, ref } from 'vue'
@@ -106,6 +112,7 @@ import TicketList from '@/components/desk/tickets/TicketList.vue'
 import ListManager from '@/components/global/ListManager.vue'
 import CustomIcons from '@/components/desk/global/CustomIcons.vue'
 import FeatherIcon from 'frappe-ui/src/components/FeatherIcon.vue'
+import NotificationBoxVue from '../../components/desk/global/NotificationBox.vue'
 
 export default {
 	name: 'Tickets',
@@ -116,7 +123,8 @@ export default {
     ListManager,
     TicketList,
     CustomIcons,
-    FeatherIcon
+    FeatherIcon,
+    NotificationBoxVue,
 },
 	data() {
 		return {
@@ -124,7 +132,8 @@ export default {
 			initialFilters: [],
 			initialPage: 1,
 			ticketsWithTags: [],
-			filterTicketsWithTags: false
+			filterTicketsWithTags: false,
+			showNotificationBox: false
 		}
 	},
 	setup() {
