@@ -38,12 +38,13 @@ scheduler_events = {
 	"daily": [
 		"frappedesk.frappedesk.doctype.ticket.ticket.auto_close_tickets",
 		"frappedesk.frappedesk.doctype.service_level_agreement.service_level_agreement.check_agreement_status",
+		"frappedesk.frappedesk.doctype.ticket_activity.ticket_activity.mail_ticket_updates"
 	],
 	"cron": {
 		"* * * * * 0/5": [
 			"frappedesk.overrides.pull_support_emails"
 		]
-	}
+	},
 }
 
 website_route_rules = [

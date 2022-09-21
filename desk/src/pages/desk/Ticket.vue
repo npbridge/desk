@@ -31,6 +31,9 @@
 									<a :title="ticket.subject" class="sm:max-w-[200px] lg:max-w-[550px] truncate cursor-pointer font-semibold">
 										{{ ticket.subject }}
 									</a>
+									<Button :appearance="isFollowed? 'secondary' : 'primary'" @click="toggleFollow">
+										{{ isFollowed? "Unfollow" : "Follow"}}
+									</Button>
 								</div>
 							</div>
 						</div>
@@ -290,6 +293,40 @@ export default {
 				}
 			}
 		},
+		unfollowTicket() {
+			return {
+				method: 'frappedesk.api.ticket.unfollow_ticket',
+				onSuccess: () => {
+					this.$router.go()
+				},
+				onError: (err) => {
+					console.log(err)
+					this.$toast({
+							title: "Error on Unfollow Ticket",
+							text: "Unable to unfollow ticket.",
+							customIcon: 'circle-fail',
+							appearance: 'danger',
+						})
+				}
+			}
+		},
+		followTicket() {
+			return {
+				method: 'frappedesk.api.ticket.follow_ticket',
+				onSuccess: () => {
+					this.$router.go()
+				},
+				onError: (err) => {
+					console.log(err)
+					this.$toast({
+							title: "Error on follow Ticket",
+							text: "Unable to follow ticket.",
+							customIcon: 'circle-fail',
+							appearance: 'danger',
+						})
+				}
+			}
+		},
 		markTicketAsSeen() {
 			return {
 				method: 'frappedesk.api.ticket.mark_ticket_as_seen'
@@ -309,6 +346,9 @@ export default {
 		})
 	},
 	computed: {
+		isFollowed(){
+			return this.ticket._liked_by.includes(this.user.user)
+		},
 		ticket() {
 			return this.$resources.ticket.doc || null
 		},
@@ -320,6 +360,17 @@ export default {
 		}
 	},
 	methods: {
+		toggleFollow(){
+			if (this.isFollowed){
+				this.$resources.unfollowTicket.submit({
+						ticket_id: this.ticketId
+					})
+			} else {
+				this.$resources.followTicket.submit({
+						ticket_id: this.ticketId
+					})
+			}
+		},
 		startEditing(type='reply') {
 			this.editing = true
 			this.editingType = type

@@ -239,8 +239,6 @@ def assign_ticket_status(ticket_id, status):
 
 @frappe.whitelist(allow_guest=True)
 def mark_as_unread(ticket_id):
-		
-			
 	if ticket_id:
 		ticket_doc = frappe.get_doc("Ticket", ticket_id)
 		_seen = json.loads(ticket_doc._seen or "[]")
@@ -249,6 +247,28 @@ def mark_as_unread(ticket_id):
 		
 		log_ticket_activity(ticket_id, f"Ticket marked as unread ")
 
+		return ticket_doc
+
+@frappe.whitelist()
+def follow_ticket(ticket_id):
+	if ticket_id:
+		ticket_doc = frappe.get_doc("Ticket", ticket_id)
+		_liked_by = json.loads(ticket_doc._liked_by or "[]")
+		if frappe.session.user not in _liked_by:
+			_liked_by.append(frappe.session.user)
+
+		ticket_doc.db_set("_liked_by", json.dumps(_liked_by), update_modified=False)
+		
+		return ticket_doc
+
+@frappe.whitelist()
+def unfollow_ticket(ticket_id):
+	if ticket_id:
+		ticket_doc = frappe.get_doc("Ticket", ticket_id)
+		_liked_by = json.loads(ticket_doc._liked_by or "[]")
+		_liked_by = [user for user in _liked_by if frappe.session.user != user]
+		ticket_doc.db_set("_liked_by", json.dumps(_liked_by), update_modified=False)
+		
 		return ticket_doc
 
 @frappe.whitelist(allow_guest=True)
@@ -279,6 +299,15 @@ def bulk_mark_as_unread(ticket_ids):
 		ticket_docs = []
 		for ticket_id in ticket_ids:
 			ticket_doc = mark_as_unread(ticket_id)
+			ticket_docs.append(ticket_doc)
+		return ticket_docs
+
+@frappe.whitelist()
+def bulk_follow(ticket_ids):
+	if ticket_ids:
+		ticket_docs = []
+		for ticket_id in ticket_ids:
+			ticket_doc = follow_ticket(ticket_id)
 			ticket_docs.append(ticket_doc)
 		return ticket_docs
 
