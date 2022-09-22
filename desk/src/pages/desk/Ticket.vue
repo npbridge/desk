@@ -347,7 +347,7 @@ export default {
 	},
 	computed: {
 		isFollowed(){
-			return this.ticket._liked_by.includes(this.user.user)
+			return this.ticket._liked_by?.includes(this.user.user)
 		},
 		ticket() {
 			return this.$resources.ticket.doc || null
