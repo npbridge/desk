@@ -2,6 +2,12 @@ import frappe
 
 
 def get_context(context):
+	user = frappe.session.user
+	if (user == "Guest"):
+		frappe.local.response["type"] = "redirect"
+		frappe.local.response["location"] = "/login"
+		raise frappe.Redirect
+
 	context.categories = frappe.get_all(
 		"Category",
 		fields=["name", "description", "parent_category", "is_group", "category_name"],

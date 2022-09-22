@@ -56,9 +56,6 @@
 
 <script>
 	frappe.ready(function() {
-		if (frappe.session.user === "Guest") {
-			window.location.href = '/login'
-		}
 		$(".category-card").click(function() {
 			let category = this.getAttribute("data-value");
 			console.log('button clicked');
