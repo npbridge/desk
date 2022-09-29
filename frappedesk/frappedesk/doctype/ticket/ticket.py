@@ -174,20 +174,16 @@ def create_communication_via_bot(doc, type):
         use_bot_answers = frappe.db.get_single_value('Frappe Desk Settings', 'use_bot_answers')
         ## If use_bot_answers==TRUE, bot responses are available for every ticket
         botResponse = getResponse(doc.content)
-        frappe.log_error("got bot response", f"{botResponse}")
-        frappe.log_error("confidence is", f"{botResponse['confidence'] }")
         if use_bot_answers and botResponse['confidence'] >= threshold_limit:
             ## If threshold_limit >= set limit => Send Mail
             ## If thershold_limit < set_limit => Comment
             create_communication_via_agent(
                 ticket=doc.reference_name, 
-                message=botResponse['response'], 
                 cc=None, 
                 bcc=None, 
                 attachments=[], 
                 template="bot_auto_reply", 
-                template_args={"hello": "world"},
-                in_reply_to=None
+                template_args={"username": doc.sender_full_name, "bot_reply": botResponse["response"]},
                 )
         else:
             ## Creating a comment
@@ -238,7 +234,7 @@ def create_communication_via_contact(ticket, message, attachments=[]):
 
 
 @frappe.whitelist(allow_guest=True)
-def create_communication_via_agent(ticket, message, cc=None, bcc=None, attachments=None, template=None, template_args=None, in_reply_to=None):
+def create_communication_via_agent(ticket, message, cc=None, bcc=None, attachments=None, template=None, template_args=None):
     ticket_doc = frappe.get_doc("Ticket", ticket)
     last_ticket_communication_doc = frappe.get_last_doc("Communication", filters={"reference_name":[ "=", ticket_doc.name]})
 
@@ -297,7 +293,6 @@ def create_communication_via_agent(ticket, message, cc=None, bcc=None, attachmen
             "email_account": reply_email_account,
             "template": template,
             "args": template_args,
-            "in_reply_to": in_reply_to
         }
     )
     communication.ignore_permissions = True
@@ -351,7 +346,6 @@ def create_communication_via_agent(ticket, message, cc=None, bcc=None, attachmen
                     now=True,
                     template=template,
                     args=template_args,
-                    in_reply_to=in_reply_to
                 )
         except:
             frappe.throw("Either setup up support email account or there should be a default outgoing email account")
