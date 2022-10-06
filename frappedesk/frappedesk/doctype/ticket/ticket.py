@@ -19,6 +19,7 @@ from frappedesk.frappedesk.doctype.ticket_activity.ticket_activity import log_ti
 from frappe.utils import get_url
 from frappe.utils.user import get_user_fullname
 from frappedesk.rocketchat.rocketchat import getResponse
+from frappedesk.rocketchat.emailextract import extract_original_message
 
 class Ticket(Document):
     def autoname(self):
@@ -172,8 +173,12 @@ def create_communication_via_bot(doc, type):
     if doc.reference_doctype == "Ticket" and doc.sent_or_received == "Received":
         threshold_limit = frappe.db.get_single_value('Frappe Desk Settings', 'threshold_limit')
         use_bot_answers = frappe.db.get_single_value('Frappe Desk Settings', 'use_bot_answers')
+
+        # Removing signature and original message from email, if available
+        only_message = extract_original_message(doc.content)
+
         ## If use_bot_answers==TRUE, bot responses are available for every ticket
-        botResponse = getResponse(doc.content)
+        botResponse = getResponse(only_message)
         if use_bot_answers and botResponse['confidence'] >= threshold_limit:
             ## If threshold_limit >= set limit => Send Mail
             ## If thershold_limit < set_limit => Comment
