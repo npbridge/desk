@@ -182,12 +182,8 @@ def create_communication_via_bot(doc, type):
             last_ticket_communication_doc = frappe.get_last_doc("Communication", filters={"reference_name":[ "=", ticket_doc.name]})
             create_communication_via_agent(
                 ticket=doc.reference_name, 
-                message=f"""Dear { doc.sender_full_name },
-                    <p>
-                        { botResponse["response"] }
-                    </p>
-                """,
-                template="bot_auto_reply",
+                message=None,
+                template="bot_auto_answer",
                 template_args={"username": doc.sender_full_name, "bot_reply": botResponse["response"], "previous_message": last_ticket_communication_doc},
             )
         else:
