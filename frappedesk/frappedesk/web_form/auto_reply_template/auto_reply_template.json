@@ -10,7 +10,7 @@
  "button_label": "Save",
  "client_script": "",
  "creation": "2022-08-29 15:08:33.467458",
- "custom_css": ".navbar {\n    background-color: #022646;\n    color: #FFFFFF;\n}\n\n.navbar-brand > span {\n    color: #FFFFFF !important;\n}\n\n.navbar-brand > span:hover {\n    color: #FEB32A !important;\n}\n\n.nav-link {\n    color: #FFFFFF !important;\n}\n\n.nav-link:hover {\n    color: #FEB32A !important;\n}\n\n.navbar-light .navbar-brand:hover, .navbar-light .navbar-brand:focus {\n  color: #FEB32A;\n}\n.navbar-light .navbar-brand {\n    color: #FFFFFF;\n}\n\n.navbar-light .navbar-toggler {\n  color: #FFFFFF;\n}\n\n.btn.btn-primary {\n    background-color: #022646;\n    color: #FFFFFF;\n}\n\n.btn.btn-primary:hover {\n    color: #FEB32A;\n}\n\n.navbar-light .navbar-toggler .icon {\n  stroke: white;\n}",
+ "custom_css": ".navbar {\n    background-color: #022646;\n    color: #FFFFFF;\n}\n\n.navbar-brand > span {\n    color: #FFFFFF !important;\n}\n\n.navbar-brand > span:hover {\n    color: #FEB32A !important;\n}\n\n.nav-link {\n    color: #FFFFFF !important;\n}\n\n.nav-link:hover {\n    color: #FEB32A !important;\n}\n\n.navbar-light .navbar-brand:hover, .navbar-light .navbar-brand:focus {\n  color: #FEB32A;\n}\n.navbar-light .navbar-brand {\n    color: #FFFFFF;\n}\n\n.navbar-light .navbar-toggler {\n  color: #FFFFFF;\n}\n\n.btn.btn-primary {\n    background-color: #022646;\n    color: #FFFFFF;\n}\n\n.btn.btn-primary:hover {\n    color: #FEB32A;\n}\n\n.navbar-light .navbar-toggler .icon {\n  stroke: white;\n}\n\ninput[type=checkbox].disabled-selected, input[type=checkbox]:disabled:checked {\n    background-color: inherit !important;\n    background-image:url(\"data:image/svg+xml, <svg viewBox='0 0 8 7' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M1 4.00001L2.66667 5.80001L7 1.20001' stroke='black' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/></svg>\") !important;\n    background-size: inherit !important;\n    border: none !important;\n    box-shadow: none !important;\n}",
  "doc_type": "Email Template",
  "docstatus": 0,
  "doctype": "Web Form",
@@ -21,18 +21,18 @@
   {
    "fieldname": "subject",
    "fieldtype": "Data",
-   "label": "Subject"
+   "label": "Name"
   },
   {
    "fieldname": "default_auto_reply_template",
    "fieldtype": "Check",
-   "label": "Default Auto Reply Template"
+   "label": "Is Default Template"
   }
  ],
- "list_title": "Auto Reply Template",
+ "list_title": "Auto Reply Templates",
  "login_required": 1,
  "max_attachment_size": 0,
- "modified": "2022-10-10 15:13:49.385133",
+ "modified": "2022-10-10 16:45:38.366671",
  "modified_by": "Administrator",
  "module": "FrappeDesk",
  "name": "auto-reply-template",
@@ -42,6 +42,7 @@
  "show_attachments": 1,
  "show_list": 1,
  "show_sidebar": 0,
+ "success_message": "Auto Reply Template Updated Successfully!",
  "success_title": "Auto Reply Template Updated!",
  "success_url": "/auto-reply-template",
  "title": "Auto Reply Template",
@@ -77,7 +78,7 @@
    "fieldname": "default_auto_reply_template",
    "fieldtype": "Check",
    "hidden": 0,
-   "label": "Default Auto Reply Template",
+   "label": "Make default template",
    "max_length": 0,
    "max_value": 0,
    "read_only": 0,
