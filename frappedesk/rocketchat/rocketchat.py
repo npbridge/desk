@@ -9,6 +9,7 @@ logger.set_log_level("DEBUG")
 logger = frappe.logger("api", allow_site=True, file_count=50)
 import time
 import re
+from frappedesk.rocketchat.trim_email import extract_original_message
 
 headers = {
 	"content-type": "application/json"
@@ -28,7 +29,7 @@ params = {
 }
 
 def sendMessages(msg, postData=data, headers=headers):
-	msg = re.sub('<[^<]+?>', '', msg)
+	msg = extract_original_message(msg)
 	postData["msg"] = msg
 	postData["token"] = os.getenv('TOKEN')
 	postData["rid"] = os.getenv('ROOM_ID')

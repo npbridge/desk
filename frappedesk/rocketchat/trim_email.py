@@ -2,7 +2,8 @@ from talon.signature.bruteforce import extract_signature
 import re
 
 def remove_original_message(email_content):
-    regex = r"(?s)^\s*\bOn\b.*\nwrote:.*$"
+    #regex = r"(?s)^\s*\bOn\b.*\nwrote:.*$"
+    regex = r"(?s)^\s*\bOn\b.*wrote:.*"
     subst = ""
 
     # You can manually specify the number of replacements by changing the 4th argument
@@ -56,9 +57,7 @@ def get_signature(email_text):
                               "many thanks",
                               "thanks",
                               "sincerely",
-                              "ciao",
                               "Best",
-                              "bGIF",
                               "thank you",
                               "thankyou",
                               "talk soon",
@@ -134,13 +133,29 @@ def get_body(email_text, check_salutation=True, check_signature=True, check_repl
         if reply_text: email_text = email_text[:email_text.find(reply_text)]
     return email_text
 
+def remove_html_tags(text):
+    ## preserving line changes
+    text = re.sub(r'<br>', '__br__', text)
+    ## removing all html tags
+    text = re.sub('<[^<]+?>', ' ', text)
+    ## replacing __br__ with \n (new line)
+    text = text.replace('__br__', '\n').strip()
+    ## removing extra spaces
+    text = re.sub(' +', ' ', text)
+    return text
 
 def extract_original_message(email_content):
     ## Using custom function to remove original message from email
-    recent_message = remove_original_message(email_content)
+    recent_message = ""
+    if email_content:
+        # removing html tags
+        recent_message = remove_html_tags(email_content)
+        # removing reply text
+        recent_message = remove_original_message(recent_message)
     ## Using talon to remove signature from email
     text, signature = extract_signature(recent_message)
     ## Using custom function to remove original message from email
-    recent_message = remove_original_message(get_body(text))
+    if text:
+        # removing signature and salutation
+        recent_message = get_body(text)
     return recent_message
-
