@@ -6,7 +6,12 @@
     <div class="flex flex-row justify-between">
       <div class="flex flex-row items-center space-x-[8px]" v-if="user">
         <CustomAvatar
-          v-if="comment.comment_by !== 'Bot'"
+          v-if="comment.comment_by === 'Bot'"
+          :label="'B'"
+          size="sm"
+        />
+        <CustomAvatar
+          v-else
           :imageURL="user.user_image"
           :label="user.full_name"
           size="sm"
