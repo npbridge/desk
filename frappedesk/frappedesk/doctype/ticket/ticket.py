@@ -179,8 +179,8 @@ def create_communication_via_bot(doc, type):
             ## If threshold_limit >= set limit => Send Mail
             ## If thershold_limit < set_limit => Comment
             # we need message to display on helpdesk UI, since template body wont be visible on helpdesk ui 
-            message = """
-                Dear { doc.sender_full_name },
+            message = f"""
+                Dear { doc.sender_full_name or "Learner" },
                 <p>
                     { botResponse["response"] }
                 </p>
@@ -189,7 +189,7 @@ def create_communication_via_bot(doc, type):
                 ticket=doc.reference_name, 
                 message=message,
                 template="bot_auto_answer",
-                template_args={"username": doc.sender_full_name, "bot_reply": botResponse["response"] },
+                template_args={"username": doc.sender_full_name or "Learner", "bot_reply": botResponse["response"] },
             )
         else:
             ## Creating a comment
