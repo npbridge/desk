@@ -65,7 +65,7 @@ def getHistory(params=params, headers=headers):
 
 def getResponse(msg, msgID=None, history={}):
 	msgID = sendMessages(msg) if msg else None
-	time.sleep(1)
+	time.sleep(2)
 	history = getHistory()
 	if msgID and 'messages' in history:
 		message_index = next((index for (index, d) in enumerate(history['messages']) if d["_id"] == msgID), None)
