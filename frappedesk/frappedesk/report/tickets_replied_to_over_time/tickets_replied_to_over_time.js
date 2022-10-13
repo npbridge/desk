@@ -2,7 +2,7 @@
 // For license information, please see license.txt
 /* eslint-disable */
 
-frappe.query_reports["Tickets Received Over Time"] = {
+frappe.query_reports["Tickets Replied To Over Time"] = {
   filters: [
     {
       fieldname: "from_date_first",
@@ -67,12 +67,20 @@ frappe.query_reports["Tickets Received Over Time"] = {
       (data, index) =>
         `${
           firstDataset[index]
-            ? firstDataset[index].opening_date.split("-").reverse().join("-")
+            ? firstDataset[index].first_responded_on
+                .split(" ")[0]
+                .split("-")
+                .reverse()
+                .join("-")
             : "-"
         }|
          ${
            secondDataset[index]
-             ? secondDataset[index].opening_date.split("-").reverse().join("-")
+             ? secondDataset[index].first_responded_on
+                 .split(" ")[0]
+                 .split("-")
+                 .reverse()
+                 .join("-")
              : "-"
          }`
     );

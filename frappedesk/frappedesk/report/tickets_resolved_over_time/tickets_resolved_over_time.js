@@ -2,7 +2,7 @@
 // For license information, please see license.txt
 /* eslint-disable */
 
-frappe.query_reports["Tickets Received Over Time"] = {
+frappe.query_reports["Tickets Resolved Over Time"] = {
   filters: [
     {
       fieldname: "from_date_first",
@@ -67,14 +67,22 @@ frappe.query_reports["Tickets Received Over Time"] = {
       (data, index) =>
         `${
           firstDataset[index]
-            ? firstDataset[index].opening_date.split("-").reverse().join("-")
+            ? firstDataset[index].resolution_date
+                .split(" ")[0]
+                .split("-")
+                .reverse()
+                .join("-")
             : "-"
         }|
-         ${
-           secondDataset[index]
-             ? secondDataset[index].opening_date.split("-").reverse().join("-")
-             : "-"
-         }`
+		   ${
+         secondDataset[index]
+           ? secondDataset[index].resolution_date
+               .split(" ")[0]
+               .split("-")
+               .reverse()
+               .join("-")
+           : "-"
+       }`
     );
     const firstDataSetValues = firstDataset.map((d) => d.count);
     const secondDatasetValues = secondDataset.map((d) => d.count);

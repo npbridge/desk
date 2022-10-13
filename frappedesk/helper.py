@@ -15,36 +15,31 @@ def get_sql_periodicity(range):
 
 	return periodicity
 
-def get_report_data(from_date, to_date, range="Weekly", extra_field_name=None, filter=None): 
+def get_report_data(from_date, to_date, range="Weekly", extra_field_name=None, filter=None, filter_based_on="opening_date"): 
 	""" Return data from sql grouped by periodicity. Provide filters in a json {value: "equal_to_this"}"""
 	periodicity = get_sql_periodicity(range)
 
+	filter_clause = ""
 	if filter:
-		query = """
-		SELECT
-			{}(opening_date) as date_format,
-			opening_date as opening_date,
-			count(idx) as count
-		FROM tabTicket
-		WHERE
-			date(opening_date) between '{}' and '{}',
-			'''add filter'''
-		GROUP BY date_format
-		ORDER BY date_format asc
-	""".format(periodicity, from_date, to_date)
+		for key, value in filter.items():
+			filter_clause += f",\n{key}={value}"
 
-	else:
-		query = """
-			SELECT
-				{}(opening_date) as date_format,
-				opening_date as opening_date,
-				count(idx) as count
-			FROM tabTicket
-			WHERE
-				date(opening_date) between '{}' and '{}'
-			GROUP BY date_format
-			ORDER BY date_format asc
-		""".format(periodicity, from_date, to_date)
+			
+	query_where_clause = """
+	WHERE 
+		date({}) between '{}' and '{}'
+	""".format(filter_based_on, from_date, to_date) + filter_clause
+
+	query = """
+	SELECT
+		{}({}) as date_format,
+		{} as {},
+		count(idx) as count
+	FROM tabTicket
+	{}
+	GROUP BY date_format
+	ORDER BY date_format asc
+	""".format(periodicity, filter_based_on, filter_based_on, filter_based_on, query_where_clause)
 
 	data = frappe.db.sql(
 		query,
