@@ -218,22 +218,22 @@ export default {
         to: {
           path: '/frappedesk/knowledge-base',
         },
-      }
+      },
     ]
 
     if (this.user.agent) {
-      const foundRoleInfo = this.user.doc.roles.find(role => role.role === 'Helpdesk Manager')
-          if (foundRoleInfo)  {
-            this.menuOptions.push(
-              {
-                label: 'Settings',
-                icon: 'settings',
-                to: {
-                  path: '/frappedesk/settings',
-                },
-              }
-          )
-        }
+      const foundRoleInfo = this.user.doc.roles.find(
+        (role) => role.role === 'Helpdesk Manager'
+      )
+      if (foundRoleInfo) {
+        this.menuOptions.push({
+          label: 'Settings',
+          icon: 'settings',
+          to: {
+            path: '/frappedesk/settings',
+          },
+        })
+      }
 
       this.menuOptions
         .find((option) => option.label == 'Tickets')
@@ -315,7 +315,7 @@ export default {
         ]
       )
 
-      this.menuOptions
+    this.menuOptions
       .find((option) => option.label == 'Content')
       .children.push(
         ...[
@@ -407,6 +407,56 @@ export default {
           this.menuOptions.find(
             (option) => option.label == 'Tickets'
           ).children[1].extra = count
+        },
+      }
+    },
+    myResolvedTicketsCount() {
+      return {
+        method: 'frappe.client.get_count',
+        params: {
+          doctype: 'Ticket',
+          filters: {
+            status: ['=', 'Resolved'],
+            _assign: ['like', `%${this.user.agent.name}%`],
+          },
+        },
+        auto: true,
+        onSuccess(count) {
+          this.menuOptions.find(
+            (option) => option.label == 'Tickets'
+          ).children[2].extra = count
+        },
+      }
+    },
+    myClosedTicketsCount() {
+      return {
+        method: 'frappe.client.get_count',
+        params: {
+          doctype: 'Ticket',
+          filters: {
+            status: ['=', 'Closed'],
+            _assign: ['like', `%${this.user.agent.name}%`],
+          },
+        },
+        auto: true,
+        onSuccess(count) {
+          this.menuOptions.find(
+            (option) => option.label == 'Tickets'
+          ).children[3].extra = count
+        },
+      }
+    },
+    totalTickets() {
+      return {
+        method: 'frappe.client.get_count',
+        params: {
+          doctype: 'Ticket',
+        },
+        auto: true,
+        onSuccess(count) {
+          this.menuOptions.find(
+            (option) => option.label == 'Tickets'
+          ).children[4].extra = count
         },
       }
     },
