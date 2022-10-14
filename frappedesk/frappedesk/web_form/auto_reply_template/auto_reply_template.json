@@ -15,7 +15,7 @@
  "docstatus": 0,
  "doctype": "Web Form",
  "idx": 0,
- "introduction_text": "<div class=\"ql-editor read-mode\"><p>You can use the following in your template:</p><p>{{username}} - for username of user</p></div>",
+ "introduction_text": "<div class=\"ql-editor read-mode\"><p>You can use the following in your template:</p><p>{{username}} - for username of user</p><p>{{ reference_name }} &nbsp;- for ticket id</p><p>{{ resolution_by }} - for resolution date &nbsp;</p></div>",
  "is_standard": 1,
  "list_columns": [
   {
@@ -32,7 +32,7 @@
  "list_title": "Auto Reply Templates",
  "login_required": 1,
  "max_attachment_size": 0,
- "modified": "2022-10-10 16:45:38.366671",
+ "modified": "2022-10-14 10:22:12.042034",
  "modified_by": "Administrator",
  "module": "FrappeDesk",
  "name": "auto-reply-template",
@@ -44,7 +44,7 @@
  "show_sidebar": 0,
  "success_message": "Auto Reply Template Updated Successfully!",
  "success_title": "Auto Reply Template Updated!",
- "success_url": "/auto-reply-template",
+ "success_url": "",
  "title": "Auto Reply Template",
  "web_form_fields": [
   {
