@@ -218,22 +218,22 @@ export default {
         to: {
           path: '/frappedesk/knowledge-base',
         },
-      }
+      },
     ]
 
     if (this.user.agent) {
-      const foundRoleInfo = this.user.doc.roles.find(role => role.role === 'Helpdesk Manager')
-          if (foundRoleInfo)  {
-            this.menuOptions.push(
-              {
-                label: 'Settings',
-                icon: 'settings',
-                to: {
-                  path: '/frappedesk/settings',
-                },
-              }
-          )
-        }
+      const foundRoleInfo = this.user.doc.roles.find(
+        (role) => role.role === 'Helpdesk Manager'
+      )
+      if (foundRoleInfo) {
+        this.menuOptions.push({
+          label: 'Settings',
+          icon: 'settings',
+          to: {
+            path: '/frappedesk/settings',
+          },
+        })
+      }
 
       this.menuOptions
         .find((option) => option.label == 'Tickets')
@@ -315,14 +315,14 @@ export default {
         ]
       )
 
-      this.menuOptions
+    this.menuOptions
       .find((option) => option.label == 'Content')
       .children.push(
         ...[
           {
             label: 'Auto Reply Template',
             to: {
-              path: '/auto-reply-template/Moodle Help Desk',
+              path: '/auto-reply-template',
             },
           },
           {
