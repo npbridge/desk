@@ -327,7 +327,7 @@ export default {
           {
             label: 'Auto Reply Template',
             to: {
-              path: '/auto-reply-template/Moodle Help Desk',
+              path: '/auto-reply-template',
             },
           },
           {
