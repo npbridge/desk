@@ -92,7 +92,7 @@ def getResponse(msg, msgID=None, history={}):
 	if msgID and 'response' in responses and 'confidence' in responses:
 		return responses
 	else:
-		response = "Bot can't respond this time, Please try after some time"
+		response = "Thank you for contacting Learner Support. I shall get back to you with answers to your queries."
 		logger.debug(f"{response}")
 		return {'response': response, 'confidence': 0}
 
