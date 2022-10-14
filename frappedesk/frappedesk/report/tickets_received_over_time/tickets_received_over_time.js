@@ -65,16 +65,8 @@ frappe.query_reports["Tickets Received Over Time"] = {
 
     const labels = largerDataSet.map(
       (data, index) =>
-        `${
-          firstDataset[index]
-            ? firstDataset[index].opening_date.split("-").reverse().join("-")
-            : "-"
-        }|
-         ${
-           secondDataset[index]
-             ? secondDataset[index].opening_date.split("-").reverse().join("-")
-             : "-"
-         }`
+        `${firstDataset[index] ? firstDataset[index].opening_date : "-"}|
+         ${secondDataset[index] ? secondDataset[index].opening_date : "-"}`
     );
     const firstDataSetValues = firstDataset.map((d) => d.count);
     const secondDatasetValues = secondDataset.map((d) => d.count);

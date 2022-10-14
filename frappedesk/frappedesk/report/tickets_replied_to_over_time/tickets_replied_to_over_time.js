@@ -65,23 +65,9 @@ frappe.query_reports["Tickets Replied To Over Time"] = {
 
     const labels = largerDataSet.map(
       (data, index) =>
-        `${
-          firstDataset[index]
-            ? firstDataset[index].first_responded_on
-                .split(" ")[0]
-                .split("-")
-                .reverse()
-                .join("-")
-            : "-"
-        }|
+        `${firstDataset[index] ? firstDataset[index].first_responded_on : "-"}|
          ${
-           secondDataset[index]
-             ? secondDataset[index].first_responded_on
-                 .split(" ")[0]
-                 .split("-")
-                 .reverse()
-                 .join("-")
-             : "-"
+           secondDataset[index] ? secondDataset[index].first_responded_on : "-"
          }`
     );
     const firstDataSetValues = firstDataset.map((d) => d.count);

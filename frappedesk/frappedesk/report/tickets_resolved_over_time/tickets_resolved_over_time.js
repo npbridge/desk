@@ -65,24 +65,8 @@ frappe.query_reports["Tickets Resolved Over Time"] = {
 
     const labels = largerDataSet.map(
       (data, index) =>
-        `${
-          firstDataset[index]
-            ? firstDataset[index].resolution_date
-                .split(" ")[0]
-                .split("-")
-                .reverse()
-                .join("-")
-            : "-"
-        }|
-		   ${
-         secondDataset[index]
-           ? secondDataset[index].resolution_date
-               .split(" ")[0]
-               .split("-")
-               .reverse()
-               .join("-")
-           : "-"
-       }`
+        `${firstDataset[index] ? firstDataset[index].resolution_date : "-"}|
+		   ${secondDataset[index] ? secondDataset[index].resolution_date : "-"}`
     );
     const firstDataSetValues = firstDataset.map((d) => d.count);
     const secondDatasetValues = secondDataset.map((d) => d.count);
