@@ -150,6 +150,11 @@ export default {
     CustomAvatar,
     FeatherIcon,
   },
+  data() {
+    return {
+      myTotalTickets: null,
+    }
+  },
   setup() {
     const viewportWidth = inject('viewportWidth')
 
@@ -374,6 +379,21 @@ export default {
     },
   },
   resources: {
+    myTotalTickets() {
+      return {
+        method: 'frappe.client.get_count',
+        params: {
+          doctype: 'Ticket',
+          filters: {
+            _assign: ['like', `%${this.user.agent.name}%`],
+          },
+        },
+        auto: true,
+        onSuccess(count) {
+          this.myTotalTickets = count
+        },
+      }
+    },
     myOpenTicketsCount() {
       return {
         method: 'frappe.client.get_count',
@@ -386,9 +406,11 @@ export default {
         },
         auto: true,
         onSuccess(count) {
-          this.menuOptions.find(
-            (option) => option.label == 'Tickets'
-          ).children[0].extra = count
+          this.$resources.myTotalTickets.fetch().then(() => {
+            this.menuOptions.find(
+              (option) => option.label == 'Tickets'
+            ).children[0].extra = `${count} / ${this.myTotalTickets}`
+          })
         },
       }
     },
@@ -404,9 +426,11 @@ export default {
         },
         auto: true,
         onSuccess(count) {
-          this.menuOptions.find(
-            (option) => option.label == 'Tickets'
-          ).children[1].extra = count
+          this.$resources.myTotalTickets.fetch().then(() => {
+            this.menuOptions.find(
+              (option) => option.label == 'Tickets'
+            ).children[1].extra = `${count} / ${this.myTotalTickets}`
+          })
         },
       }
     },
@@ -422,9 +446,11 @@ export default {
         },
         auto: true,
         onSuccess(count) {
-          this.menuOptions.find(
-            (option) => option.label == 'Tickets'
-          ).children[2].extra = count
+          this.$resources.myTotalTickets.fetch().then(() => {
+            this.menuOptions.find(
+              (option) => option.label == 'Tickets'
+            ).children[2].extra = `${count} / ${this.myTotalTickets}`
+          })
         },
       }
     },
@@ -440,9 +466,11 @@ export default {
         },
         auto: true,
         onSuccess(count) {
-          this.menuOptions.find(
-            (option) => option.label == 'Tickets'
-          ).children[3].extra = count
+          this.$resources.myTotalTickets.fetch().then(() => {
+            this.menuOptions.find(
+              (option) => option.label == 'Tickets'
+            ).children[3].extra = `${count} / ${this.myTotalTickets}`
+          })
         },
       }
     },
