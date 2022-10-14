@@ -69,7 +69,7 @@ def retrieveResponse(msgID=None):
 	except requests.exceptions.Timeout as errt:
 		logger.debug(f"Rocket Chat Timeout Error: {errt}")
 		return None
-	rxcept requests.exceptions.TooManyRedirects as errr:
+	except requests.exceptions.TooManyRedirects as errr:
 		logger.debug(f"Rocket Chat Too Many Redirect: {errr}")
 		return None
 	except requests.exceptions.RequestException as e:
