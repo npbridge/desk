@@ -15,7 +15,8 @@ headers = {
 }
 endPoints = {
 	"sendMessage": os.getenv('SEND_MESSAGE_END_POINT'),
-	"history": os.getenv('HISTORY_ENDPOINT')+os.getenv('ROOM_ID')
+	"history": os.getenv('HISTORY_ENDPOINT')+os.getenv('ROOM_ID'),
+	"getResponse": os.getenv('GET_RESPONSE')
 }
 
 data = {
@@ -62,19 +63,36 @@ def getHistory(params=params, headers=headers):
 		return None
 	return res.json()
 
+def retrieveResponse(msgID=None):
+	try:
+		res = requests.get(endPoints["getResponse"]+msgID)
+	except requests.exceptions.Timeout as errt:
+		logger.debug(f"Rocket Chat Timeout Error: {errt}")
+		return None
+	except requests.exceptions.TooManyRedirects as errr:
+		logger.debug(f"Rocket Chat Too Many Redirect: {errr}")
+		return None
+	except requests.exceptions.RequestException as e:
+		logger.debug(f"Rocket Chat Exception: {e}")
+		return None
+	return res.json()
+
 def getResponse(msg, msgID=None, history={}):
 	msgID = sendMessages(msg) if msg else None
-	time.sleep(1)
-	history = getHistory()
-	if msgID and 'messages' in history:
-		message_index = next((index for (index, d) in enumerate(history['messages']) if d["_id"] == msgID), None)
-		response_index = message_index - 1
-		response = history['messages'][response_index]['msg']
-		response = "<p>" + response.replace("\n", "<br>") + "</p>"
-		confidence = history['messages'][response_index]['confidence'] if 'confidence' in history['messages'][response_index] else 0
-		return {'response': response, 'confidence': confidence}
+	time.sleep(2)
+	#history = getHistory()
+	responses = retrieveResponse(msgID)
+	#if msgID and 'messages' in history:
+	#	message_index = next((index for (index, d) in enumerate(history['messages']) if d["_id"] == msgID), None)
+	#	response_index = message_index - 1
+	#	response = history['messages'][response_index]['msg']
+	#	response = "<p>" + response.replace("\n", "<br>") + "</p>"
+	#	confidence = history['messages'][response_index]['confidence'] if 'confidence' in history['messages'][response_index] else 0
+	#	return {'response': response, 'confidence': confidence}
+	if msgID and 'response' in responses and 'confidence' in responses:
+		return responses
 	else:
-		response = "Bot can't respond this time, Please try after some time"
+		response = "Thank you for contacting Learner Support. I shall get back to you with answers to your queries."
 		logger.debug(f"{response}")
 		return {'response': response, 'confidence': 0}
 
