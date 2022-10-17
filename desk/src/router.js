@@ -37,6 +37,41 @@ const routes = [
     },
   },
   {
+    path: '/app/query-report',
+    name: 'Reports',
+    children: [
+      {
+        path: 'Tickets Received Over Time',
+        name: 'Tickets Received Over Time',
+        beforeEnter(to, from, next) {
+          window.location.href = '/app/query-report/Tickets Received Over Time'
+        },
+      },
+      {
+        path: 'Tickets Replied To Over Time',
+        name: 'Tickets Replied To Over Time',
+        beforeEnter(to, from, next) {
+          window.location.href =
+            '/app/query-report/Tickets Replied To Over Time'
+        },
+      },
+      {
+        path: 'Tickets Resolved Over Time',
+        name: 'Tickets Resolved Over Time',
+        beforeEnter(to, from, next) {
+          window.location.href = '/app/query-report/Tickets Resolved Over Time'
+        },
+      },
+      {
+        path: 'Tickets Closed Over Time',
+        name: 'Tickets Closed Over Time',
+        beforeEnter(to, from, next) {
+          window.location.href = '/app/query-report/Tickets Closed Over Time'
+        },
+      },
+    ],
+  },
+  {
     path: '/frappedesk/login',
     name: 'DeskLogin',
     // component: () => import('@/pages/auth/Login.vue'),
