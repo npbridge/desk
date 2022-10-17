@@ -16,10 +16,10 @@ const routes = [
     },
   },
   {
-    path: '/auto-reply-template/Moodle Help Desk',
+    path: '/auto-reply-template',
     name: 'Auto Reply Template',
     beforeEnter(to, from, next) {
-      window.location.href = '/auto-reply-template/Moodle Help Desk'
+      window.location.href = '/auto-reply-template'
     },
   },
   {
