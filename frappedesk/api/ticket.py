@@ -386,7 +386,15 @@ def get_conversations(ticket_id):
 
 @frappe.whitelist(allow_guest=True)
 def submit_conversation_via_agent(ticket_id, cc, bcc,  message, attachments):
-	return create_communication_via_agent(ticket_id, message, cc, bcc, attachments)
+	return create_communication_via_agent(
+		ticket_id, 
+		message, 
+		cc, 
+		bcc, 
+		attachments, 
+		template="agent_response_with_history",
+        template_args={"message": message, }
+		)
 
 @frappe.whitelist(allow_guest=True)
 def submit_conversation_via_contact(ticket_id, message, attachments):
