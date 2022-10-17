@@ -1,9 +1,9 @@
 {
- "based_on": "on_hold_since",
- "chart_name": "Tickets Un-resolved Over Time",
+ "based_on": "opening_date",
+ "chart_name": "Tickets Received Over Time",
  "chart_type": "Count",
- "color": "#CB2929",
- "creation": "2022-08-22 10:41:16.425060",
+ "color": "#449CF0",
+ "creation": "2022-08-18 12:37:36.291658",
  "docstatus": 0,
  "doctype": "Dashboard Chart",
  "document_type": "Ticket",
@@ -11,18 +11,26 @@
  "filters_json": "[]",
  "group_by_type": "Count",
  "idx": 0,
- "is_public": 1,
+ "is_public": 0,
  "is_standard": 1,
- "modified": "2022-08-22 10:41:25.815399",
+ "last_synced_on": "2022-10-17 09:30:19.966136",
+ "modified": "2022-10-17 10:33:37.112455",
  "modified_by": "Administrator",
  "module": "FrappeDesk",
- "name": "Tickets Un-resolved Over Time",
+ "name": "Tickets Received Over Time",
  "number_of_groups": 0,
  "owner": "Administrator",
  "parent_document_type": "",
- "roles": [],
+ "roles": [
+  {
+   "role": "Helpdesk Agent"
+  },
+  {
+   "role": "Helpdesk Manager"
+  }
+ ],
  "source": "",
- "time_interval": "Yearly",
+ "time_interval": "Quarterly",
  "timeseries": 1,
  "timespan": "Last Year",
  "type": "Line",
