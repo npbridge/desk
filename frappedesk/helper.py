@@ -44,7 +44,7 @@ def get_report_data(from_date, to_date, range="Weekly", extra_field_name="Random
 	FROM tabTicket 
 	{}
 	GROUP BY date_format
-	ORDER BY date_format asc
+	ORDER BY DATE_FORMAT(date_format,'%Y-%m-%d') asc
 	""".format(periodicity, filter_based_on, filter_based_on, filter_based_on, query_where_clause)
 
 	query_for_empty_dates = """
@@ -66,7 +66,7 @@ def get_report_data(from_date, to_date, range="Weekly", extra_field_name="Random
 	SELECT 
 		coalesce(sum(count)) as count,
 		DATE_FORMAT(date({}), '%d-%m-%Y') as {},
-		date_format as date_format
+		date_format
 	FROM(
 		SELECT 
 			d.dt as {}, 

@@ -218,6 +218,12 @@ export default {
         children: [],
       },
       {
+        label: 'Reports',
+        icon: 'reports',
+        expanded: false,
+        children: [],
+      },
+      {
         label: 'Knowledge Base',
         icon: 'knowledge-base',
         to: {
@@ -315,6 +321,43 @@ export default {
                   page: 1,
                 }
               },
+            },
+          },
+        ]
+      )
+
+    this.menuOptions
+      .find((option) => option.label == 'Reports')
+      .children.push(
+        ...[
+          {
+            label: 'Tickets Received Over Time',
+            to: {
+              path: '/app/query-report/Tickets Received Over Time',
+            },
+          },
+          {
+            label: 'Tickets Replied To Over Time',
+            to: {
+              path: '/app/query-report/Tickets Replied To Over Time',
+            },
+          },
+          {
+            label: 'Tickets Resolved Over Time',
+            to: {
+              path: '/app/query-report/Tickets Resolved Over Time',
+            },
+          },
+          {
+            label: 'Tickets Closed Over Time',
+            to: {
+              path: '/app/query-report/Tickets Closed Over Time',
+            },
+          },
+          {
+            label: 'Tickets Un-Resolved Over Time',
+            to: {
+              path: '/app/query-report/Tickets Un-Resolved Over Time',
             },
           },
         ]
