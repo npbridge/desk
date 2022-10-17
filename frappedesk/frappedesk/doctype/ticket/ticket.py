@@ -178,13 +178,18 @@ def create_communication_via_bot(doc, type):
         if use_bot_answers and botResponse['confidence'] >= threshold_limit:
             ## If threshold_limit >= set limit => Send Mail
             ## If thershold_limit < set_limit => Comment
-            ticket_doc = frappe.get_doc("Ticket", doc.reference_name)
-            last_ticket_communication_doc = frappe.get_last_doc("Communication", filters={"reference_name":[ "=", ticket_doc.name]})
+            # we need message to display on helpdesk UI, since template body wont be visible on helpdesk ui 
+            message = f"""
+                Dear { doc.sender_full_name or "Learner" },
+                <p>
+                    { botResponse["response"] }
+                </p>
+                """
             create_communication_via_agent(
                 ticket=doc.reference_name, 
-                message=None,
+                message=message,
                 template="bot_auto_answer",
-                template_args={"username": doc.sender_full_name, "bot_reply": botResponse["response"], "previous_message": last_ticket_communication_doc},
+                template_args={"username": doc.sender_full_name or "Learner", "bot_reply": botResponse["response"] },
             )
         else:
             ## Creating a comment
@@ -293,7 +298,7 @@ def create_communication_via_agent(ticket, message, cc=None, bcc=None, attachmen
             "reference_name": ticket_doc.name,
             "email_account": reply_email_account,
             "template": template,
-            "args": template_args
+            "args": {**template_args, "previous_message": last_ticket_communication_doc}
         }
     )
     communication.ignore_permissions = True
@@ -346,7 +351,7 @@ def create_communication_via_agent(ticket, message, cc=None, bcc=None, attachmen
                     attachments=_attachments if len(_attachments) > 0 else None,
                     now=True,
                     template=template,
-                    args=template_args
+                    args={**template_args, "previous_message": last_ticket_communication_doc}
                 )
         except:
             frappe.throw("Either setup up support email account or there should be a default outgoing email account")

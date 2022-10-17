@@ -1,0 +1,40 @@
+{
+ "based_on": "resolution_date",
+ "chart_name": "Tickets Resolved Over Time",
+ "chart_type": "Count",
+ "color": "#29CD42",
+ "creation": "2022-08-18 12:39:53.534043",
+ "docstatus": 0,
+ "doctype": "Dashboard Chart",
+ "document_type": "Ticket",
+ "dynamic_filters_json": "[]",
+ "filters_json": "[]",
+ "group_by_type": "Count",
+ "idx": 0,
+ "is_public": 0,
+ "is_standard": 1,
+ "last_synced_on": "2022-10-17 09:30:19.822499",
+ "modified": "2022-10-17 10:33:25.614944",
+ "modified_by": "Administrator",
+ "module": "FrappeDesk",
+ "name": "Tickets Resolved Over Time",
+ "number_of_groups": 0,
+ "owner": "Administrator",
+ "parent_document_type": "",
+ "roles": [
+  {
+   "role": "Helpdesk Agent"
+  },
+  {
+   "role": "Helpdesk Manager"
+  }
+ ],
+ "source": "",
+ "time_interval": "Quarterly",
+ "timeseries": 1,
+ "timespan": "Last Year",
+ "type": "Line",
+ "use_report_chart": 0,
+ "value_based_on": "",
+ "y_axis": []
+}

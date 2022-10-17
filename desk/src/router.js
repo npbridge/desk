@@ -16,10 +16,10 @@ const routes = [
     },
   },
   {
-    path: '/auto-reply-template/Moodle Help Desk',
+    path: '/auto-reply-template',
     name: 'Auto Reply Template',
     beforeEnter(to, from, next) {
-      window.location.href = '/auto-reply-template/Moodle Help Desk'
+      window.location.href = '/auto-reply-template'
     },
   },
   {
@@ -35,6 +35,49 @@ const routes = [
     beforeEnter(to, from, next) {
       window.location.href = '/tags/list'
     },
+  },
+  {
+    path: '/app/query-report',
+    name: 'Reports',
+    children: [
+      {
+        path: 'Tickets Received Over Time',
+        name: 'Tickets Received Over Time',
+        beforeEnter(to, from, next) {
+          window.location.href = '/app/query-report/Tickets Received Over Time'
+        },
+      },
+      {
+        path: 'Tickets Replied To Over Time',
+        name: 'Tickets Replied To Over Time',
+        beforeEnter(to, from, next) {
+          window.location.href =
+            '/app/query-report/Tickets Replied To Over Time'
+        },
+      },
+      {
+        path: 'Tickets Resolved Over Time',
+        name: 'Tickets Resolved Over Time',
+        beforeEnter(to, from, next) {
+          window.location.href = '/app/query-report/Tickets Resolved Over Time'
+        },
+      },
+      {
+        path: 'Tickets Closed Over Time',
+        name: 'Tickets Closed Over Time',
+        beforeEnter(to, from, next) {
+          window.location.href = '/app/query-report/Tickets Closed Over Time'
+        },
+      },
+      {
+        path: 'Tickets Un-Resolved Over Time',
+        name: 'Tickets Un-Resolved Over Time',
+        beforeEnter(to, from, next) {
+          window.location.href =
+            '/app/query-report/Tickets Un-Resolved Over Time'
+        },
+      },
+    ],
   },
   {
     path: '/frappedesk/login',

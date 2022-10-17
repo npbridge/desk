@@ -264,6 +264,9 @@ def update_role_permissions(role):
 
 		#Comment permission - read
 		add_permission("Comment", role, 0, "write")
+
+		#Permission for email template
+		add_permission("Email Template", role, 0, "write")
 		
 def add_default_assignment_rule():
 	if frappe.get_list("Assignment Rule", filters={"document_type": "Ticket"}):
