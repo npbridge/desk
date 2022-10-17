@@ -57,7 +57,7 @@ def execute(filters=None):
 		query_for_ticket_data = """
 			SELECT 
 				date_format,
-				as_on_date as as_on_date,
+				as_on_date,
 				count
 			FROM (
 				SELECT
@@ -81,7 +81,7 @@ def execute(filters=None):
 		{}
 		SELECT 
 			DATE_FORMAT(date(as_on_date), '%d-%m-%Y') as as_on_date,
-			date_format as date_format,
+			date_format,
 			coalesce(sum(count)) as count
 		FROM(
 			SELECT 
