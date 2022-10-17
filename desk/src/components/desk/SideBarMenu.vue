@@ -213,27 +213,33 @@ export default {
         children: [],
       },
       {
+        label: 'Reports',
+        icon: 'reports',
+        expanded: false,
+        children: [],
+      },
+      {
         label: 'Knowledge Base',
         icon: 'knowledge-base',
         to: {
           path: '/frappedesk/knowledge-base',
         },
-      }
+      },
     ]
 
     if (this.user.agent) {
-      const foundRoleInfo = this.user.doc.roles.find(role => role.role === 'Helpdesk Manager')
-          if (foundRoleInfo)  {
-            this.menuOptions.push(
-              {
-                label: 'Settings',
-                icon: 'settings',
-                to: {
-                  path: '/frappedesk/settings',
-                },
-              }
-          )
-        }
+      const foundRoleInfo = this.user.doc.roles.find(
+        (role) => role.role === 'Helpdesk Manager'
+      )
+      if (foundRoleInfo) {
+        this.menuOptions.push({
+          label: 'Settings',
+          icon: 'settings',
+          to: {
+            path: '/frappedesk/settings',
+          },
+        })
+      }
 
       this.menuOptions
         .find((option) => option.label == 'Tickets')
@@ -315,7 +321,38 @@ export default {
         ]
       )
 
-      this.menuOptions
+    this.menuOptions
+      .find((option) => option.label == 'Reports')
+      .children.push(
+        ...[
+          {
+            label: 'Tickets Received Over Time',
+            to: {
+              path: '/app/query-report/Tickets Received Over Time',
+            },
+          },
+          {
+            label: 'Tickets Replied To Over Time',
+            to: {
+              path: '/app/query-report/Tickets Replied To Over Time',
+            },
+          },
+          {
+            label: 'Tickets Resolved Over Time',
+            to: {
+              path: '/app/query-report/Tickets Resolved Over Time',
+            },
+          },
+          {
+            label: 'Tickets Closed Over Time',
+            to: {
+              path: '/app/query-report/Tickets Closed Over Time',
+            },
+          },
+        ]
+      )
+
+    this.menuOptions
       .find((option) => option.label == 'Content')
       .children.push(
         ...[
