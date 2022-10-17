@@ -28,7 +28,7 @@ def get_report_data(from_date, to_date, range="Weekly", extra_field_name="Random
 	filter_clause = ""
 	if filter:
 		for key, value in filter.items():
-			filter_clause += f",\n{key}={value}"
+			filter_clause += f"AND {key}='{value}'"
 
 			
 	query_where_clause = """

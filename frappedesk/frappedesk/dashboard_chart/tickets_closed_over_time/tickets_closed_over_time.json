@@ -1,0 +1,40 @@
+{
+ "based_on": "modified",
+ "chart_name": "Tickets Closed Over Time",
+ "chart_type": "Count",
+ "color": "#CB2929",
+ "creation": "2022-10-17 09:29:59.862445",
+ "docstatus": 0,
+ "doctype": "Dashboard Chart",
+ "document_type": "Ticket",
+ "dynamic_filters_json": "[]",
+ "filters_json": "[[\"Ticket\",\"status\",\"=\",\"Closed\",false]]",
+ "group_by_type": "Count",
+ "idx": 0,
+ "is_public": 0,
+ "is_standard": 1,
+ "last_synced_on": "2022-10-17 09:30:19.318750",
+ "modified": "2022-10-17 10:32:36.185769",
+ "modified_by": "Administrator",
+ "module": "FrappeDesk",
+ "name": "Tickets Closed Over Time",
+ "number_of_groups": 0,
+ "owner": "Administrator",
+ "parent_document_type": "",
+ "roles": [
+  {
+   "role": "Helpdesk Agent"
+  },
+  {
+   "role": "Helpdesk Manager"
+  }
+ ],
+ "source": "",
+ "time_interval": "Daily",
+ "timeseries": 1,
+ "timespan": "Last Week",
+ "type": "Line",
+ "use_report_chart": 0,
+ "value_based_on": "",
+ "y_axis": []
+}
