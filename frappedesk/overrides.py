@@ -30,8 +30,8 @@ def on_email_template_updated(doc, event):
 
 		default_ticket_outgoing_email_account = frappe.get_doc("Email Account", [["use_imap", "=", 1], ["IMAP Folder","append_to","=","Ticket"], ["default_outgoing","=",1]])
 		if default_ticket_outgoing_email_account.enable_auto_reply:
-			default_ticket_outgoing_email_account.auto_reply_message = doc.response
-			default_ticket_outgoing_email_account.save()
+			frappe.db.set_value("Email Account", default_ticket_outgoing_email_account.name, "auto_reply_message", doc.response)
+
 		else:
 			frappe.throw("No default email account setup.")
 
