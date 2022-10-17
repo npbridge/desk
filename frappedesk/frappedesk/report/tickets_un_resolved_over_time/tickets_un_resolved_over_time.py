@@ -69,12 +69,12 @@ def execute(filters=None):
 						COUNT(resolution_date) OVER (ROWS UNBOUNDED PRECEDING)
 					) as count
 				FROM tabTicket
-				ORDER BY as_on_date asc
+				ORDER BY DATE_FORMAT(as_on_date,'%Y-%m-%d') asc
 			) AS T
 			WHERE 
 				date(as_on_date) between '{}' and '{}' 
 			GROUP BY date_format
-			ORDER BY date_format asc
+			ORDER BY DATE_FORMAT(as_on_date,'%Y-%m-%d') asc
 			""".format(filters.range, filters.range, date_range["from_date"], date_range["to_date"])
 
 		query_all_ticket_data_with_missing_dates = """
@@ -93,17 +93,18 @@ def execute(filters=None):
 			ON t.as_on_date = d.dt
 		) as p
 		GROUP BY date_format
+		ORDER BY DATE_FORMAT(as_on_date,'%Y-%m-%d') asc
 		""".format(query_for_empty_dates, filters.range, query_for_ticket_data)
 
 		temp_data = frappe.db.sql(
 			query_all_ticket_data_with_missing_dates,
 			as_dict = 1
 		)
-
 		updated_temp_data = [{**ticket_count_info, "dataset": date_range["extra_field_name"] } for ticket_count_info in temp_data]
 
 		first_non_0_value = find_first_non_0_value(updated_temp_data)
 		updated_temp_data = fill_in_missing_values(updated_temp_data, first_non_0_value)
+
 		data = [*data, *updated_temp_data]
 
 	return columns, data
