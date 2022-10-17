@@ -349,6 +349,12 @@ export default {
               path: '/app/query-report/Tickets Closed Over Time',
             },
           },
+          {
+            label: 'Tickets Un-Resolved Over Time',
+            to: {
+              path: '/app/query-report/Tickets Un-Resolved Over Time',
+            },
+          },
         ]
       )
 

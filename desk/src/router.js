@@ -69,6 +69,14 @@ const routes = [
           window.location.href = '/app/query-report/Tickets Closed Over Time'
         },
       },
+      {
+        path: 'Tickets Un-Resolved Over Time',
+        name: 'Tickets Un-Resolved Over Time',
+        beforeEnter(to, from, next) {
+          window.location.href =
+            '/app/query-report/Tickets Un-Resolved Over Time'
+        },
+      },
     ],
   },
   {
