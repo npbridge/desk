@@ -81,7 +81,7 @@ def getResponse(msg, msgID=None, history={}):
 	msgID = sendMessages(msg) if msg else None
 	time.sleep(2)
 	#history = getHistory()
-	responses = retrieveResponse(msgID) if msgID else None
+	responses = retrieveResponse(msgID) if msgID else {}
 	#if msgID and 'messages' in history:
 	#	message_index = next((index for (index, d) in enumerate(history['messages']) if d["_id"] == msgID), None)
 	#	response_index = message_index - 1
