@@ -9,12 +9,12 @@ def execute(filters=None):
 	columns = [
 		{"fieldname": "dataset", "label": "Dataset", "fieldtype": "Data", "width": 200},
 		{"fieldname": "as_on_date", "label": "As On Date", "fieldtype": "Data", "width": 200},
-		{
-			"fieldname": "date_format", 
-			"label": filters.range, 
-			"fieldtype": "Data", 
-			"width": 200
-		},
+		# {
+		# 	"fieldname": "date_format", 
+		# 	"label": filters.range, 
+		# 	"fieldtype": "Data", 
+		# 	"width": 200
+		# },
 		{
 			"fieldname": "count",
 			"fieldtype": "Data",
