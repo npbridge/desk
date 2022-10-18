@@ -191,6 +191,11 @@ const routes = [
         component: () => import('@/pages/desk/Contacts.vue'),
       },
       {
+        path: 'comparison-reports',
+        name: 'ComparisonReports',
+        component: () => import('@/pages/desk/Reports.vue'),
+      },
+      {
         path: 'contacts/:contactId',
         name: 'Contact',
         component: () => import('@/pages/desk/Contact.vue'),

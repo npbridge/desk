@@ -218,10 +218,11 @@ export default {
         children: [],
       },
       {
-        label: 'Reports',
+        label: 'Comparison Reports',
         icon: 'reports',
-        expanded: false,
-        children: [],
+        to: {
+          path: '/frappedesk/comparison-reports',
+        },
       },
       {
         label: 'Knowledge Base',
@@ -321,43 +322,6 @@ export default {
                   page: 1,
                 }
               },
-            },
-          },
-        ]
-      )
-
-    this.menuOptions
-      .find((option) => option.label == 'Reports')
-      .children.push(
-        ...[
-          {
-            label: 'Tickets Received Over Time',
-            to: {
-              path: '/app/query-report/Tickets Received Over Time',
-            },
-          },
-          {
-            label: 'Tickets Replied To Over Time',
-            to: {
-              path: '/app/query-report/Tickets Replied To Over Time',
-            },
-          },
-          {
-            label: 'Tickets Resolved Over Time',
-            to: {
-              path: '/app/query-report/Tickets Resolved Over Time',
-            },
-          },
-          {
-            label: 'Tickets Closed Over Time',
-            to: {
-              path: '/app/query-report/Tickets Closed Over Time',
-            },
-          },
-          {
-            label: 'Tickets Un-Resolved Over Time',
-            to: {
-              path: '/app/query-report/Tickets Un-Resolved Over Time',
             },
           },
         ]

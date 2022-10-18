@@ -7,15 +7,16 @@ from frappedesk.helper import get_report_data
 
 def execute(filters=None):
 	columns, data = [], []
+	filters.range = "Day"
 	columns = [
 		{"fieldname": "dataset", "label": "Dataset", "fieldtype": "Data", "width": 200},
 		{"fieldname": "resolution_date", "label": "Resolved On", "fieldtype": "Data", "width": 200},
-		{
-			"fieldname": "date_format", 
-			"label": filters.range, 
-			"fieldtype": "Date" if filters.range == "Day" else "Data", 
-			"width": 200
-		},
+		# {
+		# 	"fieldname": "date_format", 
+		# 	"label": filters.range, 
+		# 	"fieldtype": "Date" if filters.range == "Day" else "Data", 
+		# 	"width": 200
+		# },
 		{
 			"fieldname": "count",
 			"fieldtype": "Data",
