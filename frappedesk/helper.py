@@ -79,7 +79,6 @@ def get_report_data(from_date, to_date, range="Weekly", extra_field_name="Random
 	GROUP BY date_format
 	""".format(query_for_empty_dates,filter_based_on,filter_based_on, filter_based_on, periodicity, query_for_ticket_data, filter_based_on)
 
-	frappe.log_error("final query", f"{query_all_ticket_data_with_missing_dates}")
 	final_data = frappe.db.sql(
 		query_all_ticket_data_with_missing_dates,
 		as_dict= 1 
