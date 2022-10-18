@@ -7,7 +7,7 @@ from frappedesk.helper import  get_report_data
 
 def execute(filters=None):
 	columns, data = [], []
-
+	filters.range = "Day"
 	columns = [
 		{"fieldname": "dataset", "label": "Dataset", "fieldtype": "Data", "width": 200},
 		{"fieldname": "modified", "label": "Closed On", "fieldtype": "Data", "width": 200},

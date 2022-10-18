@@ -32,20 +32,20 @@ frappe.query_reports["Tickets Received Over Time"] = {
 			default: frappe.datetime.add_days(frappe.datetime.nowdate()),
 			reqd: 1,
 		},
-		{
-			fieldname: "range",
-			label: __("Range"),
-			fieldtype: "Select",
-			options: [
-				{ value: "Day", label: __("Daily") },
-				{ value: "Week", label: __("Weekly") },
-				{ value: "Month", label: __("Monthly") },
-				{ value: "Quarter", label: __("Quarterly") },
-				{ value: "Year", label: __("Yearly") },
-			],
-			default: "Week",
-			reqd: 1,
-		},
+		// {
+		// 	fieldname: "range",
+		// 	label: __("Range"),
+		// 	fieldtype: "Select",
+		// 	options: [
+		// 		{ value: "Day", label: __("Daily") },
+		// 		{ value: "Week", label: __("Weekly") },
+		// 		{ value: "Month", label: __("Monthly") },
+		// 		{ value: "Quarter", label: __("Quarterly") },
+		// 		{ value: "Year", label: __("Yearly") },
+		// 	],
+		// 	default: "Week",
+		// 	reqd: 1,
+		// },
 	],
 	get_chart_data: (_columns, result) => {
 		let firstDataset = []
