@@ -100,14 +100,14 @@ export default {
           path: '/app/query-report/Tickets Closed Over Time',
         },
       },
-      {
-        heading: 'Tickets Un-Resolved Over Time',
-        information:
-          'Find and compare the number of tickets Un-Resolved Over Time',
-        to: {
-          path: '/app/query-report/Tickets Un-Resolved Over Time',
-        },
-      },
+      // {
+      //   heading: 'Tickets Un-Resolved Over Time',
+      //   information:
+      //     'Find and compare the number of tickets Un-Resolved Over Time',
+      //   to: {
+      //     path: '/app/query-report/Tickets Un-Resolved Over Time',
+      //   },
+      // },
     ]
   },
 }
