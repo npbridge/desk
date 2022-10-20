@@ -7,10 +7,8 @@ def execute(filters=None):
 	columns, data = [], []
 	filters.range = "Day"
 	columns = [
- 		{"fieldname": "dataset", "label": "Dataset", "fieldtype": "Data", "width": 200},
- 		{"fieldname": "as_on_date", "label": "As On Date", "fieldtype": "Data", "width": 200},
- 		 {
- 		 	"fieldname": "date_format", 
+ 		{
+ 		 	"fieldname": "date", 
  		 	"label": filters.range, 
  		 	"fieldtype": "Data", 
  		 	"width": 200
@@ -49,6 +47,14 @@ def execute(filters=None):
  				AND 
 				DATE(resolution_date) < '2022-10-18'
 		""".format(date_range["from_date"])
+
+		previous_data = frappe.db.sql(
+ 			previous_unresolved_count
+ 		)
+		if previous_data:
+			previous_unresolved_tickets = previous_data[0][0]
+		else:
+			previous_unresolved_tickets = 0
 
 		query_for_empty_dates = """
  		WITH recursive all_dates(dt) as (
@@ -96,9 +102,7 @@ def execute(filters=None):
 
 		query_for_ticket_data = """
 			SELECT 
-				d.dt as date,  
-				coalesce(tt.created_count,0) as created_count,
-				coalesce(tt.resolved_count,0) as resolved_count, 
+				d.dt as date,
 				coalesce(
 					(
 						SUM(tt.created_count) OVER (order by date) 
@@ -108,7 +112,7 @@ def execute(filters=None):
 						{}
 					),
 					0
-				) as total_unresolved_count
+				) as count
 			FROM all_dates d 
 			LEFT JOIN 
 				(
@@ -126,17 +130,15 @@ def execute(filters=None):
 				) as tabTickets 
 			ON tabTickets.date=d.dt 
 			ORDER BY d.dt
- 		""".format(previous_unresolved_count, number_of_ticket_resolved_on_dates, number_of_ticket_created_on_dates)
+ 		""".format(previous_unresolved_tickets, number_of_ticket_resolved_on_dates, number_of_ticket_created_on_dates)
 
 		query_all_data = """
  		{}
 		{}
  		""".format(query_for_empty_dates, query_for_ticket_data)
 
-		temp_data = frappe.db.sql(
+		data = frappe.db.sql(
  			query_all_data,
  			as_dict = 1
  		)
-		data = [*data, *temp_data]
-	
 	return columns, data
