@@ -46,7 +46,7 @@ def execute(filters=None):
 			WHERE 
 				resolution_date IS NOT NULL
 				AND 
-				DATE(resolution_date) < '2022-10-18'
+				DATE(resolution_date) < '{}'
 		""".format(date_range["from_date"])
 
 		previous_data = frappe.db.sql(
