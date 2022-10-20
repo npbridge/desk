@@ -21,7 +21,7 @@
 				<div>
 					<span class="block mb-2 text-sm leading-4 text-gray-700">Profile Picture</span>
 					<div class="flex flex-row space-x-[8px] items-center">
-						<CustomAvatar :label="values?.contactName" size="2xl" :imageURL="values?.profilePicture" />
+						<CustomAvatar :label="values?.contactName" size="2xl" :imageURL="values?.profilePicture && !values.profilePicture.includes('private') && values.profilePicture" />
 						<div class="flex flex-row space-x-[8px]">
 							<!-- <Button>Upload new</Button>
 							<Button>Remove</Button> -->

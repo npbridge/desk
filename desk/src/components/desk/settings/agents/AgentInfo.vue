@@ -41,7 +41,7 @@
             <CustomAvatar
               :label="values?.agentName"
               size="2xl"
-              :imageURL="values?.profilePicture"
+              :imageURL="values?.profilePicture && !values.profilePicture.includes('private') && values.profilePicture"
             />
           </div>
         </div>
