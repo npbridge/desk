@@ -69,13 +69,14 @@ def retrieveResponse(msgID=None):
 		return res.json()
 	except requests.exceptions.Timeout as errt:
 		logger.debug(f"Rocket Chat Timeout Error: {errt}")
+		return {"error": errt}
 	except requests.exceptions.TooManyRedirects as errr:
 		logger.debug(f"Rocket Chat Too Many Redirect: {errr}")
+		return {"error": errr}
 	except requests.exceptions.RequestException as e:
 		logger.debug(f"Rocket Chat Exception: {e}")
-	return None
+		return {"error": e}
 	
-
 def getResponse(msg, msgID=None, history={}):
 	msgID = sendMessages(msg) if msg else None
 	time.sleep(2)
@@ -88,7 +89,7 @@ def getResponse(msg, msgID=None, history={}):
 	#	response = "<p>" + response.replace("\n", "<br>") + "</p>"
 	#	confidence = history['messages'][response_index]['confidence'] if 'confidence' in history['messages'][response_index] else 0
 	#	return {'response': response, 'confidence': confidence}
-	if msgID and responses and 'response' in responses and 'confidence' in responses:
+	if msgID and 'response' in responses and 'confidence' in responses:
 		return responses
 	else:
 		response = "Thank you for contacting Learner Support. I shall get back to you with answers to your queries."
