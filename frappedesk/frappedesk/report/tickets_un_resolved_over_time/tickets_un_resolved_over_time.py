@@ -7,6 +7,7 @@ def execute(filters=None):
 	columns, data = [], []
 	filters.range = "Day"
 	columns = [
+		{"fieldname": "dataset", "label": "Dataset", "fieldtype": "Data", "width": 200},
 		{
 			"fieldname": "date", 
 			"label": filters.range, 
@@ -105,9 +106,9 @@ def execute(filters=None):
 				d.dt as date,
 				coalesce(
 					(
-						SUM(tt.created_count) OVER (order by date) 
+						SUM(tabTickets.created_count) OVER (order by date) 
 						- 
-						SUM(tt.resolved_count) OVER (order by date) 
+						SUM(tabTickets.resolved_count) OVER (order by date) 
 						+
 						{}
 					),
@@ -137,8 +138,13 @@ def execute(filters=None):
 		{}
 		""".format(query_for_empty_dates, query_for_ticket_data)
 
-		data = frappe.db.sql(
+		tmp_data = frappe.db.sql(
 			query_all_data,
 			as_dict = 1
 		)
+
+		tmp_data = [{**ticket_count_info, "dataset": date_range["extra_field_name"]} for ticket_count_info in tmp_data]
+
+		data = [*data, *tmp_data]
+
 	return columns, data
