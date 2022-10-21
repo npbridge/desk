@@ -2,7 +2,7 @@
 // For license information, please see license.txt
 /* eslint-disable */
 
-frappe.query_reports["Tickets Un-Resolved Over Time"] = {
+frappe.query_reports["Tickets Unresolved Over Time"] = {
 	filters: [
 		{
 			fieldname: "from_date_first",
