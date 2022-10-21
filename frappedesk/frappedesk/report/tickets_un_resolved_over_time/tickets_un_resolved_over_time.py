@@ -44,10 +44,10 @@ def execute(filters=None):
 				count(resolution_date) 
 			FROM tabTicket 
 			WHERE 
-				resolution_date IS NOT NULL
+				resolution_date IS NULL
 				AND 
-				DATE(resolution_date) < '{}'
-		""".format(date_range["from_date"])
+				DATE(resolution_date) < '{from_date}'
+		""".format(from_date= date_range["from_date"])
 
 		previous_data = frappe.db.sql(
 			previous_unresolved_count
@@ -60,16 +60,16 @@ def execute(filters=None):
 		query_for_empty_dates = """
 		WITH recursive all_dates(dt) as (
 		SELECT 
-			'{}' dt
+			'{from_date}' dt
 		UNION ALL
 			SELECT 
 				dt + interval 1 day
 			FROM 
 				all_dates 
 		WHERE 
-			dt < '{}'
+			dt < '{to_date}'
 		)
-		""".format(date_range["from_date"], date_range["to_date"])
+		""".format(from_date= date_range["from_date"], to_date= date_range["to_date"])
 		
 		number_of_ticket_created_on_dates = """
 		SELECT 
@@ -80,11 +80,11 @@ def execute(filters=None):
 		WHERE 
 			DATE(creation) 
 				between 
-				'{}' 
+				'{from_date}' 
 				and 
-				'{}' 
+				'{to_date}' 
 		GROUP BY date
-		""".format(date_range["from_date"], date_range["to_date"])
+		""".format(from_date= date_range["from_date"], to_date= date_range["to_date"])
 
 		number_of_ticket_resolved_on_dates = """
 		SELECT 
@@ -92,25 +92,27 @@ def execute(filters=None):
 			'0' as created_count,
 			COUNT(resolution_date) as resolved_count
 		FROM tabTicket 
-		WHERE 
+		WHERE
+			resolution_date IS NOT NULL
+			AND
 			DATE(resolution_date) 
 				between 
-				'{}' 
+				'{from_date}' 
 				and 
-				'{}' 
+				'{to_date}' 
 		GROUP BY date
-		""".format(date_range["from_date"], date_range["to_date"])
+		""".format(from_date= date_range["from_date"], to_date= date_range["to_date"])
 
 		query_for_ticket_data = """
 			SELECT 
 				d.dt as date,
 				coalesce(
 					(
-						SUM(tabTickets.created_count) OVER (order by date) 
+						SUM(tabT.created_count) OVER (order by date) 
 						- 
-						SUM(tabTickets.resolved_count) OVER (order by date) 
+						SUM(tabT.resolved_count) OVER (order by date) 
 						+
-						{}
+						{previous_unresolved_count}
 					),
 					0
 				) as count
@@ -123,20 +125,20 @@ def execute(filters=None):
 						SUM(resolved_count) as resolved_count 
 					FROM 
 						(
-							{} 
+							{resolved_on_date_count} 
 							UNION 
-							{}
+							{created_on_date_count}
 						)allTicketsCount 
 					GROUP BY date
-				) as tabTickets 
-			ON tabTickets.date=d.dt 
+				) as tabT 
+			ON tabT.date=d.dt 
 			ORDER BY d.dt
-		""".format(previous_unresolved_tickets, number_of_ticket_resolved_on_dates, number_of_ticket_created_on_dates)
+		""".format(previous_unresolved_count= previous_unresolved_tickets, resolved_on_date_count= number_of_ticket_resolved_on_dates, created_on_date_count= number_of_ticket_created_on_dates)
 
 		query_all_data = """
-		{}
-		{}
-		""".format(query_for_empty_dates, query_for_ticket_data)
+		{all_dates_from_range}
+		{ticket_data}
+		""".format(all_dates_from_range= query_for_empty_dates, ticket_data= query_for_ticket_data)
 
 		tmp_data = frappe.db.sql(
 			query_all_data,
