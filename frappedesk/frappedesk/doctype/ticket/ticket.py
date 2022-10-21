@@ -172,7 +172,6 @@ def create_communication_via_bot(doc, type):
     if doc.reference_doctype == "Ticket" and doc.sent_or_received == "Received":
         threshold_limit = frappe.db.get_single_value('Frappe Desk Settings', 'threshold_limit')
         use_bot_answers = frappe.db.get_single_value('Frappe Desk Settings', 'use_bot_answers')
-
         ## If use_bot_answers==TRUE, bot responses are available for every ticket
         botResponse = getResponse(doc.content)
     
