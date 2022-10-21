@@ -150,6 +150,11 @@ export default {
     CustomAvatar,
     FeatherIcon,
   },
+  data() {
+    return {
+      myTotalTickets: null,
+    }
+  },
   setup() {
     const viewportWidth = inject('viewportWidth')
 
@@ -213,27 +218,34 @@ export default {
         children: [],
       },
       {
+        label: 'Comparison Reports',
+        icon: 'reports',
+        to: {
+          path: '/frappedesk/comparison-reports',
+        },
+      },
+      {
         label: 'Knowledge Base',
         icon: 'knowledge-base',
         to: {
           path: '/frappedesk/knowledge-base',
         },
-      }
+      },
     ]
 
     if (this.user.agent) {
-      const foundRoleInfo = this.user.doc.roles.find(role => role.role === 'Helpdesk Manager')
-          if (foundRoleInfo)  {
-            this.menuOptions.push(
-              {
-                label: 'Settings',
-                icon: 'settings',
-                to: {
-                  path: '/frappedesk/settings',
-                },
-              }
-          )
-        }
+      const foundRoleInfo = this.user.doc.roles.find(
+        (role) => role.role === 'Helpdesk Manager'
+      )
+      if (foundRoleInfo) {
+        this.menuOptions.push({
+          label: 'Settings',
+          icon: 'settings',
+          to: {
+            path: '/frappedesk/settings',
+          },
+        })
+      }
 
       this.menuOptions
         .find((option) => option.label == 'Tickets')
@@ -315,14 +327,14 @@ export default {
         ]
       )
 
-      this.menuOptions
+    this.menuOptions
       .find((option) => option.label == 'Content')
       .children.push(
         ...[
           {
             label: 'Auto Reply Template',
             to: {
-              path: '/auto-reply-template/Moodle Help Desk',
+              path: '/auto-reply-template',
             },
           },
           {
@@ -374,6 +386,21 @@ export default {
     },
   },
   resources: {
+    myTotalTickets() {
+      return {
+        method: 'frappe.client.get_count',
+        params: {
+          doctype: 'Ticket',
+          filters: {
+            _assign: ['like', `%${this.user.agent.name}%`],
+          },
+        },
+        auto: true,
+        onSuccess(count) {
+          this.myTotalTickets = count
+        },
+      }
+    },
     myOpenTicketsCount() {
       return {
         method: 'frappe.client.get_count',
@@ -386,9 +413,11 @@ export default {
         },
         auto: true,
         onSuccess(count) {
-          this.menuOptions.find(
-            (option) => option.label == 'Tickets'
-          ).children[0].extra = count
+          this.$resources.myTotalTickets.fetch().then(() => {
+            this.menuOptions.find(
+              (option) => option.label == 'Tickets'
+            ).children[0].extra = `${count} / ${this.myTotalTickets}`
+          })
         },
       }
     },
@@ -404,9 +433,65 @@ export default {
         },
         auto: true,
         onSuccess(count) {
+          this.$resources.myTotalTickets.fetch().then(() => {
+            this.menuOptions.find(
+              (option) => option.label == 'Tickets'
+            ).children[1].extra = `${count} / ${this.myTotalTickets}`
+          })
+        },
+      }
+    },
+    myResolvedTicketsCount() {
+      return {
+        method: 'frappe.client.get_count',
+        params: {
+          doctype: 'Ticket',
+          filters: {
+            status: ['=', 'Resolved'],
+            _assign: ['like', `%${this.user.agent.name}%`],
+          },
+        },
+        auto: true,
+        onSuccess(count) {
+          this.$resources.myTotalTickets.fetch().then(() => {
+            this.menuOptions.find(
+              (option) => option.label == 'Tickets'
+            ).children[2].extra = `${count} / ${this.myTotalTickets}`
+          })
+        },
+      }
+    },
+    myClosedTicketsCount() {
+      return {
+        method: 'frappe.client.get_count',
+        params: {
+          doctype: 'Ticket',
+          filters: {
+            status: ['=', 'Closed'],
+            _assign: ['like', `%${this.user.agent.name}%`],
+          },
+        },
+        auto: true,
+        onSuccess(count) {
+          this.$resources.myTotalTickets.fetch().then(() => {
+            this.menuOptions.find(
+              (option) => option.label == 'Tickets'
+            ).children[3].extra = `${count} / ${this.myTotalTickets}`
+          })
+        },
+      }
+    },
+    totalTickets() {
+      return {
+        method: 'frappe.client.get_count',
+        params: {
+          doctype: 'Ticket',
+        },
+        auto: true,
+        onSuccess(count) {
           this.menuOptions.find(
             (option) => option.label == 'Tickets'
-          ).children[1].extra = count
+          ).children[4].extra = count
         },
       }
     },

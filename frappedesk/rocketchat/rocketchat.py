@@ -70,7 +70,7 @@ def retrieveResponse(msgID=None):
 	except requests.exceptions.Timeout as errt:
 		logger.debug(f"Rocket Chat Timeout Error: {errt}")
 		return None
-	rxcept requests.exceptions.TooManyRedirects as errr:
+	except requests.exceptions.TooManyRedirects as errr:
 		logger.debug(f"Rocket Chat Too Many Redirect: {errr}")
 		return None
 	except requests.exceptions.RequestException as e:
@@ -82,7 +82,7 @@ def getResponse(msg, msgID=None, history={}):
 	msgID = sendMessages(msg) if msg else None
 	time.sleep(2)
 	#history = getHistory()
-	responses = retrieveResponse(msgID)
+	responses = retrieveResponse(msgID) if msgID else {}
 	#if msgID and 'messages' in history:
 	#	message_index = next((index for (index, d) in enumerate(history['messages']) if d["_id"] == msgID), None)
 	#	response_index = message_index - 1
@@ -93,7 +93,7 @@ def getResponse(msg, msgID=None, history={}):
 	if msgID and 'response' in responses and 'confidence' in responses:
 		return responses
 	else:
-		response = "Bot can't respond this time, Please try after some time"
+		response = "Thank you for contacting Learner Support. I shall get back to you with answers to your queries."
 		logger.debug(f"{response}")
 		return {'response': response, 'confidence': 0}
 
