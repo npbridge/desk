@@ -30,7 +30,7 @@ params = {
 }
 
 def sendMessages(msg, postData=data, headers=headers):
-	msg = extract_original_message(msg)
+	msg = extract_original_message(msg) if len(msg) > 256 else msg
 	postData["msg"] = msg
 	postData["token"] = os.getenv('TOKEN')
 	postData["rid"] = os.getenv('ROOM_ID')
@@ -79,7 +79,7 @@ def retrieveResponse(msgID=None):
 	return res.json()
 
 def getResponse(msg, msgID=None, history={}):
-	msgID = sendMessages(msg) if len(msg) < 257 else None
+	msgID = sendMessages(msg) if msg else None
 	time.sleep(2)
 	#history = getHistory()
 	responses = retrieveResponse(msgID) if msgID else None
