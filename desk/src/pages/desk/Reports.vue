@@ -78,9 +78,9 @@ export default {
         },
       },
       {
-        heading: 'Tickets Replied To Over Time',
+        heading: 'Tickets Replied Over Time',
         information:
-          'Find and compare the number of tickets Replied To Over Time',
+          'Find and compare the number of tickets replied over time',
         to: {
           path: '/app/query-report/Tickets Replied To Over Time',
         },
@@ -88,14 +88,14 @@ export default {
       {
         heading: 'Tickets Resolved Over Time',
         information:
-          'Find and compare the number of tickets Resolved Over Time',
+          'Find and compare the number of tickets resolved over time',
         to: {
           path: '/app/query-report/Tickets Resolved Over Time',
         },
       },
       {
         heading: 'Tickets Closed Over Time',
-        information: 'Find and compare the number of tickets Closed Over Time',
+        information: 'Find and compare the number of closed tickets over time',
         to: {
           path: '/app/query-report/Tickets Closed Over Time',
         },
@@ -103,7 +103,7 @@ export default {
        {
          heading: 'Tickets Unresolved Over Time',
          information:
-           'Find and compare the number of tickets Unresolved Over Time',
+           'Find and compare the number of unresolved tickets over time',
          to: {
            path: '/app/query-report/Tickets Un-Resolved Over Time',
          },
