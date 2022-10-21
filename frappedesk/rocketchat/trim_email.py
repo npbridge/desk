@@ -6,12 +6,17 @@ def remove_original_message(email_content):
     #regex = r"(?s)^\s*\bOn\b.*\nwrote:.*$"
     regex = r"(?s)^\s*\bOn\b.*wrote:.*"
     subst = ""
-
     # You can manually specify the number of replacements by changing the 4th argument
     result = re.sub(regex, subst, email_content, 0, re.MULTILINE)
-
     if result:
-        return result
+        result = re.sub(regex, subst, email_content, 0, re.MULTILINE)
+        regex = r".*Forwarded message.*"
+        subst = ""
+        email_without_forwarded = re.sub(regex, subst, result, 0, re.MULTILINE)
+        if email_without_forwarded:
+            return email_without_forwarded
+        else:
+            return result
     else:
         return email_content
 
@@ -107,6 +112,10 @@ def remove_html_tags(text):
     text = re.sub(r'<br>', '__br__', text)
     ## removing all html tags
     text = re.sub('<[^<]+?>', ' ', text)
+    ## removing &nbsp, &lt, &gt
+    text = text.replace("&nbsp;", ' ').strip()
+    text = text.replace("&gt;", '').strip()
+    text = text.replace("&lt;", '').strip()
     ## replacing __br__ with \n (new line)
     text = text.replace('__br__', '\n').strip()
     ## removing extra spaces
