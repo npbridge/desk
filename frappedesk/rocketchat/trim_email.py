@@ -1,6 +1,7 @@
 from talon.signature.bruteforce import extract_signature
 import re
 
+
 def remove_original_message(email_content):
     #regex = r"(?s)^\s*\bOn\b.*\nwrote:.*$"
     regex = r"(?s)^\s*\bOn\b.*wrote:.*"
@@ -14,16 +15,8 @@ def remove_original_message(email_content):
     else:
         return email_content
 
-# source : https://github.com/Trindaz/EFZP/blob/master/EFZP.py
+
 def get_reply_text(email_text):
-    #Notes on regex
-    #Search for classic prefix from GMail and other mail clients "On May 16, 2011, Dave wrote:"
-    #Search for prefix from outlook clients From: Some Person [some.person@domain.tld]
-    #Search for prefix from outlook clients when used for sending to recipients in the same domain From: Some Person\nSent: 16/05/2011 22:42\nTo: Some Other Person
-    #Search for prefix when message has been forwarded
-    #Search for From: <email@domain.tld>\nTo: <email@domain.tld>\nDate:<email@domain.tld
-    #Search for From:, To:, Sent:
-    #Some clients use -*Original Message-*
     pattern = "(?P<reply_text>" + \
         "On ([a-zA-Z0-9, :/<>@\.\"\[\]]* wrote:.*)|" + \
         "From: [\w@ \.]* \[mailto:[\w\.]*@[\w\.]*\].*|" + \
@@ -42,8 +35,6 @@ def get_reply_text(email_text):
 
 
 def get_signature(email_text):
-    #note - these openinged statements *must* be in lower case for
-    #sig within sig searching to work later in this func
     sig_opening_statements = [
                               "warm regards",
                               "kind regards",
@@ -52,14 +43,16 @@ def get_signature(email_text):
                               "many thanks",
                               "thanks",
                               "sincerely",
-                              "Best",
+                              "best",
                               "thank you",
                               "thankyou",
                               "talk soon",
                               "cordially",
                               "yours truly",
                               "thanking You",
-                              "sent from my iphone"]
+                              "sent from my iphone",
+                              "thanks & regards"]
+
     pattern = "(?P<signature>(" + "|".join(sig_opening_statements) + ")(.)*)"
     groups = re.search(pattern, email_text, re.IGNORECASE + re.DOTALL)
     signature = None
@@ -70,11 +63,7 @@ def get_signature(email_text):
 
 
 def get_salutation(email_text):
-    #remove reply text fist (e.g. Thanks\nFrom: email@domain.tld causes salutation to consume start of reply_text
-    reply_text = get_reply_text(email_text)
-    if reply_text: email_text = email_text[:email_text.find(reply_text)]
-    #Notes on regex:
-    #Max of 5 words succeeding first Hi/To etc, otherwise is probably an entire sentence
+    # Max of 5 words succeeding first Hi/To etc, otherwise is probably an entire sentence
     salutation_opening_statements = [
                                      "hi",
                                      "dear",
@@ -97,18 +86,21 @@ def get_body(email_text, check_salutation=True, check_signature=True, check_repl
 
     if check_reply_text:
         reply_text = get_reply_text(email_text)
-        if reply_text: email_text = email_text[:email_text.find(reply_text)]
+        if reply_text:
+            email_text = email_text[:email_text.find(reply_text)]
 
     if check_salutation:
         sal = get_salutation(email_text)
-        if sal: email_text = email_text[len(sal):]
+        if sal:
+            email_text = email_text[len(sal):]
 
     if check_signature:
         sig = get_signature(email_text)
-        if sig: email_text = email_text[:email_text.find(sig)]
+        if sig:
+            email_text = email_text[:email_text.find(sig)]
 
-    
     return email_text
+
 
 def remove_html_tags(text):
     ## preserving line changes
@@ -121,24 +113,36 @@ def remove_html_tags(text):
     text = re.sub(' +', ' ', text)
     return text
 
+
 def extract_original_message(email_content):
     ## Using custom function to remove original message from email
+    last_cleaned_message = email_content
     recent_message = ""
+
     if email_content:
         # removing html tags
         recent_message = remove_html_tags(email_content)
+
         if len(recent_message) > 256:
             # removing reply text
+            last_cleaned_message = recent_message
             recent_message = remove_original_message(recent_message)
+
         if len(recent_message) > 256:
             ## Using talon to remove signature from email
+            last_cleaned_message = recent_message
             recent_message, signature = extract_signature(recent_message)
+
         ## Using custom function to remove original message from email
         if len(recent_message) > 256:
             # removing signature and salutation
-            text = get_body(recent_message)
-            recent_message = text if text else recent_message
-        return recent_message
+            last_cleaned_message = recent_message
+            recent_message = get_body(recent_message)
+
+        if recent_message:
+            last_cleaned_message = recent_message
+
+    return last_cleaned_message
     # we can handle empty body here: target to a specific intent for empty body
     #else:
     #    return "Empty Intent Trigger Message"
