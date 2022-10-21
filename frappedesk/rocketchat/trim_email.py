@@ -42,11 +42,6 @@ def get_reply_text(email_text):
 
 
 def get_signature(email_text):
-
-    #try not to have the signature be the very start of the message if we can avoid it
-    salutation = get_salutation(email_text)
-    if salutation: email_text = email_text[len(salutation):]
-
     #note - these openinged statements *must* be in lower case for
     #sig within sig searching to work later in this func
     sig_opening_statements = [
@@ -71,26 +66,6 @@ def get_signature(email_text):
     if groups:
         if "signature" in groups.groupdict():
             signature = groups.groupdict()["signature"]
-            reply_text = get_reply_text(email_text[email_text.find(signature):])
-            if reply_text: signature = signature.replace(reply_text, "")
-
-            #search for a sig within current sig to lessen chance of accidentally stealing words from body
-            tmp_sig = signature
-            for s in sig_opening_statements:
-                if tmp_sig.lower().find(s) == 0:
-                    tmp_sig = tmp_sig[len(s):]
-            groups = re.search(pattern, tmp_sig, re.IGNORECASE + re.DOTALL)
-            if groups: signature = groups.groupdict()["signature"]
-
-    #if no standard formatting has been provided (e.g. Regards, <name>),
-    #try a probabilistic approach by looking for phone numbers, names etc. to derive sig
-    if not signature:
-        #body_without_sig = get_body(email_text, check_signature=False)
-        pass
-
-    #check to see if the entire body of the message has been 'stolen' by the signature. If so, return no sig so body can have it.
-    body_without_sig = get_body(email_text, check_signature=False)
-    if signature==body_without_sig: signature = None
     return signature
 
 
@@ -120,6 +95,10 @@ def get_salutation(email_text):
 
 def get_body(email_text, check_salutation=True, check_signature=True, check_reply_text=True):
 
+    if check_reply_text:
+        reply_text = get_reply_text(email_text)
+        if reply_text: email_text = email_text[:email_text.find(reply_text)]
+
     if check_salutation:
         sal = get_salutation(email_text)
         if sal: email_text = email_text[len(sal):]
@@ -128,9 +107,7 @@ def get_body(email_text, check_salutation=True, check_signature=True, check_repl
         sig = get_signature(email_text)
         if sig: email_text = email_text[:email_text.find(sig)]
 
-    if check_reply_text:
-        reply_text = get_reply_text(email_text)
-        if reply_text: email_text = email_text[:email_text.find(reply_text)]
+    
     return email_text
 
 def remove_html_tags(text):
@@ -150,12 +127,17 @@ def extract_original_message(email_content):
     if email_content:
         # removing html tags
         recent_message = remove_html_tags(email_content)
-        # removing reply text
-        recent_message = remove_original_message(recent_message)
-    ## Using talon to remove signature from email
-    text, signature = extract_signature(recent_message)
-    ## Using custom function to remove original message from email
-    if text:
-        # removing signature and salutation
-        recent_message = get_body(text)
-    return recent_message
+        if len(recent_message) > 256:
+            # removing reply text
+            recent_message = remove_original_message(recent_message)
+        if len(recent_message) > 256:
+            ## Using talon to remove signature from email
+            text, signature = extract_signature(recent_message)
+        ## Using custom function to remove original message from email
+        if len(text) > 256:
+            # removing signature and salutation
+            recent_message = get_body(text)
+        return recent_message
+    # we can handle empty body here: target to a specific intent for empty body
+    #else:
+    #    return "Empty Intent Trigger Message"

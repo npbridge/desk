@@ -79,10 +79,10 @@ def retrieveResponse(msgID=None):
 	return res.json()
 
 def getResponse(msg, msgID=None, history={}):
-	msgID = sendMessages(msg) if msg else None
+	msgID = sendMessages(msg) if len(msg) < 257 else None
 	time.sleep(2)
 	#history = getHistory()
-	responses = retrieveResponse(msgID) if msgID else {}
+	responses = retrieveResponse(msgID) if msgID else None
 	#if msgID and 'messages' in history:
 	#	message_index = next((index for (index, d) in enumerate(history['messages']) if d["_id"] == msgID), None)
 	#	response_index = message_index - 1
@@ -90,7 +90,7 @@ def getResponse(msg, msgID=None, history={}):
 	#	response = "<p>" + response.replace("\n", "<br>") + "</p>"
 	#	confidence = history['messages'][response_index]['confidence'] if 'confidence' in history['messages'][response_index] else 0
 	#	return {'response': response, 'confidence': confidence}
-	if msgID and 'response' in responses and 'confidence' in responses:
+	if msgID and responses and 'response' in responses and 'confidence' in responses:
 		return responses
 	else:
 		response = "Thank you for contacting Learner Support. I shall get back to you with answers to your queries."
