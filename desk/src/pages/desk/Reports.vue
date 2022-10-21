@@ -101,9 +101,9 @@ export default {
         },
       },
        {
-         heading: 'Tickets Un-Resolved Over Time',
+         heading: 'Tickets Unresolved Over Time',
          information:
-           'Find and compare the number of tickets Un-Resolved Over Time',
+           'Find and compare the number of tickets Unresolved Over Time',
          to: {
            path: '/app/query-report/Tickets Un-Resolved Over Time',
          },
