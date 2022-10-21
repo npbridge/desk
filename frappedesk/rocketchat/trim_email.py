@@ -136,17 +136,17 @@ def extract_original_message(email_content):
             # removing reply text
             last_cleaned_message = recent_message
             recent_message = remove_original_message(recent_message)
-
-        if len(recent_message) > 256:
-            ## Using talon to remove signature from email
-            last_cleaned_message = recent_message
-            recent_message, signature = extract_signature(recent_message)
-
+        
         ## Using custom function to remove original message from email
         if len(recent_message) > 256:
             # removing signature and salutation
             last_cleaned_message = recent_message
             recent_message = get_body(recent_message)
+
+        if len(recent_message) > 256:
+            ## Using talon to remove signature from email
+            last_cleaned_message = recent_message
+            recent_message, signature = extract_signature(recent_message)
 
         if recent_message:
             last_cleaned_message = recent_message
