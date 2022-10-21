@@ -132,11 +132,11 @@ def extract_original_message(email_content):
             recent_message = remove_original_message(recent_message)
         if len(recent_message) > 256:
             ## Using talon to remove signature from email
-            text, signature = extract_signature(recent_message)
+            recent_message, signature = extract_signature(recent_message)
         ## Using custom function to remove original message from email
-        if len(text) > 256:
+        if len(recent_message) > 256:
             # removing signature and salutation
-            recent_message = get_body(text)
+            recent_message = get_body(recent_message)
         return recent_message
     # we can handle empty body here: target to a specific intent for empty body
     #else:
