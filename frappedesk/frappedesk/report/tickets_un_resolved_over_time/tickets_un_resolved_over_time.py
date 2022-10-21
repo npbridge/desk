@@ -41,12 +41,12 @@ def execute(filters=None):
 
 		previous_unresolved_count = """
 			SELECT 
-				count(resolution_date) 
+				count(creation) 
 			FROM tabTicket 
 			WHERE 
 				resolution_date IS NULL
 				AND 
-				DATE(resolution_date) < '{from_date}'
+				DATE(creation) < '{from_date}'
 		""".format(from_date= date_range["from_date"])
 
 		previous_data = frappe.db.sql(
