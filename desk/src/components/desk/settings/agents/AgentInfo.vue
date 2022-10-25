@@ -41,7 +41,9 @@
             <CustomAvatar
               :label="values?.agentName"
               size="2xl"
-              :imageURL="values?.profilePicture && !values.profilePicture.includes('private') && values.profilePicture"
+              :imageURL="values?.profilePicture && (values.email === user.user ? 
+								values.profilePicture : 
+								!values.profilePicture.includes('private') && values.profilePicture)"
             />
           </div>
         </div>
@@ -94,7 +96,7 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { inject, ref } from 'vue'
 import { FeatherIcon, Input } from 'frappe-ui'
 import CustomAvatar from '@/components/global/CustomAvatar.vue'
 
@@ -110,11 +112,13 @@ export default {
     const editingName = ref(false)
     const tempAgentName = ref('')
     const updatingValues = ref(false)
+    const user = inject('user')
 
     return {
       editingName,
       tempAgentName,
       updatingValues,
+      user
     }
   },
   computed: {

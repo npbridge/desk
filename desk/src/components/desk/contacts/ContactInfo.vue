@@ -21,7 +21,11 @@
 				<div>
 					<span class="block mb-2 text-sm leading-4 text-gray-700">Profile Picture</span>
 					<div class="flex flex-row space-x-[8px] items-center">
-						<CustomAvatar :label="values?.contactName" size="2xl" :imageURL="values?.profilePicture && !values.profilePicture.includes('private') && values.profilePicture" />
+						<!-- if user is same as contact return image else if image is not private then return image else return null -->
+						<CustomAvatar :label="values?.contactName" size="2xl" :imageURL="
+							values?.profilePicture && (values.email === user.user ? 
+								values.profilePicture : 
+								!values.profilePicture.includes('private') && values.profilePicture)" />
 						<div class="flex flex-row space-x-[8px]">
 							<!-- <Button>Upload new</Button>
 							<Button>Remove</Button> -->
@@ -105,7 +109,7 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, inject } from 'vue'
 import { FeatherIcon, Input } from 'frappe-ui'
 import CustomAvatar from '@/components/global/CustomAvatar.vue'
 import Autocomplete from '@/components/global/Autocomplete.vue'
@@ -129,11 +133,13 @@ export default {
 		const editingName = ref(false)
 		const tempContactName = ref('')
 		const contactCourses = ref([])
+		const user = inject('user')
 
 		return {
 			editingName,
 			tempContactName,
 			contactCourses,
+			user
 		}
 	},
 	computed: {
