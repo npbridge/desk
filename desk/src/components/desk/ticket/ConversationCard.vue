@@ -2,7 +2,7 @@
 	<div class="flex flex-col my-[16px] px-[10px]">
 		<div class="flex flex-row justify-between">
 			<div class="flex flex-row items-center space-x-[8px]">
-				<CustomAvatar :label="userName" :imageURL="profilePicUrl" size="sm" />
+				<CustomAvatar :label="userName" :imageURL="profilePicUrl" :imageOwner="emailId" size="sm" />
 				<div class="h-full">
 					<div
 						class="flex flex-col select-none"
@@ -63,7 +63,7 @@ import { ref } from 'vue'
 
 export default {
 	name: 'ConversationCard',
-	props: ['userName', 'profilePicUrl', 'time', 'message', 'color', 'attachments', 'cc', 'bcc'],
+	props: ['userName', 'emailId', 'profilePicUrl', 'time', 'message', 'color', 'attachments', 'cc', 'bcc'],
 	components: {
 		FeatherIcon,
 		CustomAvatar

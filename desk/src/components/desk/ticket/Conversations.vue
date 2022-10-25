@@ -17,6 +17,7 @@
 						>
 							<ConversationCard 
 								:userName="getUserName(conversation)" 
+								:emailId="conversation.sender.email_ids? conversation.sender.email_ids[0].email_id: conversation.sender.email"
 								:cc="conversation.cc"
 								:bcc="conversation.bcc"
 								:profilePicUrl="conversation.sender.image ? conversation.sender.image : conversation.sender.user_image" 

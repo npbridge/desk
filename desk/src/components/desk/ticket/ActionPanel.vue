@@ -76,9 +76,6 @@
 		</div>
 		<div class="px-[19px] py-[28px] h-full overflow-y-auto">
 			<div class="text-base space-y-[12px]">
-				<!-- <div v-if="user.agent">
-					<router-link class="hover:underline" :to="{ path: '/support/impersonate', query: {contact: ticket.raised_by, ticketId: ticket.name}}" target="_blank">See on Support Portal</router-link>
-				</div> -->
 				<div class="flex flex-col space-y-[8px]">
 					<div class="text-gray-600 font-normal text-[12px]">Assignee</div>
 					<Autocomplete 
@@ -107,7 +104,8 @@
 							<div class="flex flex-row space-x-1 items-center w-full" @click="open">
 								<div class="grow">
 									<div v-if="ticket.assignees.length > 0 && !updatingAssignee" class="flex flex-row text-left space-x-2">
-										<CustomAvatar :label="ticket.assignees[0].agent_name" :imageURL="ticket.assignees[0].image" size="xs" />
+										<CustomAvatar :label="ticket.assignees[0].agent_name" :imageURL="ticket.assignees[0].image" 
+											:imageOwner="ticket.assignees[0].name" size="xs" />
 										<div>{{ ticket.assignees[0].agent_name }}</div>
 									</div>
 									<div v-else>
@@ -373,7 +371,6 @@ export default {
 	setup() {
 		const viewportWidth = inject('viewportWidth')
 
-		const user = inject('user')
 		const ticketTypes = inject('ticketTypes')
 		const ticketTags = inject('ticketTags')
 		const ticketPriorities = inject('ticketPriorities')
@@ -400,7 +397,6 @@ export default {
 		return {
 			viewportWidth,
 
-			user,
 			ticketTypes,
 			ticketTags,
 			ticketPriorities,

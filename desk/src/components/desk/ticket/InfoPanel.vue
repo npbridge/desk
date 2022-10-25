@@ -13,6 +13,7 @@
 								<CustomAvatar
 									:label="contactFullName"
 									:imageURL="ticket.contact.image"
+									:imageOwner="ticket.contact.email_ids[0].email_id"
 									size="md"
 								/>
 							</div>
