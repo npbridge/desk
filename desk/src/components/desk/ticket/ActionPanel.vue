@@ -440,7 +440,6 @@ export default {
 	},
 	computed: {
 		ticket() {
-			console.log(this.$resources.ticket.data)
 			return this.$resources.ticket.data || null
 		}
 	},

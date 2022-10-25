@@ -74,7 +74,6 @@ export default {
 	},
 	computed: {
 		contactFetched() {
-			console.log("contact", this.$resources.contactFetched.data )
 			return this.$resources.contactFetched.data || null
 		}
 	},
