@@ -332,7 +332,7 @@ export default {
       .children.push(
         ...[
           {
-            label: 'Auto Reply Template',
+            label: 'Auto Reply Templates',
             to: {
               path: '/auto-reply-template',
             },
