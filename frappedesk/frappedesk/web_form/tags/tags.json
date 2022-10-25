@@ -24,7 +24,7 @@
  "list_title": "Tags",
  "login_required": 1,
  "max_attachment_size": 0,
- "modified": "2022-09-14 12:16:30.314028",
+ "modified": "2022-10-25 12:26:13.270654",
  "modified_by": "jahnavi@npbridge.com",
  "module": "FrappeDesk",
  "name": "tags",
@@ -36,7 +36,7 @@
  "show_sidebar": 0,
  "success_message": "Tag list updated successfully! You will be redirected to ticketing system now. ",
  "success_title": "Tags Updated",
- "success_url": "/frappedesk",
+ "success_url": "/tags",
  "title": "Tags",
  "web_form_fields": [
   {

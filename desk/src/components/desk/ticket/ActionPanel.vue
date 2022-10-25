@@ -6,8 +6,7 @@
 				background-image: linear-gradient(to right, #EBEEF0 33%, rgba(255,255,255,0) 0%);
 				background-position: bottom;
 				background-size: 19.5px 1px;
-				background-repeat: repeat-x;
-			"
+				background-repeat: repeat-x;" 
 		>
 			<div class="flex flex-row pb-[15px]">
 				<div class="grow"><span class="text-[16px] font-normal text-gray-500">Ticket</span> <span class="text-[15px] font-semibold">{{ `#${ticket.name}` }}</span></div>
@@ -182,7 +181,7 @@
 							class="bg-white border px-[8px] rounded-[10px] h-fit w-fit border-[black] text-[black] mr-[0.2rem] mb-[0.2rem]" 
 								>
 								<div class="flex flex-row items-center h-[20px] space-x-[7px]">
-									<div class="text-[10px] uppercase grow">{{ tag.tag }}</div>
+									<div class="text-[10px] uppercase grow"> {{ ticketTags.find(ttag => ttag.name === tag.tag)?.description }} </div>
 									<div>
 										<FeatherIcon name="x-circle" class="h-3 stroke-black-500  cursor-pointer" @click="removeTag(tag.name)" />
 									</div>
@@ -192,8 +191,8 @@
 					</div>
 					<Autocomplete 
 						v-if="ticketTags"
-						:options="ticketTags.map(x => {
-							return {label: x.name , value: x.name}
+						:options="ticketTags.map(tag => {
+							return {label: tag.description , value: tag.name}
 						})"
 						placeholder="Set tags"
 						:value="ticket.ticket_tag.length > 0  && !updatingTicketTag ? ticket.ticket_tag[0].name : ''" 
@@ -441,6 +440,7 @@ export default {
 	},
 	computed: {
 		ticket() {
+			console.log(this.$resources.ticket.data)
 			return this.$resources.ticket.data || null
 		}
 	},
@@ -453,6 +453,22 @@ export default {
 					ticket_id: this.ticketId,
 				},
 				auto: true
+			}
+		},
+		tags() {
+			return {
+				method: 'frappe.client.get_list',
+				params: {
+					doctype: 'Helpdesk Tag',
+					fields: ['name', 'description'],
+				},
+				onSuccess: (data) => {
+					this.ticketTags = data
+				},
+				onError: (error) => {
+					console.log(error)
+					// TODO:
+				},
 			}
 		},
 	},
@@ -502,6 +518,7 @@ export default {
 				this.updatingTicketTag = true
 				this.ticketController.set(this.ticketId, 'tag', this.newTag).then(() => {
 					this.updatingTicketTag= false
+					this.$resources.tags.fetch()
 					this.$resources.ticket.fetch()
 
 					this.$toast({

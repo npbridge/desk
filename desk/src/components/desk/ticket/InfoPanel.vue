@@ -43,7 +43,7 @@
 								class="bg-white border px-[8px] rounded-[10px] h-fit w-fit border-[black] text-[black] mr-[0.2rem] mb-[0.2rem]" 
 									>
 									<div class="flex flex-row items-center h-[20px] space-x-[7px]">
-										<div class="text-[10px] uppercase grow">{{ course.course }} </div>
+										<div class="text-[10px] uppercase grow">{{ contactCourses.find(ccourse => ccourse.name === course.course)?.description }} </div>
 									</div>
 								</div>
 							</div>

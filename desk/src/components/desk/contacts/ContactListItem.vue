@@ -32,7 +32,7 @@
 								class="bg-white border px-[8px] rounded-[10px] h-fit w-fit border-[black] text-[black] mr-[0.2rem] mb-[0.2rem]" 
 									>
 									<div class="flex flex-row items-center h-[20px] space-x-[7px]">
-										<div class="text-[10px] uppercase grow">{{ course.course }} </div>
+										<div class="text-[10px] uppercase grow">{{ contactCourses.find(ccourse => ccourse.name === course.course)?.description  }} </div>
 									</div>
 								</div>
 							</div>
@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { Input, FeatherIcon } from 'frappe-ui'
 
 export default {
@@ -65,13 +65,16 @@ export default {
 				)
 			}
 		})
+		const contactCourses = ref([])
 
 		return {
 			fullName,
+			contactCourses
 		}
 	},
 	computed: {
 		contactFetched() {
+			console.log("contact", this.$resources.contactFetched.data )
 			return this.$resources.contactFetched.data || null
 		}
 	},
@@ -83,6 +86,23 @@ export default {
 					contact: this.contact.name,
 				},
 				auto: true
+			}
+		},
+		courses() {
+			return {
+				method: 'frappe.client.get_list',
+				params: {
+					doctype: 'Course',
+					fields: ['name', 'description'],
+				},
+				auto: true,
+				onSuccess: (data) => {
+					this.contactCourses = data
+				},
+				onError: (error) => {
+					console.log(error)
+					// TODO:
+				},
 			}
 		},
 	},

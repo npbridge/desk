@@ -38,7 +38,7 @@
 							class="bg-white border px-[8px] rounded-[10px] h-fit w-fit border-[black] text-[black] mr-[0.2rem] mb-[0.2rem]"
 								>
 								<div class="flex flex-row items-center h-[20px] space-x-[2px]">
-									<div class="text-[11px] uppercase grow">{{ course.course }} </div>
+									<div class="text-[11px] uppercase grow">{{ contactCourses.find(ccourse => ccourse.name === course.course)?.description }} </div>
 										<div>
 											<FeatherIcon name="x-circle" class="h-3 stroke-black-500  cursor-pointer" @click="removeCourse(course.name)" />
 										</div>
@@ -48,8 +48,8 @@
 					</div>
 					<Autocomplete
 						v-if="contactCourses"
-						:options="contactCourses.map(x => {
-							return {label: x.name , value: x.name}
+						:options="contactCourses.map(course => {
+							return {label: course.description , value: course.name}
 						})"
 						placeholder="Set courses"
 						:value="values?.course?.length > 0  ? values.course[0].name : ''"
@@ -201,7 +201,7 @@ export default {
 				method: 'frappe.client.get_list',
 				params: {
 					doctype: 'Course',
-					pluck: 'name',
+					fields: ['name', 'description'],
 				},
 				auto: true,
 				onSuccess: (data) => {

@@ -164,7 +164,7 @@ def assign_ticket_tag(ticket_id, tag):
 				ticket_tag_doc = check_and_create_ticket_tag(tag)
 				if ticket_tag_doc:
 					ticket_doc.append("ticket_tag", {
-							"tag": tag,
+							"tag": ticket_tag_doc.name,
 						})
 					ticket_doc.save()
 					log_ticket_activity(ticket_id, f"tag: {tag} added.")
@@ -186,7 +186,7 @@ def assign_contact_course(contact, course):
 				contact_course_doc = check_and_create_contact_course(course)
 				if contact_course_doc:
 					contact_doc.append("course", {
-							"course": course,
+							"course": contact_course_doc.name,
 						})
 					contact_doc.save()
 
