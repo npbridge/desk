@@ -44,7 +44,7 @@
  "show_sidebar": 0,
  "success_message": "Auto Reply Template Updated Successfully!",
  "success_title": "Auto Reply Template Updated!",
- "success_url": "auto-reply-template",
+ "success_url": "/auto-reply-template",
  "title": "Auto Reply Template",
  "web_form_fields": [
   {
