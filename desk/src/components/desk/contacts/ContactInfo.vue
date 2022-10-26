@@ -22,7 +22,7 @@
 					<span class="block mb-2 text-sm leading-4 text-gray-700">Profile Picture</span>
 					<div class="flex flex-row space-x-[8px] items-center">
 						<!-- if user is same as contact return image else if image is not private then return image else return null -->
-						<CustomAvatar :label="values?.contactName" size="2xl" :imageURL="values?.profilePicture" :imageOwner="values.email"/>
+						<CustomAvatar :label="values?.contactName" size="2xl" :imageURL="values?.profilePicture" :imageOwner="values?.email"/>
 						<div class="flex flex-row space-x-[8px]">
 							<!-- <Button>Upload new</Button>
 							<Button>Remove</Button> -->
