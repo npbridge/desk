@@ -10,7 +10,7 @@ def execute(filters=None):
 	filters.range = "Day"
 	columns = [
 		{"fieldname": "dataset", "label": "Dataset", "fieldtype": "Data", "width": 200},
-		{"fieldname": "resolution_date", "label": "Resolved On", "fieldtype": "Data", "width": 200},
+		{"fieldname": "resolution_date", "label": "Resolved On", "fieldtype": "Date", "width": 200},
 		# {
 		# 	"fieldname": "date_format", 
 		# 	"label": filters.range, 

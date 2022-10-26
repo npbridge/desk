@@ -65,7 +65,7 @@ def get_report_data(from_date, to_date, range="Weekly", extra_field_name="Random
 	{}
 	SELECT 
 		coalesce(sum(count)) as count,
-		DATE_FORMAT(date({}), '%d-%m-%Y') as {},
+		date({}) as {},
 		date_format
 	FROM(
 		SELECT 
