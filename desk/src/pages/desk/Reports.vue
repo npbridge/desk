@@ -101,7 +101,7 @@ export default {
         },
       },
        {
-         heading: 'Tickets Unresolved Over Time',
+         heading: 'Tickets Un-Resolved Over Time',
          information:
            'Find and compare the number of unresolved tickets over time',
          to: {
