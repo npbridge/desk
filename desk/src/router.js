@@ -87,14 +87,14 @@ const routes = [
       window.location.href = '/login'
     },
   },
-  {
-    path: '/support/login',
-    name: 'PortalLogin',
-    // component: () => import('@/pages/auth/Login.vue'),
-    beforeEnter(to, from, next) {
-      window.location.href = '/login'
-    },
-  },
+  // {
+  //   path: '/support/login',
+  //   name: 'PortalLogin',
+  //   // component: () => import('@/pages/auth/Login.vue'),
+  //   beforeEnter(to, from, next) {
+  //     window.location.href = '/login'
+  //   },
+  // },
   // {
   //	 path: '/frappedesk/signup',
   //	 name: 'DeskSignup',
@@ -289,40 +289,40 @@ const routes = [
       },
     ],
   },
-  {
-    path: '/support',
-    name: 'Portal',
-    component: () => import('@/pages/portal/Portal.vue'),
-    children: [
-      {
-        path: 'tickets',
-        name: 'ProtalTickets',
-        component: () => import('@/pages/portal/Tickets.vue'),
-      },
-      {
-        path: 'tickets/:ticketId',
-        name: 'PortalTicket',
-        component: () => import('@/pages/portal/Ticket.vue'),
-        props: true,
-      },
-      {
-        path: 'tickets/new/:templateId',
-        name: 'TemplatedNewTicket',
-        component: () => import('@/pages/portal/NewTicket.vue'),
-        props: true,
-      },
-      {
-        path: 'tickets/new',
-        name: 'DefaultNewTicket',
-        component: () => import('@/pages/portal/NewTicket.vue'),
-      },
-      {
-        path: 'impersonate',
-        name: 'Impersonate',
-        component: () => import('@/pages/portal/Impersonate.vue'),
-      },
-    ],
-  },
+  // {
+  //   path: '/support',
+  //   name: 'Portal',
+  //   component: () => import('@/pages/portal/Portal.vue'),
+  //   children: [
+  //     {
+  //       path: 'tickets',
+  //       name: 'ProtalTickets',
+  //       component: () => import('@/pages/portal/Tickets.vue'),
+  //     },
+  //     {
+  //       path: 'tickets/:ticketId',
+  //       name: 'PortalTicket',
+  //       component: () => import('@/pages/portal/Ticket.vue'),
+  //       props: true,
+  //     },
+  //     {
+  //       path: 'tickets/new/:templateId',
+  //       name: 'TemplatedNewTicket',
+  //       component: () => import('@/pages/portal/NewTicket.vue'),
+  //       props: true,
+  //     },
+  //     {
+  //       path: 'tickets/new',
+  //       name: 'DefaultNewTicket',
+  //       component: () => import('@/pages/portal/NewTicket.vue'),
+  //     },
+  //     {
+  //       path: 'impersonate',
+  //       name: 'Impersonate',
+  //       component: () => import('@/pages/portal/Impersonate.vue'),
+  //     },
+  //   ],
+  // },
 ]
 
 let router = createRouter({
