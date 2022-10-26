@@ -196,11 +196,16 @@ export default {
       this.updatingValues = true
       const newValues = this.values
 
+      const splitName = this.tempAgentName.split(" ")
+      const firstName = splitName.shift()
+      const lastName = splitName.join(" ")
+
       this.$resources.user.setValue
         .submit({
           email: newValues.email,
           email_signature: newValues.signature,
-          full_name: this.tempAgentName,
+          first_name: firstName,
+          last_name: lastName
         })
         .then(() => {
           this.$resources.agent.setValue.submit({
