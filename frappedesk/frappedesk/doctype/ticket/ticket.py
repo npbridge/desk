@@ -56,8 +56,12 @@ class Ticket(Document):
                 contact = frappe.db.get_value("Contact", {"email_id": email_id})
                 if contact:
                     self.contact = contact
-                    if save:
-                        self.save()
+                else:
+                    child_table_contact = frappe.get_list("Contact Email", fields = ['parent'], filters={'email_id': ["=", email_id]}, parent_doctype="Contact")
+                    if len(child_table_contact) > 0 :
+                        self.contact = child_table_contact[0].parent
+                if save:
+                    self.save()
 
     def create_communication(self):
         communication = frappe.new_doc("Communication")

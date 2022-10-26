@@ -66,17 +66,17 @@ def getHistory(params=params, headers=headers):
 def retrieveResponse(msgID=None):
 	try:
 		res = requests.get(endPoints["getResponse"]+msgID)
+		return res.json()
 	except requests.exceptions.Timeout as errt:
 		logger.debug(f"Rocket Chat Timeout Error: {errt}")
-		return None
+		return {"error": errt}
 	except requests.exceptions.TooManyRedirects as errr:
 		logger.debug(f"Rocket Chat Too Many Redirect: {errr}")
-		return None
+		return {"error": errr}
 	except requests.exceptions.RequestException as e:
 		logger.debug(f"Rocket Chat Exception: {e}")
-		return None
-	return res.json()
-
+		return {"error": e}
+	
 def getResponse(msg, msgID=None, history={}):
 	msgID = sendMessages(msg) if msg else None
 	time.sleep(2)

@@ -6,8 +6,7 @@
 				background-image: linear-gradient(to right, #EBEEF0 33%, rgba(255,255,255,0) 0%);
 				background-position: bottom;
 				background-size: 19.5px 1px;
-				background-repeat: repeat-x;
-			"
+				background-repeat: repeat-x;" 
 		>
 			<div class="flex flex-row pb-[15px]">
 				<div class="grow"><span class="text-[16px] font-normal text-gray-500">Ticket</span> <span class="text-[15px] font-semibold">{{ `#${ticket.name}` }}</span></div>
@@ -77,9 +76,6 @@
 		</div>
 		<div class="px-[19px] py-[28px] h-full overflow-y-auto">
 			<div class="text-base space-y-[12px]">
-				<!-- <div v-if="user.agent">
-					<router-link class="hover:underline" :to="{ path: '/support/impersonate', query: {contact: ticket.raised_by, ticketId: ticket.name}}" target="_blank">See on Support Portal</router-link>
-				</div> -->
 				<div class="flex flex-col space-y-[8px]">
 					<div class="text-gray-600 font-normal text-[12px]">Assignee</div>
 					<Autocomplete 
@@ -108,7 +104,8 @@
 							<div class="flex flex-row space-x-1 items-center w-full" @click="open">
 								<div class="grow">
 									<div v-if="ticket.assignees.length > 0 && !updatingAssignee" class="flex flex-row text-left space-x-2">
-										<CustomAvatar :label="ticket.assignees[0].agent_name" :imageURL="ticket.assignees[0].image" size="xs" />
+										<CustomAvatar :label="ticket.assignees[0].agent_name" :imageURL="ticket.assignees[0].image" 
+											:imageOwner="ticket.assignees[0].name" size="xs" />
 										<div>{{ ticket.assignees[0].agent_name }}</div>
 									</div>
 									<div v-else>
@@ -182,7 +179,7 @@
 							class="bg-white border px-[8px] rounded-[10px] h-fit w-fit border-[black] text-[black] mr-[0.2rem] mb-[0.2rem]" 
 								>
 								<div class="flex flex-row items-center h-[20px] space-x-[7px]">
-									<div class="text-[10px] uppercase grow">{{ tag.tag }}</div>
+									<div class="text-[10px] uppercase grow"> {{ ticketTags.find(ttag => ttag.name === tag.tag)?.description }} </div>
 									<div>
 										<FeatherIcon name="x-circle" class="h-3 stroke-black-500  cursor-pointer" @click="removeTag(tag.name)" />
 									</div>
@@ -192,8 +189,8 @@
 					</div>
 					<Autocomplete 
 						v-if="ticketTags"
-						:options="ticketTags.map(x => {
-							return {label: x.name , value: x.name}
+						:options="ticketTags.map(tag => {
+							return {label: tag.description , value: tag.name}
 						})"
 						placeholder="Set tags"
 						:value="ticket.ticket_tag.length > 0  && !updatingTicketTag ? ticket.ticket_tag[0].name : ''" 
@@ -374,7 +371,6 @@ export default {
 	setup() {
 		const viewportWidth = inject('viewportWidth')
 
-		const user = inject('user')
 		const ticketTypes = inject('ticketTypes')
 		const ticketTags = inject('ticketTags')
 		const ticketPriorities = inject('ticketPriorities')
@@ -401,7 +397,6 @@ export default {
 		return {
 			viewportWidth,
 
-			user,
 			ticketTypes,
 			ticketTags,
 			ticketPriorities,
@@ -455,6 +450,22 @@ export default {
 				auto: true
 			}
 		},
+		tags() {
+			return {
+				method: 'frappe.client.get_list',
+				params: {
+					doctype: 'Helpdesk Tag',
+					fields: ['name', 'description'],
+				},
+				onSuccess: (data) => {
+					this.ticketTags = data
+				},
+				onError: (error) => {
+					console.log(error)
+					// TODO:
+				},
+			}
+		},
 	},
 	methods: {
 		handleShortcuts(e) {
@@ -502,6 +513,7 @@ export default {
 				this.updatingTicketTag = true
 				this.ticketController.set(this.ticketId, 'tag', this.newTag).then(() => {
 					this.updatingTicketTag= false
+					this.$resources.tags.fetch()
 					this.$resources.ticket.fetch()
 
 					this.$toast({

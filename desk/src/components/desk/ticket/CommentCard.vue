@@ -13,6 +13,7 @@
         <CustomAvatar
           v-else
           :imageURL="user.user_image"
+          :imageOwner="user.name"
           :label="user.full_name"
           size="sm"
         />

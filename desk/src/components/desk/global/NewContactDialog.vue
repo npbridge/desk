@@ -162,7 +162,7 @@ export default {
 			let coursesOptions = []
 			this.contactCourses.forEach(course => {
 				coursesOptions.push({
-						label: course.name,
+						label: course.description,
 						handler: () => {
 							this.course = course.name
 						},

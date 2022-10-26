@@ -469,7 +469,7 @@ export default {
 				method: 'frappe.client.get_list',
 				params: {
 					doctype: 'Helpdesk Tag',
-					pluck: 'name',
+					fields: ['name', 'description'],
 				},
 				auto: this.user.has_desk_access,
 				onSuccess: (data) => {
@@ -486,7 +486,7 @@ export default {
 				method: 'frappe.client.get_list',
 				params: {
 					doctype: 'Course',
-					pluck: 'name',
+					fields: ['name', 'description'],
 				},
 				auto: this.user.has_desk_access,
 				onSuccess: (data) => {

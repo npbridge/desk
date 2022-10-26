@@ -21,7 +21,8 @@
 				<div>
 					<span class="block mb-2 text-sm leading-4 text-gray-700">Profile Picture</span>
 					<div class="flex flex-row space-x-[8px] items-center">
-						<CustomAvatar :label="values?.contactName" size="2xl" :imageURL="values?.profilePicture" />
+						<!-- if user is same as contact return image else if image is not private then return image else return null -->
+						<CustomAvatar :label="values?.contactName" size="2xl" :imageURL="values?.profilePicture" :imageOwner="values?.email"/>
 						<div class="flex flex-row space-x-[8px]">
 							<!-- <Button>Upload new</Button>
 							<Button>Remove</Button> -->
@@ -38,7 +39,7 @@
 							class="bg-white border px-[8px] rounded-[10px] h-fit w-fit border-[black] text-[black] mr-[0.2rem] mb-[0.2rem]"
 								>
 								<div class="flex flex-row items-center h-[20px] space-x-[2px]">
-									<div class="text-[11px] uppercase grow">{{ course.course }} </div>
+									<div class="text-[11px] uppercase grow">{{ contactCourses.find(ccourse => ccourse.name === course.course)?.description }} </div>
 										<div>
 											<FeatherIcon name="x-circle" class="h-3 stroke-black-500  cursor-pointer" @click="removeCourse(course.name)" />
 										</div>
@@ -48,8 +49,8 @@
 					</div>
 					<Autocomplete
 						v-if="contactCourses"
-						:options="contactCourses.map(x => {
-							return {label: x.name , value: x.name}
+						:options="contactCourses.map(course => {
+							return {label: course.description , value: course.name}
 						})"
 						placeholder="Set courses"
 						:value="values?.course?.length > 0  ? values.course[0].name : ''"
@@ -105,7 +106,7 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, inject } from 'vue'
 import { FeatherIcon, Input } from 'frappe-ui'
 import CustomAvatar from '@/components/global/CustomAvatar.vue'
 import Autocomplete from '@/components/global/Autocomplete.vue'
@@ -129,11 +130,13 @@ export default {
 		const editingName = ref(false)
 		const tempContactName = ref('')
 		const contactCourses = ref([])
+		const user = inject('user')
 
 		return {
 			editingName,
 			tempContactName,
 			contactCourses,
+			user
 		}
 	},
 	computed: {
@@ -201,7 +204,7 @@ export default {
 				method: 'frappe.client.get_list',
 				params: {
 					doctype: 'Course',
-					pluck: 'name',
+					fields: ['name', 'description'],
 				},
 				auto: true,
 				onSuccess: (data) => {

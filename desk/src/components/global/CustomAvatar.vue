@@ -1,7 +1,11 @@
 <template>
 	<div class="overflow-hidden" :class="styleClasses">
 		<img
-			v-if="imageURL"
+			v-if="imageURL && imageOwner ?
+					imageOwner === user.user ?
+						imageURL :
+						!imageURL.includes('private') && imageURL
+					: imageURL"
 			:src="imageURL"
 			class="object-cover"
 			:class="styleClasses"
@@ -17,6 +21,8 @@
 </template>
 
 <script>
+import { inject } from 'vue'
+
 const validShapes = ['square', 'circle']
 
 export default {
@@ -24,6 +30,7 @@ export default {
 	props: {
 		imageURL: String,
 		label: String,
+		imageOwner: String,
 		size: {
 			default: '8',
 		},
@@ -40,6 +47,11 @@ export default {
 				return valid
 			},
 		},
+	},
+	setup() {
+		const user = inject('user')
+
+		return {user}
 	},
 	computed: {
 		styleClasses() {
