@@ -29,10 +29,10 @@ def sendMessages(msg, postData=data, headers=headers):
 		res = requests.post(endPoints["sendMessage"], data=json.dumps(postData), headers=headers)
 		defaultResponse = res.json()
 	except requests.exceptions.Timeout as errt:
-		logger.debug(f"Rocket Chat Timeout Error: {errt}")
+		logger.debug(f"Middleware Timeout Error: {errt}")
 	except requests.exceptions.TooManyRedirects as errr:
-		logger.debug(f"Rocket Chat Too Many Redirect: {errr}")
+		logger.debug(f"Middleware Too Many Redirect: {errr}")
 	except requests.exceptions.RequestException as e:
-		logger.debug(f"Rocket Chat Exception: {e}")
+		logger.debug(f"Middleware Exception: {e}")
 
 	return defaultResponse
