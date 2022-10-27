@@ -66,6 +66,15 @@ website_route_rules = [
 	{"from_route": "/support/impersonate", "to_route": "frappedesk"},
 ]
 
+website_redirects = [
+	{"source": "/about", "target": "/home"},
+	{"source": "/contact", "target": "/home"},
+	{"source": "/message", "target": "/home"},
+	{"source": "/qrcode", "target": "/home"},
+	{"source": "/search", "target": "/home"},
+	{"source": "/third_party_apps", "target": "/home"},
+	]
+
 fixtures = [
 	"Custom Field"
 ]
