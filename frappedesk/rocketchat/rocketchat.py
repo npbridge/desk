@@ -19,7 +19,7 @@ data = {
 	"message": ""
 }
 
-def sendMessages(msg, postData=data, headers=headers):
+def getResponse(msg, postData=data, headers=headers):
 	postData["message"] = msg
 	defaultResponse = {
 		"response": "Thank you for contacting Learner Support. I shall get back to you with answers to your queries.",
