@@ -11,7 +11,7 @@ def execute(filters=None):
 		{
 			"fieldname": "date", 
 			"label": filters.range, 
-			"fieldtype": "Data", 
+			"fieldtype": "Date", 
 			"width": 200
 		},
 		{
