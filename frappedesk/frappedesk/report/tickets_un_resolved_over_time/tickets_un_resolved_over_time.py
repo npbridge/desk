@@ -44,7 +44,11 @@ def execute(filters=None):
 				count(creation) 
 			FROM tabTicket 
 			WHERE 
+			(
 				resolution_date IS NULL
+				OR
+				DATE(resolution_date) > '{from_date}'
+			)
 				AND 
 				DATE(creation) < '{from_date}'
 		""".format(from_date= date_range["from_date"])
