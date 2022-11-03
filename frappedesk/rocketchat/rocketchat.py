@@ -9,7 +9,8 @@ logger.set_log_level("DEBUG")
 logger = frappe.logger("api", allow_site=True, file_count=50)
 
 headers = {
-	"content-type": "application/json"
+	"content-type": "application/json",
+	"x-access-token": os.getenv('AUTH_TOKEN')
 }
 endPoints = {
 	"sendMessage": os.getenv('SEND_MESSAGE_END_POINT')
