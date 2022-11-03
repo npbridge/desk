@@ -179,7 +179,7 @@ def create_communication_via_bot(doc, type):
         ## If use_bot_answers==TRUE, bot responses are available for every ticket
         botResponse = getResponse(doc.content)
     
-        if use_bot_answers and int(botResponse['confidence'])*100 >= threshold_limit:
+        if use_bot_answers and botResponse['confidence']>= threshold_limit/100:
             ## If threshold_limit >= set limit => Send Mail
             ## If thershold_limit < set_limit => Comment
             # we need message to display on helpdesk UI, since template body wont be visible on helpdesk ui 
