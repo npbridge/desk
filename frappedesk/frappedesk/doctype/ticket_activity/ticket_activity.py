@@ -37,9 +37,10 @@ def mail_ticket_updates():
 			send_mail_data[follower] = [*existing_data, {"ticket": ticketId, "content": list(grouped_activities_tee) }]
 
 	# look through activities by ticket and mail summary of people who have followed ticket
+	default_ticket_outgoing_email_account = frappe.get_doc("Email Account", [["use_imap", "=", 1], ["IMAP Folder","append_to","=","Ticket"], ["default_outgoing","=",1]])
 	for follower, activity_data in send_mail_data.items():
 		frappe.sendmail(
-				sender="staging@npbridge.com",
+				sender=default_ticket_outgoing_email_account.email_id,
 				recipients=[follower],
 				subject=f"Daily Ticket Summary",
 				template="daily_summary",
