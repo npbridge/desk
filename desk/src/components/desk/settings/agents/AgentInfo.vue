@@ -117,7 +117,7 @@ export default {
       editingName,
       tempAgentName,
       updatingValues,
-      user
+      user,
     }
   },
   computed: {
@@ -131,6 +131,7 @@ export default {
       if (this.updatingValues) {
         return this.values || null
       }
+      this.tempAgentName = this.agentDoc ? this.agentDoc.agent_name : null
       return {
         agentName: this.agentDoc?.agent_name || null,
         profilePicture: this.userDoc?.user_image || null,
@@ -196,16 +197,16 @@ export default {
       this.updatingValues = true
       const newValues = this.values
 
-      const splitName = this.tempAgentName.split(" ")
+      const splitName = this.tempAgentName.split(' ')
       const firstName = splitName.shift()
-      const lastName = splitName.join(" ")
+      const lastName = splitName.join(' ')
 
       this.$resources.user.setValue
         .submit({
           email: newValues.email,
           email_signature: newValues.signature,
           first_name: firstName,
-          last_name: lastName
+          last_name: lastName,
         })
         .then(() => {
           this.$resources.agent.setValue.submit({
