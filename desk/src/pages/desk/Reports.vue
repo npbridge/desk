@@ -1,6 +1,11 @@
 <template>
   <div class="flex flex-col">
-    <div class="flex border-b h-[100px] px-[24px] shrink-0 mt-[15px] mb-[5px]">
+    <div class="text-right">
+      <SidebarCollapser class="mt-3 w-fit mr-6" />
+    </div>
+    <div
+      class="flex border-b md:h-[100px] px-[24px] shrink-0 mt-[15px] mb-[5px]"
+    >
       <div>
         <div class="grow my-auto text-[17px] font-semibold text-gray-900">
           Comparison Reports
@@ -18,9 +23,9 @@
       class="bg-[#F7F7F7] group flex items-center text-base font-medium text-gray-500 py-[10px] pl-[11px] pr-[17px] rounded-[6px]"
     >
       <div class="flex flex-row items-center group w-full">
-        <div class="sm:w-4/12">Name</div>
-        <div class="sm:w-7/12">Details</div>
-        <div class="sm:w-3/12 pl-[0.5rem]">Link</div>
+        <div class="w-4/12">Name</div>
+        <div class="w-7/12">Details</div>
+        <div class="w-3/12 pl-[0.5rem]">Link</div>
       </div>
     </div>
     <div
@@ -33,13 +38,13 @@
       <div v-for="report in reports" :key="report.heading">
         <div class="block rounded-[6px] py-[7px] px-[11px]">
           <div class="flex items-center text-base">
-            <div class="sm:w-4/12 pr-10">
+            <div class="w-4/12 pr-10">
               {{ report.heading }}
             </div>
-            <div class="sm:w-7/12 pr-10">
+            <div class="w-7/12 pr-10">
               {{ report.information }}
             </div>
-            <div class="sm:w-3/12 pr-10">
+            <div class="w-3/12 pr-10">
               <Button
                 @click="
                   () => {
@@ -58,6 +63,7 @@
 
 <script>
 import { ref } from 'vue'
+import SidebarCollapser from '../../components/global/SidebarCollapser.vue'
 
 export default {
   name: 'Reports',
@@ -79,8 +85,7 @@ export default {
       },
       {
         heading: 'Tickets Replied Over Time',
-        information:
-          'Find and compare the number of tickets replied over time',
+        information: 'Find and compare the number of tickets replied over time',
         to: {
           path: '/app/query-report/Tickets Replied To Over Time',
         },
@@ -102,12 +107,14 @@ export default {
       },
       {
         heading: 'Tickets Un-Resolved Over Time',
-        information: 'Find and compare the number of tickets un-resolved over time',
+        information:
+          'Find and compare the number of tickets un-resolved over time',
         to: {
           path: '/app/query-report/Tickets Un-Resolved Over Time',
         },
       },
     ]
   },
+  components: { SidebarCollapser },
 }
 </script>
