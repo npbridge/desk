@@ -376,6 +376,24 @@ def get_contact_by_name(contact):
 		return contact_doc
 
 @frappe.whitelist(allow_guest=True)
+def get_course_by_name(course):
+	if course:
+		course_doc = frappe.get_doc("Course", course)
+		return course_doc
+
+@frappe.whitelist(allow_guest=True)
+def get_tag_by_name(tag):
+	if tag:
+		tag_doc = frappe.get_doc("Helpdesk Tag", tag)
+		return tag_doc
+
+@frappe.whitelist(allow_guest=True)
+def get_template_by_name(template):
+	if template:
+		email_template_doc = frappe.get_doc("Email Template", template)
+		return email_template_doc
+
+@frappe.whitelist(allow_guest=True)
 def fetch_ticket_with_tags(tags): 
 	ticket_tag_doctype = frappe.get_list("Ticket Tag", fields = ['parent'], filters={'tag':('in', tags)}, parent_doctype="Ticket")
 	return [tag.parent for tag in ticket_tag_doctype]

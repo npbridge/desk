@@ -339,19 +339,19 @@ export default {
           {
             label: 'Auto Reply Templates',
             to: {
-              path: '/auto-reply-template',
+              path: '/frappedesk/templates',
             },
           },
           {
-            label: 'Courses Data',
+            label: 'Courses',
             to: {
-              path: '/courses/list',
+              path: '/frappedesk/courses',
             },
           },
           {
-            label: 'Tags Data',
+            label: 'Tags',
             to: {
-              path: '/tags/list',
+              path: '/frappedesk/tags',
             },
           },
         ]
