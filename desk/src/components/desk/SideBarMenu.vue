@@ -14,6 +14,9 @@
       />
       <!-- <CustomIcons name="frappedesk" /> -->
     </div>
+    <div class="self-end pr-[1rem] md:hidden" :onClick="closeSidebar">
+      <FeatherIcon name="x" width="20" height="20" />
+    </div>
     <div class="mb-auto space-y-[4px] select-none mx-[8px] text-gray-800">
       <div v-for="option in menuOptions" :key="option.label">
         <div
@@ -24,6 +27,7 @@
               if (option.children) {
                 option.children ? (option.expanded = !option.expanded) : {}
               } else if (option.to) {
+                closeSidebar()
                 $router.push(option.to)
               }
             }
@@ -51,6 +55,7 @@
             <div
               v-for="childOption in option.children"
               :key="childOption.label"
+              :onClick="closeSidebar"
             >
               <router-link
                 class="group py-[6.25px] rounded-[8px] flex items-center cursor-pointer hover:bg-gray-200"
@@ -497,6 +502,12 @@ export default {
     },
   },
   methods: {
+    closeSidebar() {
+      if (window.innerWidth < 768) {
+        document.getElementById('sidebar').style.width = '0px'
+        document.getElementById('sidebar').style.visibility = 'collapse'
+      }
+    },
     updateTicketCount() {
       if (this.user.agent) {
         this.$resources.myOpenTicketsCount.fetch()

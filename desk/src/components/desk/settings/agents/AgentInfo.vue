@@ -46,8 +46,8 @@
             />
           </div>
         </div>
-        <div class="flex flex-row space-x-[16px]">
-          <div class="grow">
+        <div class="flex flex-col md:flex-row md:space-x-[16px]">
+          <div class="md:grow">
             <Input
               label="E-mail"
               type="text"
@@ -55,7 +55,7 @@
               @change="(val) => (values.email = val)"
             />
           </div>
-          <div class="grow">
+          <div class="md:grow">
             <Input
               label="Team"
               type="select"
@@ -65,7 +65,7 @@
             />
           </div>
         </div>
-        <div class="grow">
+        <div class="md:grow">
           <Input
             label="Signature"
             type="textarea"
