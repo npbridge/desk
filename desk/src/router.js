@@ -191,6 +191,21 @@ const routes = [
         component: () => import('@/pages/desk/Contacts.vue'),
       },
       {
+        path: 'courses',
+        name: 'Courses',
+        component: () => import('@/pages/desk/content/Courses.vue'),
+      },
+      {
+        path: 'tags',
+        name: 'Tags',
+        component: () => import('@/pages/desk/content/Tags.vue'),
+      },
+      {
+        path: 'templates',
+        name: 'Templates',
+        component: () => import('@/pages/desk/content/Templates.vue'),
+      },
+      {
         path: 'comparison-reports',
         name: 'ComparisonReports',
         component: () => import('@/pages/desk/Reports.vue'),
@@ -209,6 +224,63 @@ const routes = [
               },
               {
                 label: route.params.contactId,
+              },
+            ]
+          },
+        },
+      },
+      {
+        path: 'courses/:courseId',
+        name: 'Course',
+        component: () => import('@/pages/desk/content/Course.vue'),
+        props: true,
+        meta: {
+          breadcrumbs(route) {
+            return [
+              {
+                label: 'Courses',
+                path: '/frappedesk/courses',
+              },
+              {
+                label: route.params.courseId,
+              },
+            ]
+          },
+        },
+      },
+      {
+        path: 'tags/:tagId',
+        name: 'Tag',
+        component: () => import('@/pages/desk/content/Tag.vue'),
+        props: true,
+        meta: {
+          breadcrumbs(route) {
+            return [
+              {
+                label: 'Tags',
+                path: '/frappedesk/tags',
+              },
+              {
+                label: route.params.tagId,
+              },
+            ]
+          },
+        },
+      },
+      {
+        path: 'templates/:templateId',
+        name: 'Template',
+        component: () => import('@/pages/desk/content/Template.vue'),
+        props: true,
+        meta: {
+          breadcrumbs(route) {
+            return [
+              {
+                label: 'Templates',
+                path: '/frappedesk/templates',
+              },
+              {
+                label: route.params.templateId,
               },
             ]
           },

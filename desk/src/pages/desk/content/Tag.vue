@@ -1,0 +1,39 @@
+<template>
+  <div class="flex flex-col">
+    <div class="flex">
+      <router-link
+        :to="{
+          path: '/frappedesk/tags',
+        }"
+        class="h-[20px] mx-[10px] mt-[26px] text-[12px] text-gray-600 stroke-gray-600 flex flex-row items-center hover:text-gray-700 hover:stroke-gray-700 select-none"
+        role="button"
+      >
+        <FeatherIcon name="arrow-left" class="w-[13px] h-[13px]" />
+        <div>Back to All Tags</div>
+      </router-link>
+    </div>
+    <div class="flex border-b h-[52px] px-[24px] shrink-0">
+      <div class="grow my-auto text-[16px] font-semibold text-gray-900">
+        Tags
+      </div>
+    </div>
+
+    <div class="flex flex-col md:flex-row w-full h-full">
+      <TagInfo class="shrink-0 border-r border-[#F4F5F6]" :tag="tagId" />
+    </div>
+  </div>
+</template>
+
+<script>
+import TagInfo from '@/components/desk/tags/TagInfo.vue'
+import { FeatherIcon } from 'frappe-ui'
+
+export default {
+  name: 'Tag',
+  props: ['tagId'],
+  components: {
+    TagInfo,
+    FeatherIcon,
+  },
+}
+</script>
