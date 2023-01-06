@@ -123,6 +123,14 @@ export default {
               appearance: 'success',
             })
           },
+          onError: (error) => {
+            this.$toast({
+              title:
+                'Error in updating. Make sure you have a default template.',
+              customIcon: 'circle-fail',
+              appearance: 'error',
+            })
+          },
         },
       }
     },

@@ -548,6 +548,9 @@ export default {
         'frappedesk/reports': 'Reports',
         'frappedesk/contacts': 'Contacts',
         'frappedesk/settings': 'Settings',
+        'frappedesk/templates': 'Auto Reply Templates',
+        'frappedesk/courses': 'Courses',
+        'frappedesk/tags': 'Tags',
       }
       Object.keys(routeMenuItemMap).forEach((route) => {
         if (this.$route.path.includes(route)) {
