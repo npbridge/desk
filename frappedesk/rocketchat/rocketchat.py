@@ -39,7 +39,7 @@ def getResponse(query, user, ticket_id, postData=data, headers=headers):
     defaultResponse = {
         "response": "Thank you for contacting Learner Support. I shall get back to you with answers to your queries.",
         "confidence": 0
-	}
+    }
     try:
         res = queryAPI(postData)
         if res.status_code == 200:
