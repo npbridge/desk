@@ -11,19 +11,19 @@ logger = frappe.logger("api", allow_site=True, file_count=50)
 
 
 headers = {
-	"content-type": "application/json"
+    "content-type": "application/json"
 }
 credentials = {
     "user": os.getenv('BOT_API_USERNAME'),
     "password": os.getenv('BOT_API_PASSWORD')
 }
 endPoints = {
-	"sendMessage": os.getenv('BOT_API_QUERY_ENDPOINT'),
+    "sendMessage": os.getenv('BOT_API_QUERY_ENDPOINT'),
     "getToken": os.getenv('BOT_API_TOKEN_END_POINT'),
 }
 
 data = {
-	"bot": os.getenv('BOT_UUID'),
+    "bot": os.getenv('BOT_UUID'),
     "query": "",
     "interface": os.getenv('BOT_INTERFACE'),
     "ticket": {
