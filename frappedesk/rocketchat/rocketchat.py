@@ -43,14 +43,18 @@ def getResponse(query, user, ticket_id, postData=data, headers=headers):
     try:
         res = queryAPI(postData)
         if res.status_code == 200:
-            defaultResponse["response"] = res.text
+            bot_message = res.json()
+            bot_message = json.loads(bot_message)
+            defaultResponse["response"] = bot_message["message"]
             defaultResponse["confidence"] = 1
         if res.status_code == 401:
             updatingToken = getAuthenticated()
             if updatingToken == 200:
                 res = queryAPI(postData)
                 if res.status_code == 200:
-                    defaultResponse["response"] = res.text
+                    bot_message = res.json()
+                    bot_message = json.loads(bot_message)
+                    defaultResponse["response"] = bot_message["message"]
                     defaultResponse["confidence"] = 1
             else:
                 logger.debug(f"Error while getting BOT API token")
