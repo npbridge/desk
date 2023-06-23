@@ -23,9 +23,9 @@ endPoints = {
 }
 
 data = {
-    "bot": os.getenv('BOT_UUID'),
+    "bot": os.getenv('BOT_API_UUID'),
     "query": "",
-    "interface": os.getenv('BOT_INTERFACE'),
+    "interface": os.getenv('BOT_API_INTERFACE'),
     "ticket": {
         "id": "",
         "user": ""
