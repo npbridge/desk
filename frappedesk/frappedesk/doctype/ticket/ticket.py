@@ -177,7 +177,7 @@ def create_communication_via_bot(doc, type):
         threshold_limit = frappe.db.get_single_value('Frappe Desk Settings', 'threshold_limit')
         use_bot_answers = frappe.db.get_single_value('Frappe Desk Settings', 'use_bot_answers')
         ## If use_bot_answers==TRUE, bot responses are available for every ticket
-        botResponse = getResponse(doc.content)
+        botResponse = getResponse(doc.content, doc.sender, doc.reference_name)
     
         if use_bot_answers and botResponse['confidence']>= threshold_limit/100:
             ## If threshold_limit >= set limit => Send Mail
