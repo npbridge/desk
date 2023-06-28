@@ -70,6 +70,7 @@ def getResponse(query, user, ticket_id, postData=data, headers=headers):
 
 def getAuthenticated():
     try:
+        headers.pop("Authorization", None)
         res = requests.post(
             endPoints["getToken"],
             data=json.dumps({
