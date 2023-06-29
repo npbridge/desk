@@ -67,7 +67,7 @@ export default {
   computed: {
     cleanedMessage() {
       if (this.comment?.content) {
-        return remove_script_and_style(this.comment.content)
+        return this.comment.content
       }
       return ''
     },
