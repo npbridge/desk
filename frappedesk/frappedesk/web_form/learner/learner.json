@@ -32,10 +32,10 @@
    "label": "Is Active"
   }
  ],
- "list_title": "Learners",
+ "list_title": "Learner Contacts",
  "login_required": 1,
  "max_attachment_size": 0,
- "modified": "2023-06-29 13:16:41.243100",
+ "modified": "2023-06-29 13:27:04.876504",
  "modified_by": "Administrator",
  "module": "FrappeDesk",
  "name": "learner",

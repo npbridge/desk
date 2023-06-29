@@ -28,10 +28,10 @@
    "label": "Status"
   }
  ],
- "list_title": "Learner Imports",
+ "list_title": "Learner Contact Imports",
  "login_required": 1,
  "max_attachment_size": 0,
- "modified": "2023-06-29 13:18:58.375671",
+ "modified": "2023-06-29 13:26:45.735680",
  "modified_by": "Administrator",
  "module": "FrappeDesk",
  "name": "add-learners",
