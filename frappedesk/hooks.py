@@ -42,7 +42,6 @@ doc_events = {
 	},
     "Learner": {
         "db_update": "frappedesk.learnersupport.api.add_or_update_user",
-        "on_trash": "frappedesk.learnersupport.api.delete_user"
 	}
 }
 

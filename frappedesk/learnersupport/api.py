@@ -17,7 +17,6 @@ api_endpoint = os.getenv('BOT_API_ENDPOINT')
 endpoints = {
 	"add_users": api_endpoint + "bot-api/hd-bulk-user/",
     "add_or_update_user": api_endpoint + "bot-api/hd-user/",
-    "delete_user": api_endpoint + "bot-api/hd-user/"
 }
 
 headers = {
@@ -56,13 +55,6 @@ def add_users_bulk_api(users):
 def add_or_update_user_api(user):
     res = requests.post(endpoints["add_or_update_user"], data=json.dumps(user),headers=headers)
     return res
-
-@auth_check
-def delete_user_api(email):
-    data = {
-        "user": email
-    }
-    return requests.delete(endpoints["delete_user"], data=json.dumps(data), headers=headers)
 
 """Hook Functions"""
 def add_users_bulk(doc, event):
@@ -109,11 +101,3 @@ def add_or_update_user(doc, event):
         add_or_update_user_api(user)
     except requests.exceptions.RequestException as e:
         logger.debug(f"GPTWarehouse Exception on adding user {doc}: {e}")
-    
-def delete_user(doc, event):
-    email = doc.email
-    try: 
-        delete_user_api(email)
-    except requests.exceptions.RequestException as e:
-        logger.debug(f"GPTWarehouse Exception on deleting user {doc}: {e}")
-        
