@@ -26,12 +26,17 @@
    "fieldname": "status",
    "fieldtype": "Select",
    "label": "Status"
+  },
+  {
+   "fieldname": "payload_count",
+   "fieldtype": "Int",
+   "label": "Payload Count"
   }
  ],
  "list_title": "Learner Contact Imports",
  "login_required": 1,
  "max_attachment_size": 0,
- "modified": "2023-06-29 14:17:58.172780",
+ "modified": "2023-06-29 15:25:22.743848",
  "modified_by": "Administrator",
  "module": "FrappeDesk",
  "name": "add-learners",
@@ -43,7 +48,7 @@
  "show_sidebar": 0,
  "success_message": "Learner import started successfully! ",
  "success_title": "Import Started!",
- "success_url": "/add-learners/list",
+ "success_url": "/learner-bulk/list",
  "title": "Learner Contact Importer",
  "web_form_fields": [
   {
