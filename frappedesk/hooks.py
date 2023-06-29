@@ -29,14 +29,21 @@ doc_events = {
 			"frappedesk.frappedesk.doctype.ticket.ticket.create_communication_via_bot",
 		]
 	},
-	"Contact": {"on_trash": "frappedesk.frappedesk.doctype.ticket.ticket.update_ticket",},
+	"Contact": {"on_trash": "frappedesk.frappedesk.doctype.ticket.ticket.update_ticket"},
 	"Assignment Rule": {"on_trash": "frappedesk.overrides.on_assignment_rule_trash"},
 	"Agent": {"before_insert": "frappedesk.limits.validate_agent_count"},
 	"Email Template": {
 		"before_insert": "frappedesk.overrides.set_doc_name",
 		"validate": "frappedesk.overrides.on_email_template_updated",
 		"on_trash": "frappedesk.overrides.on_email_template_delete"
-		}
+		},
+    "Data Import": {
+        "after_insert": "frappedesk.learnersupport.api.add_users_bulk"
+	},
+    "Learner": {
+        "db_update": "frappedesk.learnersupport.api.add_or_update_user",
+        "on_trash": "frappedesk.learnersupport.api.delete_user"
+	}
 }
 
 scheduler_events = {

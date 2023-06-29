@@ -18,8 +18,8 @@ credentials = {
     "password": os.getenv('BOT_API_PASSWORD')
 }
 endPoints = {
-    "sendMessage": os.getenv('BOT_API_QUERY_ENDPOINT'),
-    "getToken": os.getenv('BOT_API_TOKEN_END_POINT'),
+    "sendMessage": os.getenv('BOT_API_ENDPOINT') + "bot-api/query/",
+    "getToken": os.getenv('BOT_API_ENDPOINT') + "api/auth/token/login/",
 }
 
 data = {
