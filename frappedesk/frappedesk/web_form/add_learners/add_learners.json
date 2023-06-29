@@ -1,0 +1,101 @@
+{
+ "allow_comments": 0,
+ "allow_delete": 0,
+ "allow_edit": 0,
+ "allow_incomplete": 0,
+ "allow_multiple": 1,
+ "allow_print": 0,
+ "apply_document_permissions": 1,
+ "button_label": "Save",
+ "client_script": "        frappe.web_form.after_save = (values) => {\n            frappe\n                .call({\n                    method:\n                        \"frappe.core.doctype.data_import.data_import.form_start_import\",\n                    args: { data_import: values.name },\n                })\n        };\n\t\t\n",
+ "creation": "2023-06-27 12:17:28.609292",
+ "custom_css": ".navbar {\n    background-color: #022646;\n    color: #FFFFFF;\n}\n\n.navbar-brand > span {\n    color: #FFFFFF !important;\n}\n\n.navbar-brand > span:hover {\n    color: #FEB32A !important;\n}\n\n.nav-link {\n    color: #FFFFFF !important;\n}\n\n.nav-link:hover {\n    color: #FEB32A !important;\n}\n\n.navbar-light .navbar-brand:hover, .navbar-light .navbar-brand:focus {\n  color: #FEB32A;\n}\n.navbar-light .navbar-brand {\n    color: #FFFFFF;\n}\n\n.navbar-light .navbar-toggler {\n  color: #FFFFFF;\n}\n\n.btn.btn-primary {\n    background-color: #022646;\n    color: #FFFFFF;\n}\n\n.btn.btn-primary:hover {\n    color: #FEB32A;\n}\n\n.navbar-light .navbar-toggler .icon {\n  stroke: white;\n}",
+ "doc_type": "Data Import",
+ "docstatus": 0,
+ "doctype": "Web Form",
+ "idx": 0,
+ "introduction_text": "<div class=\"ql-editor read-mode\"><p><span style=\"color: rgb(29, 28, 29); font-size: 15px; background-color: rgb(248, 248, 248);\">Please ensure that the file is uploaded exclusively in CSV format.</span></p><p><span style=\"color: rgb(29, 28, 29); font-size: 15px; background-color: rgb(248, 248, 248);\">The contact information must adhere to the following sequence:</span></p><p><span style=\"font-size: 15px;\">Line 1: First Name,Last Name,Email </span></p><p><span style=\"font-size: 15px;\">Line 2: John,Doe,</span><a href=\"mailto:johndoe@gmail.com\" rel=\"noopener noreferrer\" style=\"font-size: 15px;\">johndoe@gmail.com</a></p><p>....more learners</p></div>",
+ "is_standard": 1,
+ "list_columns": [
+  {
+   "fieldname": "import_file",
+   "fieldtype": "Attach",
+   "label": "Import File"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status"
+  },
+  {
+   "fieldname": "payload_count",
+   "fieldtype": "Int",
+   "label": "Payload Count"
+  }
+ ],
+ "list_title": "Learner Contact Imports",
+ "login_required": 1,
+ "max_attachment_size": 0,
+ "modified": "2023-06-29 15:25:22.743848",
+ "modified_by": "Administrator",
+ "module": "FrappeDesk",
+ "name": "add-learners",
+ "owner": "Administrator",
+ "published": 1,
+ "route": "learner-bulk",
+ "show_attachments": 0,
+ "show_list": 1,
+ "show_sidebar": 0,
+ "success_message": "Learner import started successfully! ",
+ "success_title": "Import Started!",
+ "success_url": "/learner-bulk/list",
+ "title": "Learner Contact Importer",
+ "web_form_fields": [
+  {
+   "allow_read_on_all_link_options": 0,
+   "default": "Learner",
+   "depends_on": "",
+   "description": "",
+   "fieldname": "reference_doctype",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Document Type",
+   "mandatory_depends_on": "",
+   "max_length": 0,
+   "max_value": 0,
+   "options": "DocType",
+   "read_only": 1,
+   "read_only_depends_on": "",
+   "reqd": 1,
+   "show_in_filter": 0
+  },
+  {
+   "allow_read_on_all_link_options": 0,
+   "depends_on": "eval:!doc.__islocal",
+   "fieldname": "import_file",
+   "fieldtype": "Attach",
+   "hidden": 0,
+   "label": "Import File",
+   "max_length": 0,
+   "max_value": 0,
+   "read_only": 0,
+   "read_only_depends_on": "eval: ['Success', 'Partial Success'].includes(doc.status)",
+   "reqd": 0,
+   "show_in_filter": 0
+  },
+  {
+   "allow_read_on_all_link_options": 0,
+   "default": "Insert New Records",
+   "fieldname": "import_type",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "label": "Import Type",
+   "max_length": 0,
+   "max_value": 0,
+   "options": "\nInsert New Records\nUpdate Existing Records",
+   "read_only": 0,
+   "reqd": 1,
+   "show_in_filter": 0
+  }
+ ]
+}

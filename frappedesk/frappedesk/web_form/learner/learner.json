@@ -1,0 +1,103 @@
+{
+ "allow_comments": 0,
+ "allow_delete": 1,
+ "allow_edit": 1,
+ "allow_incomplete": 0,
+ "allow_multiple": 1,
+ "allow_print": 0,
+ "apply_document_permissions": 1,
+ "button_label": "Save",
+ "client_script": "        frappe.web_form.after_save = (values) => {\n        console.log(\"values\", values)\n            frappe\n                .call({\n                    method:\n                        \"frappedesk.learnersupport.api.add_or_update_user\",\n                    args: { doc: values, event: \"form_submit\"  },\n                })\n        };\n\t\t\n",
+ "creation": "2023-06-27 15:32:36.729177",
+ "custom_css": ".navbar {\n    background-color: #022646;\n    color: #FFFFFF;\n}\n\n.navbar-brand > span {\n    color: #FFFFFF !important;\n}\n\n.navbar-brand > span:hover {\n    color: #FEB32A !important;\n}\n\n.nav-link {\n    color: #FFFFFF !important;\n}\n\n.nav-link:hover {\n    color: #FEB32A !important;\n}\n\n.navbar-light .navbar-brand:hover, .navbar-light .navbar-brand:focus {\n  color: #FEB32A;\n}\n.navbar-light .navbar-brand {\n    color: #FFFFFF;\n}\n\n.navbar-light .navbar-toggler {\n  color: #FFFFFF;\n}\n\n.btn.btn-primary {\n    background-color: #022646;\n    color: #FFFFFF;\n}\n\n.btn.btn-primary:hover {\n    color: #FEB32A;\n}\n\n.navbar-light .navbar-toggler .icon {\n  stroke: white;\n}",
+ "doc_type": "Learner",
+ "docstatus": 0,
+ "doctype": "Web Form",
+ "idx": 0,
+ "is_standard": 1,
+ "list_columns": [
+  {
+   "fieldname": "first_name",
+   "fieldtype": "Data",
+   "label": "First Name"
+  },
+  {
+   "fieldname": "email",
+   "fieldtype": "Data",
+   "label": "Email"
+  },
+  {
+   "fieldname": "is_active",
+   "fieldtype": "Check",
+   "label": "Is Active"
+  }
+ ],
+ "list_title": "Learner Contacts",
+ "login_required": 1,
+ "max_attachment_size": 0,
+ "modified": "2023-06-29 13:27:04.876504",
+ "modified_by": "Administrator",
+ "module": "FrappeDesk",
+ "name": "learner",
+ "owner": "Administrator",
+ "published": 1,
+ "route": "learner",
+ "show_attachments": 0,
+ "show_list": 1,
+ "show_sidebar": 0,
+ "success_title": "Learner Added!",
+ "success_url": "/learner/list",
+ "title": "Learner Contact Entry",
+ "web_form_fields": [
+  {
+   "allow_read_on_all_link_options": 0,
+   "fieldname": "first_name",
+   "fieldtype": "Data",
+   "hidden": 0,
+   "label": "First Name",
+   "max_length": 0,
+   "max_value": 0,
+   "read_only": 0,
+   "reqd": 1,
+   "show_in_filter": 0
+  },
+  {
+   "allow_read_on_all_link_options": 0,
+   "fieldname": "last_name",
+   "fieldtype": "Data",
+   "hidden": 0,
+   "label": "Last Name",
+   "max_length": 0,
+   "max_value": 0,
+   "read_only": 0,
+   "reqd": 0,
+   "show_in_filter": 0
+  },
+  {
+   "allow_read_on_all_link_options": 0,
+   "fieldname": "email",
+   "fieldtype": "Data",
+   "hidden": 0,
+   "label": "Email",
+   "max_length": 0,
+   "max_value": 0,
+   "options": "Email",
+   "read_only": 0,
+   "reqd": 1,
+   "show_in_filter": 0
+  },
+  {
+   "allow_read_on_all_link_options": 0,
+   "default": "1",
+   "fieldname": "is_active",
+   "fieldtype": "Check",
+   "hidden": 0,
+   "label": "Is Active",
+   "max_length": 0,
+   "max_value": 0,
+   "read_only": 0,
+   "reqd": 0,
+   "show_in_filter": 0
+  }
+ ]
+}
