@@ -22,7 +22,8 @@
   "views",
   "helpful",
   "not_helpful",
-  "note"
+  "note",
+  "use_in_bot"
  ],
  "fields": [
   {
@@ -130,13 +131,19 @@
    "fieldname": "note",
    "fieldtype": "Long Text",
    "label": "Note"
+  },
+  {
+   "default": "0",
+   "fieldname": "use_in_bot",
+   "fieldtype": "Check",
+   "label": "Use In Bot"
   }
  ],
  "has_web_view": 1,
  "index_web_pages_for_search": 1,
  "is_published_field": "published",
  "links": [],
- "modified": "2022-08-30 11:46:42.451319",
+ "modified": "2023-07-03 12:49:09.722253",
  "modified_by": "Administrator",
  "module": "FrappeDesk",
  "name": "Article",

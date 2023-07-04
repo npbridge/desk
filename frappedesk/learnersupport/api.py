@@ -14,9 +14,11 @@ logger = frappe.logger("api", allow_site=True, file_count=50)
 load_dotenv()
 
 api_endpoint = os.getenv('BOT_API_ENDPOINT') 
+# TODO: Update the path once api done
 endpoints = {
 	"add_users": api_endpoint + "bot-api/hd-bulk-user/",
     "add_or_update_user": api_endpoint + "bot-api/hd-user/",
+    "add_or_update_doc": api_endpoint + "bot-api/hd-doc/",
 }
 
 headers = {
@@ -53,7 +55,17 @@ def add_users_bulk_api(users):
 
 @auth_check
 def add_or_update_user_api(user):
-    res = requests.post(endpoints["add_or_update_user"], data=json.dumps(user),headers=headers)
+    res = requests.post(endpoints["add_or_update_user"], data=json.dumps(user), headers=headers)
+    return res
+
+@auth_check
+def add_or_update_doc_api(document):
+    res = requests.post(endpoints["add_or_update_doc"], data=json.dumps(document), headers=headers)
+    return res
+
+@auth_check
+def delete_doc_api(document):
+    res = requests.post(endpoints["add_or_update_doc"], data=json.dumps(document), headers=headers)
     return res
 
 """Hook Functions"""
@@ -85,7 +97,7 @@ def add_users_bulk(doc, event):
         except requests.exceptions.RequestException as e:
             logger.debug(f"GPTWarehouse Exception on adding users in bulk: {e}")
 
-@frappe.whitelist() # type: ignore
+@frappe.whitelist() 
 def add_or_update_user(doc, event):
     if isinstance(doc, str):
         doc = json.loads(doc)
@@ -101,3 +113,36 @@ def add_or_update_user(doc, event):
         add_or_update_user_api(user)
     except requests.exceptions.RequestException as e:
         logger.debug(f"GPTWarehouse Exception on adding user {doc}: {e}")
+
+@frappe.whitelist()
+def add_or_update_doc(doc, event):
+    if not doc.use_in_bot:
+        return
+    
+    # Update doc in gpt warehouse
+    document = {
+        "source": "HD",
+        "source_id": doc.name,
+        "title": doc.title,
+        "content": doc.content
+    }
+    try: 
+        add_or_update_doc_api(document)
+    except requests.exceptions.RequestException as e:
+        logger.debug(f"GPTWarehouse Exception on adding/updating document {document}: {e}")
+
+@frappe.whitelist()
+def delete_doc(doc, event):
+    if not doc.use_in_bot:
+        return
+    
+    document = {
+        "source": "HD",
+        "source_id": doc.name,
+        "title": doc.title,
+        "content": doc.content
+    }
+    try: 
+        delete_doc_api(document)
+    except requests.exceptions.RequestException as e:
+        logger.debug(f"GPTWarehouse Exception on deleting document {document}: {e}")

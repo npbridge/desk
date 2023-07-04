@@ -42,6 +42,9 @@ doc_events = {
 	},
     "Learner": {
         "db_update": "frappedesk.learnersupport.api.add_or_update_user",
+	},
+    "Article": {
+        "on_update": "frappedesk.frappedesk.doctype.article.article.update_in_gpt"
 	}
 }
 
