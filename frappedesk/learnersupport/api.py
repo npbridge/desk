@@ -115,7 +115,7 @@ def add_or_update_user(doc, event):
     except requests.exceptions.RequestException as e:
         logger.debug(f"GPTWarehouse Exception on adding user {doc}: {e}")
 
-def create_gpt_doc(doc, event):     
+def create_gpt_doc(doc, event):  
     course = {
         "id": doc.name,
         "title": doc.title,

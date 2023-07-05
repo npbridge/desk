@@ -6,7 +6,7 @@ load_dotenv()
 import frappe
 from frappe.utils import logger
 
-logger.set_log_level("DEBUG")
+logger.set_log_level("DEBUG") # type: ignore
 logger = frappe.logger("api", allow_site=True, file_count=50)
 
 
@@ -18,7 +18,7 @@ credentials = {
     "password": os.getenv('BOT_API_PASSWORD')
 }
 endPoints = {
-    "sendMessage": os.getenv('BOT_API_ENDPOINT') + "bot-api/query/",
+    "sendMessage": os.getenv('BOT_API_ENDPOINT') + "bot-api/query/", # type ignore
     "getToken": os.getenv('BOT_API_ENDPOINT') + "api/auth/token/login/",
 }
 
