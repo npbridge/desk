@@ -34,9 +34,7 @@ def auth_check(func):
     def wrapper_auth_check(*args,**kwargs):
         headers["Authorization"] = "Token " + os.environ["BOT_API_TOKEN"]
         res = func(*args,**kwargs)
-        print(res.status_code)
         if res.status_code == 401:
-            print("updating token")
             updatingToken = getAuthenticated()
             if updatingToken == 200:
                 headers["Authorization"] = "Token " + os.environ["BOT_API_TOKEN"]
@@ -140,5 +138,4 @@ def create_gpt_doc(doc, event):
     try: 
         create_gpt_doc_api(course)
     except requests.exceptions.RequestException as e:
-        print("error", e)
         logger.debug(f"GPTWarehouse Exception on creating gpt doc {doc}: {e}")
