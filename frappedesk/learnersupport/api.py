@@ -94,7 +94,7 @@ def add_users_bulk(doc, event):
         try:
             add_users_bulk_api(users)
         except requests.exceptions.RequestException as e:
-            logger.debug(f"GPTWarehouse Exception on adding users in bulk: {e}")
+            logger.error(f"GPTWarehouse Exception on adding users in bulk: {e}")
 
 @frappe.whitelist() # type: ignore
 def add_or_update_user(doc, event):
@@ -111,7 +111,7 @@ def add_or_update_user(doc, event):
     try:
         add_or_update_user_api(user)
     except requests.exceptions.RequestException as e:
-        logger.debug(f"GPTWarehouse Exception on adding user {doc}: {e}")
+        logger.error(f"GPTWarehouse Exception on adding user {doc}: {e}")
 
 def create_gpt_doc(doc, event):  
     course = {
@@ -138,4 +138,4 @@ def create_gpt_doc(doc, event):
     try: 
         create_gpt_doc_api(course)
     except requests.exceptions.RequestException as e:
-        logger.debug(f"GPTWarehouse Exception on creating gpt doc {doc}: {e}")
+        logger.error(f"GPTWarehouse Exception on creating gpt doc {doc}: {e}")
