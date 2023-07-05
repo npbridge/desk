@@ -22,10 +22,7 @@
     >
       <div v-if="!manager.loading">
         <div v-if="manager.list.length > 0">
-          <div
-            v-for="(course, index) in manager.list"
-            :key="course.description"
-          >
+          <div v-for="(course, index) in manager.list" :key="course.title">
             <CourseListItem
               :class="index == 0 ? 'mt-[9px] mb-[2px]' : 'my-[2px]'"
               :course="course"

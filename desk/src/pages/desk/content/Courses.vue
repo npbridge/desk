@@ -7,7 +7,7 @@
         :options="{
           cache: ['Courses', 'Desk'],
           doctype: 'Course',
-          fields: ['name', 'description'],
+          fields: ['name', 'title', 'description'],
           limit: 40,
           start_page: initialPage,
           route_query_pagination: true,

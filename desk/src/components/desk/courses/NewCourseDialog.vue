@@ -88,7 +88,7 @@ export default {
 
       let doc = {
         doctype: 'Course',
-        description: this.courseName,
+        title: this.courseName,
       }
 
       this.$resources.createCourse.submit({

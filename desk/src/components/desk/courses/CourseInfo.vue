@@ -6,8 +6,8 @@
           class="grow"
           label="Course Name"
           type="text"
-          :value="values?.description"
-          @change="(val) => (values.description = val)"
+          :value="values?.title"
+          @change="(val) => (values.title = val)"
         />
         <div class="w-full flex flex-row">
           <div>
@@ -58,7 +58,7 @@ export default {
         return this.values || null
       }
       return {
-        description: this.courseDoc ? this.courseDoc.description : null,
+        title: this.courseDoc ? this.courseDoc.title : null,
       }
     },
   },
@@ -84,7 +84,7 @@ export default {
   methods: {
     save() {
       this.$resources.course.setValue.submit({
-        description: this.values.description,
+        title: this.values.title,
       })
     },
     cancel() {

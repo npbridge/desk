@@ -17,7 +17,7 @@
         class="w-full group flex items-center"
       >
         <div class="w-1/1 truncate pr-10">
-          {{ course.description }}
+          {{ course.title }}
         </div>
       </router-link>
     </div>

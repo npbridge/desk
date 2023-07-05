@@ -17,6 +17,7 @@ api_endpoint = os.getenv('BOT_API_ENDPOINT')
 endpoints = {
 	"add_users": api_endpoint + "bot-api/hd-bulk-user/",
     "add_or_update_user": api_endpoint + "bot-api/hd-user/",
+    "add_or_update_doc": api_endpoint + "bot-api/hd-doc/"
 }
 
 headers = {
@@ -33,7 +34,9 @@ def auth_check(func):
     def wrapper_auth_check(*args,**kwargs):
         headers["Authorization"] = "Token " + os.environ["BOT_API_TOKEN"]
         res = func(*args,**kwargs)
+        print(res.status_code)
         if res.status_code == 401:
+            print("updating token")
             updatingToken = getAuthenticated()
             if updatingToken == 200:
                 headers["Authorization"] = "Token " + os.environ["BOT_API_TOKEN"]
@@ -53,8 +56,18 @@ def add_users_bulk_api(users):
 
 @auth_check
 def add_or_update_user_api(user):
-    res = requests.post(endpoints["add_or_update_user"], data=json.dumps(user),headers=headers)
+    res = requests.post(endpoints["add_or_update_user"], data=json.dumps(user), headers=headers)
     return res
+
+@auth_check
+def create_gpt_doc_api(course):
+    bot_uuid = os.getenv("BOT_API_UUID")
+    data = {
+        "course": course,
+        "bot": bot_uuid
+    }
+    res = requests.post(endpoints["add_or_update_doc"], data=json.dumps(data), headers=headers)
+    return res 
 
 """Hook Functions"""
 def add_users_bulk(doc, event):
@@ -101,3 +114,31 @@ def add_or_update_user(doc, event):
         add_or_update_user_api(user)
     except requests.exceptions.RequestException as e:
         logger.debug(f"GPTWarehouse Exception on adding user {doc}: {e}")
+
+def create_gpt_doc(doc, event):     
+    course = {
+        "id": doc.name,
+        "title": doc.title,
+        "description": doc.description,
+        "url": doc.url,
+        "number": doc.number,
+        "start_date": doc.start_date,
+        "end_date": doc.end_date,
+        "instructors": doc.instructors,
+        "schedule": doc.schedule,
+        "assignment": [
+            {
+            "title": assignment.title,
+            "description": assignment.description,
+            "start_date": assignment.start_date,
+            "end_date": assignment.end_date,
+            "type": assignment.type
+            } 
+            for assignment in doc.assignment
+            ]
+    }
+    try: 
+        create_gpt_doc_api(course)
+    except requests.exceptions.RequestException as e:
+        print("error", e)
+        logger.debug(f"GPTWarehouse Exception on creating gpt doc {doc}: {e}")

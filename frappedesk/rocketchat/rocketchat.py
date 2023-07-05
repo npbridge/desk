@@ -59,10 +59,10 @@ def getResponse(query, user, ticket_id, postData=data, headers=headers):
             else:
                 logger.debug(f"Error while getting BOT API token")
 
-    except requests.exceptions.Timeout as errt:
-        logger.debug(f"Middleware Timeout Error: {errt}")
-    except requests.exceptions.TooManyRedirects as errr:
-        logger.debug(f"Middleware Too Many Redirect: {errr}")
+    except requests.exceptions.Timeout as e:
+        logger.debug(f"Middleware Timeout Error: {e}")
+    except requests.exceptions.TooManyRedirects as e:
+        logger.debug(f"Middleware Too Many Redirect: {e}")
     except requests.exceptions.RequestException as e:
         logger.debug(f"Middleware Exception: {e}")
 
@@ -82,10 +82,12 @@ def getAuthenticated():
         if res.status_code == 200:
             response = res.json()
             os.environ["BOT_API_TOKEN"] = response["auth_token"]
-    except requests.exceptions.Timeout as errt:
-        logger.debug(f"Getting Token Timeout Error: {errt}")
-    except requests.exceptions.TooManyRedirects as errr:
-        logger.debug(f"Getting Token Too Many Redirect: {errr}")
+        else:
+            logger.debug(f"Error in fetching token, status code is {res.status_code}")
+    except requests.exceptions.Timeout as e:
+        logger.debug(f"Getting Token Timeout Error: {e}")
+    except requests.exceptions.TooManyRedirects as e:
+        logger.debug(f"Getting Token Too Many Redirect: {e}")
     except requests.exceptions.RequestException as e:
         logger.debug(f"Getting Token Exception: {e}")
 
