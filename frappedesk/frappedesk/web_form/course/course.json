@@ -1,0 +1,183 @@
+{
+ "allow_comments": 0,
+ "allow_delete": 1,
+ "allow_edit": 1,
+ "allow_incomplete": 0,
+ "allow_multiple": 1,
+ "allow_print": 0,
+ "apply_document_permissions": 1,
+ "button_label": "Save",
+ "client_script": "",
+ "creation": "2023-07-05 11:33:27.804879",
+ "custom_css": "\nbody {\n    background:  var(--bg-light-gray);\n}\n\n.web-list-container {\n    background: white;\n}\n\n#page-course{ flex:1; }",
+ "doc_type": "Course",
+ "docstatus": 0,
+ "doctype": "Web Form",
+ "idx": 0,
+ "is_standard": 1,
+ "list_columns": [
+  {
+   "fieldname": "title",
+   "fieldtype": "Data",
+   "label": "Title"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Data",
+   "label": "Description"
+  },
+  {
+   "fieldname": "number",
+   "fieldtype": "Data",
+   "label": "Number"
+  },
+  {
+   "fieldname": "start_date",
+   "fieldtype": "Date",
+   "label": "Start Date"
+  },
+  {
+   "fieldname": "end_date",
+   "fieldtype": "Date",
+   "label": "End Date"
+  },
+  {
+   "fieldname": "instructors",
+   "fieldtype": "Data",
+   "label": "Instructors"
+  },
+  {
+   "fieldname": "schedule",
+   "fieldtype": "Data",
+   "label": "Schedule"
+  }
+ ],
+ "list_title": "Courses",
+ "login_required": 1,
+ "max_attachment_size": 0,
+ "modified": "2023-07-05 17:07:56.359224",
+ "modified_by": "Administrator",
+ "module": "FrappeDesk",
+ "name": "course",
+ "owner": "Administrator",
+ "published": 1,
+ "route": "course",
+ "show_attachments": 0,
+ "show_list": 1,
+ "show_sidebar": 0,
+ "success_message": "",
+ "success_title": "Course Added Successfully!",
+ "success_url": "/course/list",
+ "title": "Course",
+ "web_form_fields": [
+  {
+   "allow_read_on_all_link_options": 0,
+   "fieldname": "title",
+   "fieldtype": "Data",
+   "hidden": 0,
+   "label": "Title",
+   "max_length": 0,
+   "max_value": 0,
+   "read_only": 0,
+   "reqd": 1,
+   "show_in_filter": 0
+  },
+  {
+   "allow_read_on_all_link_options": 0,
+   "fieldname": "number",
+   "fieldtype": "Data",
+   "hidden": 0,
+   "label": "Number",
+   "max_length": 0,
+   "max_value": 0,
+   "read_only": 0,
+   "reqd": 0,
+   "show_in_filter": 0
+  },
+  {
+   "allow_read_on_all_link_options": 0,
+   "fieldname": "description",
+   "fieldtype": "Data",
+   "hidden": 0,
+   "label": "Description",
+   "max_length": 0,
+   "max_value": 0,
+   "read_only": 0,
+   "reqd": 0,
+   "show_in_filter": 0
+  },
+  {
+   "allow_read_on_all_link_options": 0,
+   "fieldname": "url",
+   "fieldtype": "Data",
+   "hidden": 0,
+   "label": "Url",
+   "max_length": 0,
+   "max_value": 0,
+   "read_only": 0,
+   "reqd": 0,
+   "show_in_filter": 0
+  },
+  {
+   "allow_read_on_all_link_options": 0,
+   "fieldname": "start_date",
+   "fieldtype": "Date",
+   "hidden": 0,
+   "label": "Start Date",
+   "max_length": 0,
+   "max_value": 0,
+   "read_only": 0,
+   "reqd": 1,
+   "show_in_filter": 0
+  },
+  {
+   "allow_read_on_all_link_options": 0,
+   "fieldname": "end_date",
+   "fieldtype": "Date",
+   "hidden": 0,
+   "label": "End Date",
+   "max_length": 0,
+   "max_value": 0,
+   "read_only": 0,
+   "reqd": 1,
+   "show_in_filter": 0
+  },
+  {
+   "allow_read_on_all_link_options": 0,
+   "fieldname": "instructors",
+   "fieldtype": "Data",
+   "hidden": 0,
+   "label": "Instructors",
+   "max_length": 0,
+   "max_value": 0,
+   "read_only": 0,
+   "reqd": 0,
+   "show_in_filter": 0
+  },
+  {
+   "allow_read_on_all_link_options": 0,
+   "fieldname": "schedule",
+   "fieldtype": "Data",
+   "hidden": 0,
+   "label": "Schedule",
+   "max_length": 0,
+   "max_value": 0,
+   "read_only": 0,
+   "reqd": 0,
+   "show_in_filter": 0
+  },
+  {
+   "allow_read_on_all_link_options": 0,
+   "fieldname": "assignment",
+   "fieldtype": "Table",
+   "hidden": 0,
+   "label": "Assignment",
+   "max_length": 0,
+   "max_value": 0,
+   "options": "Assignment",
+   "read_only": 0,
+   "reqd": 0,
+   "show_in_filter": 0
+  }
+ ]
+}
