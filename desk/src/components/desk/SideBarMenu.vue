@@ -335,12 +335,12 @@ export default {
               path: '/frappedesk/templates',
             },
           },
-          {
-            label: 'Courses',
-            to: {
-              path: '/frappedesk/courses',
-            },
-          },
+          // {
+          //   label: 'Courses',
+          //   to: {
+          //     path: '/frappedesk/courses',
+          //   },
+          // },
           {
             label: 'Tags',
             to: {
