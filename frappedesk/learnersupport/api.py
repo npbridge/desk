@@ -14,11 +14,11 @@ logger = frappe.logger("api", allow_site=True, file_count=50)
 load_dotenv()
 
 api_endpoint = os.getenv('BOT_API_ENDPOINT') 
-# TODO: Update the path once api done
 endpoints = {
-	"add_users": api_endpoint + "bot-api/hd-bulk-user/",
-  "add_or_update_user": api_endpoint + "bot-api/hd-user/",
-  "add_or_update_doc": api_endpoint + "bot-api/hd-doc/"
+    "add_users": api_endpoint + "bot-api/hd-bulk-user/",
+    "add_or_update_user": api_endpoint + "bot-api/hd-user/",
+    "add_or_update_course_doc": api_endpoint + "bot-api/hd-course-doc/",
+    "add_or_update_doc": api_endpoint + "bot-api/hd-doc/"
 }
 
 headers = {
@@ -59,27 +59,37 @@ def add_or_update_user_api(user):
     return res
 
 @auth_check
-def add_or_update_doc_api(document):
-    res = requests.post(endpoints["add_or_update_doc"], data=json.dumps(document), headers=headers)
-    return res
-
-@auth_check
-def delete_doc_api(document):
-    res = requests.post(endpoints["add_or_update_doc"], data=json.dumps(document), headers=headers)
-    return res
-
-@auth_check
-def create_gpt_doc_api(course):
+def create_course_doc_api(course):
     bot_uuid = os.getenv("BOT_API_UUID")
     data = {
         "course": course,
         "bot": bot_uuid
     }
-    res = requests.post(endpoints["add_or_update_doc"], data=json.dumps(data), headers=headers)
+    res = requests.post(endpoints["add_or_update_course_doc"], data=json.dumps(data), headers=headers)
     return res 
+
+@auth_check
+def add_or_update_doc_api(document):
+    bot_uuid = os.getenv("BOT_API_UUID")
+    data = {
+        "doc": document,
+        "bot": bot_uuid
+    }
+    res = requests.post(endpoints["add_or_update_doc"], data=json.dumps(data), headers=headers)
+    return res
+
+@auth_check
+def delete_doc_api(id):
+    data = {
+        "id": id,
+    }
+    res = requests.delete(endpoints["add_or_update_doc"], data=json.dumps(data), headers=headers)
+    return res
+
 
 """Hook Functions"""
 def add_users_bulk(doc, event):
+    """Adding users in bulk in gpt warehouse"""
     if doc.reference_doctype == "Learner" and doc.import_file:
         student_groups = get_student_groups()
         user_filename = frappe.get_site_path() + doc.import_file
@@ -109,6 +119,7 @@ def add_users_bulk(doc, event):
 
 @frappe.whitelist() 
 def add_or_update_user(doc, event):
+    """Adding or updating user in gpt warehouse"""
     if isinstance(doc, str):
         doc = json.loads(doc)
     student_groups = get_student_groups()
@@ -124,7 +135,9 @@ def add_or_update_user(doc, event):
     except requests.exceptions.RequestException as e:
         logger.error(f"GPTWarehouse Exception on adding user {doc}: {e}")
 
-def create_gpt_doc(doc, event):  
+@frappe.whitelist() 
+def create_course_doc(doc, event):  
+    """Creating doc from course info"""
     course = {
         "id": doc.name,
         "title": doc.title,
@@ -147,39 +160,38 @@ def create_gpt_doc(doc, event):
             ]
     }
     try: 
-        create_gpt_doc_api(course)
+        create_course_doc_api(course)
     except requests.exceptions.RequestException as e:
         logger.error(f"GPTWarehouse Exception on creating gpt doc {doc}: {e}")
 
 @frappe.whitelist()
 def add_or_update_doc(doc, event):
-    if not doc.use_in_bot:
-        return
-    
-    # Update doc in gpt warehouse
-    document = {
-        "source": "HD",
-        "source_id": doc.name,
-        "title": doc.title,
-        "content": doc.content
-    }
-    try: 
-        add_or_update_doc_api(document)
-    except requests.exceptions.RequestException as e:
-        logger.debug(f"GPTWarehouse Exception on adding/updating document {document}: {e}")
+    """Creating doc in gpt warehouse from knowledge base"""
+    if doc.use_in_bot:
+        document = {
+            "source": "hd",
+            "id": doc.name,
+            "title": doc.title,
+            "content": doc.content
+        }
+        try: 
+            add_or_update_doc_api(document)
+        except requests.exceptions.RequestException as e:
+            logger.debug(f"GPTWarehouse Exception on adding/updating document {document}: {e}")
+    else:
+        try: 
+            delete_doc_api(doc.name)
+        except requests.exceptions.RequestException as e:
+            logger.debug(f"GPTWarehouse Exception on deleting document {doc.name}: {e}")
+
 
 @frappe.whitelist()
 def delete_doc(doc, event):
+    """Deleting doc in gpt warehouse from knowledge base"""
     if not doc.use_in_bot:
         return
     
-    document = {
-        "source": "HD",
-        "source_id": doc.name,
-        "title": doc.title,
-        "content": doc.content
-    }
     try: 
-        delete_doc_api(document)
+        delete_doc_api(doc.name)
     except requests.exceptions.RequestException as e:
-        logger.debug(f"GPTWarehouse Exception on deleting document {document}: {e}")
+        logger.debug(f"GPTWarehouse Exception on deleting document {doc.name}: {e}")

@@ -16,15 +16,14 @@
           <FeatherIcon name="external-link" class="w-4" />
         </a>
       </div>
-      <div
-        v-if="article.use_in_bot"
-        class="flex flex-row justify-between items-center"
-      >
-        <div>Currently used in bot</div>
+      <div class="flex flex-row items-center">
+        <CustomSwitch
+          v-model="article.use_in_bot"
+          @click="(value) => setArticleDetail('use_in_bot', article.use_in_bot)"
+        />
+        <span style="margin-left: 0.2rem"> Train Your Bot </span>
       </div>
-      <div v-else class="flex flex-row justify-between items-center">
-        <div>Not used in bot</div>
-      </div>
+
       <div v-if="$resources.users.data" class="flex flex-col">
         <span class="block mb-2 text-sm leading-4 text-gray-700">Author</span>
         <Autocomplete
@@ -110,6 +109,7 @@ import { FeatherIcon, ErrorMessage } from 'frappe-ui'
 import Autocomplete from '@/components/global/Autocomplete.vue'
 import NewCategoryDialog from '@/components/desk/knowledge_base/NewCategoryDialog.vue'
 import { inject, ref } from '@vue/runtime-core'
+import CustomSwitch from '@/components/global/CustomSwitch.vue'
 
 export default {
   name: 'ArticleDetails',
@@ -119,6 +119,7 @@ export default {
     ErrorMessage,
     Autocomplete,
     NewCategoryDialog,
+    CustomSwitch,
   },
   setup() {
     const user = inject('user')

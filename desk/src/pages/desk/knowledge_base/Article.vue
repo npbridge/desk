@@ -62,13 +62,6 @@ export default {
                 this.saveNewArticle(true)
               },
             },
-            {
-              label: 'Use in bot',
-              appearance: 'secondary',
-              handler: () => {
-                this.saveNewArticle(false, true)
-              },
-            },
           ],
         },
       ]
@@ -136,17 +129,6 @@ export default {
                 })
               },
             },
-            {
-              label: doc.use_in_bot ? 'Remove from bot' : 'Use in bot',
-              appearance: doc.use_in_bot ? 'secondary' : 'primary',
-              handler: () => {
-                this.editMode = false
-                this.$resources.article.setValue.submit({
-                  use_in_bot: !doc.use_in_bot,
-                })
-              },
-            },
-
             {
               label: 'Delete',
               appearance: 'danger',
@@ -297,7 +279,7 @@ export default {
             category: this.newArticleTempValues.category,
             note: this.insertArticle.note,
             published: publish,
-            use_in_bot: use_in_bot,
+            use_in_bot: this.newArticleTempValues.use_in_bot,
           },
         })
       }
