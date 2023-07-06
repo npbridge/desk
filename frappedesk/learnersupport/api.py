@@ -17,8 +17,8 @@ api_endpoint = os.getenv('BOT_API_ENDPOINT')
 # TODO: Update the path once api done
 endpoints = {
 	"add_users": api_endpoint + "bot-api/hd-bulk-user/",
-    "add_or_update_user": api_endpoint + "bot-api/hd-user/",
-    "add_or_update_doc": api_endpoint + "bot-api/hd-doc/",
+  "add_or_update_user": api_endpoint + "bot-api/hd-user/",
+  "add_or_update_doc": api_endpoint + "bot-api/hd-doc/"
 }
 
 headers = {
@@ -68,6 +68,16 @@ def delete_doc_api(document):
     res = requests.post(endpoints["add_or_update_doc"], data=json.dumps(document), headers=headers)
     return res
 
+@auth_check
+def create_gpt_doc_api(course):
+    bot_uuid = os.getenv("BOT_API_UUID")
+    data = {
+        "course": course,
+        "bot": bot_uuid
+    }
+    res = requests.post(endpoints["add_or_update_doc"], data=json.dumps(data), headers=headers)
+    return res 
+
 """Hook Functions"""
 def add_users_bulk(doc, event):
     if doc.reference_doctype == "Learner" and doc.import_file:
@@ -95,7 +105,7 @@ def add_users_bulk(doc, event):
         try:
             add_users_bulk_api(users)
         except requests.exceptions.RequestException as e:
-            logger.debug(f"GPTWarehouse Exception on adding users in bulk: {e}")
+            logger.error(f"GPTWarehouse Exception on adding users in bulk: {e}")
 
 @frappe.whitelist() 
 def add_or_update_user(doc, event):
@@ -112,7 +122,34 @@ def add_or_update_user(doc, event):
     try:
         add_or_update_user_api(user)
     except requests.exceptions.RequestException as e:
-        logger.debug(f"GPTWarehouse Exception on adding user {doc}: {e}")
+        logger.error(f"GPTWarehouse Exception on adding user {doc}: {e}")
+
+def create_gpt_doc(doc, event):  
+    course = {
+        "id": doc.name,
+        "title": doc.title,
+        "description": doc.description,
+        "url": doc.url,
+        "number": doc.number,
+        "start_date": doc.start_date,
+        "end_date": doc.end_date,
+        "instructors": doc.instructors,
+        "schedule": doc.schedule,
+        "assignment": [
+            {
+            "title": assignment.title,
+            "description": assignment.description,
+            "start_date": assignment.start_date,
+            "end_date": assignment.end_date,
+            "type": assignment.type
+            } 
+            for assignment in doc.assignment
+            ]
+    }
+    try: 
+        create_gpt_doc_api(course)
+    except requests.exceptions.RequestException as e:
+        logger.error(f"GPTWarehouse Exception on creating gpt doc {doc}: {e}")
 
 @frappe.whitelist()
 def add_or_update_doc(doc, event):
