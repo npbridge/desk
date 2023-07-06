@@ -197,13 +197,6 @@ export default {
         },
       },
       {
-        label: 'Dashboard',
-        icon: 'dashboard',
-        to: {
-          path: '/app/dashboard-view/Tickets%20Dashboard',
-        },
-      },
-      {
         label: 'Tickets',
         icon: 'ticket',
         expanded: true,
