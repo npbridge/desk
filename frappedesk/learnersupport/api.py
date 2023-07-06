@@ -114,11 +114,9 @@ def add_users_bulk(doc, event):
 
         try:
             add_users_bulk_api(users)
-        except requests.exceptions.Timeout as e:
-            logger.error(f"GPTWarehouse Exception on adding users in bulk: {e}")
-        except requests.exceptions.TooManyRedirects as e:
-            logger.error(f"GPTWarehouse Exception on adding users in bulk: {e}")
         except requests.exceptions.RequestException as e:
+            logger.error(f"GPTWarehouse Exception on adding users in bulk: {e}")
+        except Exception as e:
             logger.error(f"GPTWarehouse Exception on adding users in bulk: {e}")
 
 @frappe.whitelist() 
@@ -136,12 +134,12 @@ def add_or_update_user(doc, event):
     }
     try:
         add_or_update_user_api(user)
-    except requests.exceptions.Timeout as e:
-        logger.error(f"GPTWarehouse Exception on adding user {doc}: {e}")
-    except requests.exceptions.TooManyRedirects as e:
-        logger.error(f"GPTWarehouse Exception on adding user {doc}: {e}")
     except requests.exceptions.RequestException as e:
         logger.error(f"GPTWarehouse Exception on adding user {doc}: {e}")
+    except Exception as e:
+        logger.error(f"GPTWarehouse Exception on adding user {doc}: {e}")
+
+
 
 @frappe.whitelist() 
 def create_course_doc(doc, event):  
@@ -169,12 +167,11 @@ def create_course_doc(doc, event):
     }
     try: 
         create_course_doc_api(course)
-    except requests.exceptions.Timeout as e:
-        logger.error(f"GPTWarehouse Exception on creating gpt doc {doc}: {e}")
-    except requests.exceptions.TooManyRedirects as e:
-        logger.error(f"GPTWarehouse Exception on creating gpt doc {doc}: {e}")
     except requests.exceptions.RequestException as e:
         logger.error(f"GPTWarehouse Exception on creating gpt doc {doc}: {e}")
+    except Exception as e:
+        logger.error(f"GPTWarehouse Exception on creating gpt doc {doc}: {e}")
+
 
 @frappe.whitelist()
 def add_or_update_doc(doc, event):
@@ -188,21 +185,18 @@ def add_or_update_doc(doc, event):
         }
         try: 
             add_or_update_doc_api(document)
-        except requests.exceptions.Timeout as e:
-            logger.error(f"GPTWarehouse Exception on adding/updating document {document}: {e}")
-        except requests.exceptions.TooManyRedirects as e:
-            logger.error(f"GPTWarehouse Exception on adding/updating document {document}: {e}")
         except requests.exceptions.RequestException as e:
+            logger.error(f"GPTWarehouse Exception on adding/updating document {document}: {e}")
+        except Exception as e:
             logger.error(f"GPTWarehouse Exception on adding/updating document {document}: {e}")
     else:
         try: 
             delete_doc_api(doc.name)
-        except requests.exceptions.Timeout as e:
-            logger.error(f"GPTWarehouse Exception on deleting document {doc.name}: {e}")
-        except requests.exceptions.TooManyRedirects as e:
-            logger.error(f"GPTWarehouse Exception on deleting document {doc.name}: {e}")
         except requests.exceptions.RequestException as e:
             logger.error(f"GPTWarehouse Exception on deleting document {doc.name}: {e}")
+        except Exception as e:
+            logger.error(f"GPTWarehouse Exception on deleting document {doc.name}: {e}")
+        
 
 
 @frappe.whitelist()
@@ -213,9 +207,8 @@ def delete_doc(doc, event):
     
     try: 
         delete_doc_api(doc.name)
-    except requests.exceptions.Timeout as e:
-        logger.error(f"GPTWarehouse Exception on deleting document {doc.name}: {e}")
-    except requests.exceptions.TooManyRedirects as e:
-        logger.error(f"GPTWarehouse Exception on deleting document {doc.name}: {e}")
     except requests.exceptions.RequestException as e:
         logger.error(f"GPTWarehouse Exception on deleting document {doc.name}: {e}")
+    except Exception as e:
+        logger.error(f"GPTWarehouse Exception on deleting document {doc.name}: {e}")
+
