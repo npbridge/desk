@@ -28,6 +28,14 @@
               <span class="text-[10px] uppercase grow">Published</span>
             </span>
           </div>
+          <div
+            v-if="article.use_in_bot"
+            class="bg-white border px-[8px] rounded-[10px] h-fit w-fit border-[purple] text-[purple] ml-[0.5rem]"
+          >
+            <span class="items-center h-[20px] space-x-[7px]">
+              <span class="text-[10px] uppercase grow">Used in bot</span>
+            </span>
+          </div>
 
           <!-- <div v-if="article.article_type" class="text-gray-600 font-medium bg-gray-200 px-[8px] py-[2px] rounded-[48px] uppercase text-xs">{{ article.article_type }}</div> -->
         </router-link>

@@ -42,6 +42,9 @@ doc_events = {
 	},
     "Course": {
         "on_update": "frappedesk.learnersupport.api.create_gpt_doc"
+	},
+    "Article": {
+        "on_update": "frappedesk.frappedesk.doctype.article.article.update_in_gpt"
 	}
 }
 
