@@ -41,7 +41,11 @@ doc_events = {
         "after_insert": "frappedesk.learnersupport.api.add_users_bulk"
 	},
     "Course": {
-        "on_update": "frappedesk.learnersupport.api.create_gpt_doc"
+        "on_update": "frappedesk.learnersupport.api.create_course_doc"
+	},
+    "Article": {
+        "on_update": "frappedesk.learnersupport.api.add_or_update_doc",
+        "on_trash": "frappedesk.learnersupport.api.delete_doc"
 	}
 }
 
