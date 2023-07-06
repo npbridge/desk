@@ -18,7 +18,8 @@ endpoints = {
     "add_users": api_endpoint + "bot-api/hd-bulk-user/",
     "add_or_update_user": api_endpoint + "bot-api/hd-user/",
     "add_or_update_course_doc": api_endpoint + "bot-api/hd-course-doc/",
-    "add_or_update_doc": api_endpoint + "bot-api/hd-doc/"
+    "add_or_update_doc": api_endpoint + "bot-api/hd-doc/",
+    "total_messages": api_endpoint + "bot-api/total-messages/"
 }
 
 headers = {
@@ -85,6 +86,16 @@ def delete_doc_api(id):
     }
     res = requests.delete(endpoints["add_or_update_doc"], data=json.dumps(data), headers=headers)
     return res
+
+@frappe.whitelist()
+@auth_check
+def get_total_messages():
+    bot_uuid = os.getenv("BOT_API_UUID")
+    data = {
+        "bot": bot_uuid
+    }
+    res = requests.post(endpoints["total_messages"], data=json.dumps(data), headers=headers)
+    return res 
 
 
 """Hook Functions"""
