@@ -71,8 +71,8 @@ export default {
       })
     }
 
-    this.saveNewArticle = (publish = false) => {
-      this.insertArticle(publish)
+    this.saveNewArticle = (publish = false, use_in_bot = false) => {
+      this.insertArticle(publish, use_in_bot)
     }
   },
   setup() {
@@ -250,7 +250,7 @@ export default {
     },
   },
   methods: {
-    insertArticle(publish = false) {
+    insertArticle(publish = false, use_in_bot = false) {
       this.articleInputErrors = {}
       const validateInputs = (input) => {
         if (!input.title || input.title == '') {
@@ -279,6 +279,7 @@ export default {
             category: this.newArticleTempValues.category,
             note: this.insertArticle.note,
             published: publish,
+            use_in_bot: this.newArticleTempValues.use_in_bot,
           },
         })
       }
