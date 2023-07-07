@@ -6,6 +6,7 @@
  "allow_multiple": 1,
  "allow_print": 0,
  "apply_document_permissions": 1,
+ "breadcrumbs": "[]",
  "button_label": "Save",
  "client_script": "        frappe.web_form.after_save = (values) => {\n            frappe\n                .call({\n                    method:\n                        \"frappe.core.doctype.data_import.data_import.form_start_import\",\n                    args: { data_import: values.name },\n                })\n        };\n\t\t\n",
  "creation": "2023-06-27 12:17:28.609292",
@@ -33,11 +34,11 @@
    "label": "Payload Count"
   }
  ],
- "list_title": "Learner Contact Imports",
+ "list_title": "Learner Bulk Imports",
  "login_required": 1,
  "max_attachment_size": 0,
- "modified": "2023-07-05 17:08:31.205843",
- "modified_by": "Administrator",
+ "modified": "2023-07-07 12:26:09.087478",
+ "modified_by": "jahnavi@npbridge.com",
  "module": "FrappeDesk",
  "name": "add-learners",
  "owner": "Administrator",
@@ -48,8 +49,8 @@
  "show_sidebar": 0,
  "success_message": "Learner import started successfully! ",
  "success_title": "Import Started!",
- "success_url": "/learner-bulk/list",
- "title": "Learner Contact Importer",
+ "success_url": "/learner/list",
+ "title": "Learner Bulk Importer",
  "web_form_fields": [
   {
    "allow_read_on_all_link_options": 0,
@@ -80,7 +81,7 @@
    "max_value": 0,
    "read_only": 0,
    "read_only_depends_on": "eval: ['Success', 'Partial Success'].includes(doc.status)",
-   "reqd": 0,
+   "reqd": 1,
    "show_in_filter": 0
   },
   {
