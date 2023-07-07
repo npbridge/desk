@@ -1,0 +1,46 @@
+{
+ "cards": [
+  {
+   "card": "Total Number Of Tickets"
+  },
+  {
+   "card": "Total Number Of Unresolved Tickets"
+  },
+  {
+   "card": "Total number of chat queries"
+  },
+  {
+   "card": "Total Numbe Of Learners"
+  }
+ ],
+ "charts": [
+  {
+   "chart": "Tickets Received Over Time",
+   "width": "Half"
+  },
+  {
+   "chart": "Tickets Replied To Over Time",
+   "width": "Half"
+  },
+  {
+   "chart": "Tickets Resolved Over Time",
+   "width": "Half"
+  },
+  {
+   "chart": "Tickets Closed Over Time",
+   "width": "Half"
+  }
+ ],
+ "creation": "2022-12-06 11:12:20.770010",
+ "dashboard_name": "Analytics Dashboard",
+ "docstatus": 0,
+ "doctype": "Dashboard",
+ "idx": 0,
+ "is_default": 0,
+ "is_standard": 1,
+ "modified": "2023-07-07 15:40:26.217525",
+ "modified_by": "jahnavi@npbridge.com",
+ "module": "FrappeDesk",
+ "name": "Analytics Dashboard",
+ "owner": "Administrator"
+}
