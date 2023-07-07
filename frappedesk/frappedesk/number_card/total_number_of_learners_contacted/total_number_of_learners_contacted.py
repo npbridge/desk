@@ -1,7 +1,7 @@
 import frappe
 
 # whitelisted function to return total count of ticket grouped over email
-@frappe.whitelist()
+@frappe.whitelist(allow_guest=True)
 def get():
 
     value = 0 
