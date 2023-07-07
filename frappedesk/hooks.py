@@ -83,6 +83,7 @@ website_redirects = [
 	{"source": "/qrcode", "target": "/home"},
 	{"source": "/search", "target": "/home"},
 	{"source": "/third_party_apps", "target": "/home"},
+    {"source": "/learner-bulk/list", "target": "/learner/list"}
 	]
 
 fixtures = [
