@@ -70,7 +70,7 @@
                     {{
                       contactCourses.find(
                         (ccourse) => ccourse.name === course.course
-                      )?.description
+                      )?.title
                     }}
                   </div>
                   <div>
@@ -88,7 +88,7 @@
             v-if="contactCourses"
             :options="
               contactCourses.map((course) => {
-                return { label: course.description, value: course.name }
+                return { label: course.title, value: course.name }
               })
             "
             placeholder="Set courses"
@@ -299,7 +299,7 @@ export default {
         method: 'frappe.client.get_list',
         params: {
           doctype: 'Course',
-          fields: ['name', 'description'],
+          fields: ['name', 'title', 'description'],
         },
         auto: true,
         onSuccess: (data) => {
