@@ -13,7 +13,7 @@
  "is_standard": 1,
  "label": "Total Number of Chat Messages",
  "method": "frappedesk.frappedesk.number_card.total_number_of_chat_queries.total_number_of_chat_queries.get",
- "modified": "2023-07-07 15:41:58.116657",
+ "modified": "2023-07-07 15:44:58.116657",
  "modified_by": "jahnavi@npbridge.com",
  "module": "FrappeDesk",
  "name": "Total number of chat queries",

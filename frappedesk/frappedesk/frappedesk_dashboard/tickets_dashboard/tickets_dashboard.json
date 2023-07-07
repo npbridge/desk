@@ -7,7 +7,10 @@
    "card": "Total Number Of Unresolved Tickets"
   },
   {
-   "card": "Total Number Of Learners Contacted"
+   "card": "Total number of chat queries"
+  },
+  {
+   "card": "Total Numbe Of Learners"
   }
  ],
  "charts": [
@@ -28,15 +31,15 @@
    "width": "Half"
   }
  ],
- "creation": "2022-08-18 12:37:43.973548",
+ "creation": "2022-12-06 11:12:20.770010",
  "dashboard_name": "Tickets Dashboard",
  "docstatus": 0,
  "doctype": "Dashboard",
  "idx": 0,
  "is_default": 1,
  "is_standard": 1,
- "modified": "2022-10-17 09:30:17.198421",
- "modified_by": "Administrator",
+ "modified": "2023-07-06 15:54:19.449598",
+ "modified_by": "jahnavi@npbridge.com",
  "module": "FrappeDesk",
  "name": "Tickets Dashboard",
  "owner": "Administrator"
