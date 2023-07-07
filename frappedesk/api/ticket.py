@@ -453,7 +453,7 @@ def check_and_create_contact_course(course):
 	course_doc = frappe.db.exists("Course", course)
 	if not course_doc:
 		contact_course_doc = frappe.new_doc("Course")
-		contact_course_doc.name = contact_course_doc.description = course
+		contact_course_doc.name = contact_course_doc.title = course
 		contact_course_doc.insert()
 	else:
 		contact_course_doc = frappe.get_doc("Course", course)
