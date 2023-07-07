@@ -1,12 +1,21 @@
 {
  "actions": [],
- "autoname": "format:{description}-{#####} ",
+ "allow_rename": 1,
+ "autoname": "hash",
  "creation": "2022-09-05 16:02:22.305352",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "description"
+  "title",
+  "description",
+  "url",
+  "number",
+  "start_date",
+  "end_date",
+  "instructors",
+  "schedule",
+  "assignment"
  ],
  "fields": [
   {
@@ -14,18 +23,60 @@
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Description",
+   "unique": 1
+  },
+  {
+   "fieldname": "number",
+   "fieldtype": "Data",
+   "label": "Number"
+  },
+  {
+   "fieldname": "start_date",
+   "fieldtype": "Date",
+   "label": "Start Date"
+  },
+  {
+   "fieldname": "end_date",
+   "fieldtype": "Date",
+   "label": "End Date"
+  },
+  {
+   "fieldname": "instructors",
+   "fieldtype": "Data",
+   "label": "Instructors"
+  },
+  {
+   "fieldname": "schedule",
+   "fieldtype": "Data",
+   "label": "Schedule"
+  },
+  {
+   "fieldname": "assignment",
+   "fieldtype": "Table",
+   "label": "Assignment",
+   "options": "Assignment"
+  },
+  {
+   "fieldname": "title",
+   "fieldtype": "Data",
+   "label": "Title",
    "reqd": 1,
    "unique": 1
+  },
+  {
+   "fieldname": "url",
+   "fieldtype": "Data",
+   "label": "Url"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-10-25 12:24:55.821998",
+ "modified": "2023-07-05 12:01:07.563026",
  "modified_by": "Administrator",
  "module": "FrappeDesk",
  "name": "Course",
  "name_case": "Title Case",
- "naming_rule": "Expression",
+ "naming_rule": "Random",
  "owner": "Administrator",
  "permissions": [
   {

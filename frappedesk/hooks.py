@@ -40,8 +40,12 @@ doc_events = {
     "Data Import": {
         "after_insert": "frappedesk.learnersupport.api.add_users_bulk"
 	},
-    "Learner": {
-        "db_update": "frappedesk.learnersupport.api.add_or_update_user",
+    "Course": {
+        "on_update": "frappedesk.learnersupport.api.create_course_doc"
+	},
+    "Article": {
+        "on_update": "frappedesk.learnersupport.api.add_or_update_doc",
+        "on_trash": "frappedesk.learnersupport.api.delete_doc"
 	}
 }
 
@@ -79,6 +83,7 @@ website_redirects = [
 	{"source": "/qrcode", "target": "/home"},
 	{"source": "/search", "target": "/home"},
 	{"source": "/third_party_apps", "target": "/home"},
+    {"source": "/learner-bulk/list", "target": "/learner/list"}
 	]
 
 fixtures = [
