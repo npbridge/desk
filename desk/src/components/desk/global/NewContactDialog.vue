@@ -17,7 +17,7 @@
               v-if="contactCourses"
               :options="
                 contactCourses.map((x) => {
-                  return { label: x.name, value: x.name }
+                  return { label: x.title, value: x.name }
                 })
               "
               placeholder="Assign courses"
