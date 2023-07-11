@@ -58,7 +58,7 @@
                         {{
                           contactCourses.find(
                             (ccourse) => ccourse.name === course.course
-                          )?.description
+                          )?.name
                         }}
                       </div>
                     </div>
