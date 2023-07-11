@@ -41,7 +41,7 @@
  "list_title": "Learners",
  "login_required": 1,
  "max_attachment_size": 0,
- "modified": "2023-07-05 17:07:35.509965",
+ "modified": "2023-07-11 16:25:52.884082",
  "modified_by": "Administrator",
  "module": "FrappeDesk",
  "name": "learner",
@@ -53,7 +53,7 @@
  "show_sidebar": 0,
  "success_title": "Learner Added!",
  "success_url": "/learner/list",
- "title": "Learner Contact Entry",
+ "title": "Learner Entry",
  "web_form_fields": [
   {
    "allow_read_on_all_link_options": 0,
