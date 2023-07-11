@@ -20,10 +20,9 @@
  "fields": [
   {
    "fieldname": "description",
-   "fieldtype": "Data",
+   "fieldtype": "Text",
    "in_list_view": 1,
-   "label": "Description",
-   "unique": 1
+   "label": "Description"
   },
   {
    "fieldname": "number",
@@ -71,7 +70,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-07-05 12:01:07.563026",
+ "modified": "2023-07-11 17:27:16.051264",
  "modified_by": "Administrator",
  "module": "FrappeDesk",
  "name": "Course",
