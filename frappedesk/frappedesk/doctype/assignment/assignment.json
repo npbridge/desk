@@ -1,9 +1,9 @@
 {
  "actions": [],
+ "allow_rename": 1,
  "autoname": "hash",
  "creation": "2023-07-05 11:10:40.392637",
  "doctype": "DocType",
- "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
   "title",
@@ -22,7 +22,7 @@
   },
   {
    "fieldname": "description",
-   "fieldtype": "Data",
+   "fieldtype": "Small Text",
    "in_list_view": 1,
    "label": "Description"
   },
@@ -30,15 +30,13 @@
    "fieldname": "start_date",
    "fieldtype": "Date",
    "in_list_view": 1,
-   "label": "Start Date",
-   "reqd": 1
+   "label": "Start Date"
   },
   {
    "fieldname": "end_date",
    "fieldtype": "Date",
    "in_list_view": 1,
-   "label": "End Date",
-   "reqd": 1
+   "label": "End Date"
   },
   {
    "fieldname": "type",
@@ -49,7 +47,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2023-07-05 12:02:59.421396",
+ "modified": "2023-07-11 11:36:44.430720",
  "modified_by": "Administrator",
  "module": "FrappeDesk",
  "name": "Assignment",
