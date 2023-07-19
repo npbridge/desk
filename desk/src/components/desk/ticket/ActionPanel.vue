@@ -671,7 +671,6 @@ export default {
           this.ticketTags = data
         },
         onError: (error) => {
-          console.log(error)
           // TODO:
         },
       }
