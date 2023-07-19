@@ -101,7 +101,6 @@ export default {
           this.thresholdLimitChanged = false
         },
         onError: (err) => {
-          console.log(err)
           this.$toast({
             title: 'Error updating threshold limit',
             text: err,
@@ -124,7 +123,6 @@ export default {
           this.useBotAnswersChanged = false
         },
         onError: (err) => {
-          console.log(err)
           this.$toast({
             title: 'Error updating Use Bot Answers Flag',
             text: err,

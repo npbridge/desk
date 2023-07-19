@@ -110,7 +110,6 @@ export default {
           this.contactCourses = data
         },
         onError: (error) => {
-          console.log(error)
           // TODO:
         },
       }

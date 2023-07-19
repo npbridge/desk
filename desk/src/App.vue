@@ -70,9 +70,7 @@ export default {
         await call('logout')
         this.$router.push({ name: 'DeskLogin' })
       },
-      resetPassword: async (email) => {
-        console.log('reset password')
-      },
+      resetPassword: async (email) => {},
       isLoggedIn: () => {
         const cookie = Object.fromEntries(
           document.cookie

@@ -444,7 +444,6 @@ export default {
           this.$router.go()
         },
         onError: (err) => {
-          console.log(err)
           this.$toast({
             title: 'Error on Unfollow Ticket',
             text: 'Unable to unfollow ticket.',
@@ -461,7 +460,6 @@ export default {
           this.$router.go()
         },
         onError: (err) => {
-          console.log(err)
           this.$toast({
             title: 'Error on follow Ticket',
             text: 'Unable to follow ticket.',

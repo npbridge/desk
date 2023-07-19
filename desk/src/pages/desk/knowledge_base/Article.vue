@@ -190,7 +190,7 @@ export default {
         onError: (err) => {
           this.$toast({
             title: 'Error while creating article',
-            text: err,
+            text: 'Error while creating article',
             customIcon: 'circle-fail',
             appearance: 'danger',
           })
