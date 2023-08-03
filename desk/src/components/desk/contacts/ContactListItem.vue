@@ -103,7 +103,7 @@ export default {
         method: 'frappe.client.get_list',
         params: {
           doctype: 'Course',
-          fields: ['name', 'description'],
+          fields: ['name', 'title', 'description'],
         },
         auto: true,
         onSuccess: (data) => {
