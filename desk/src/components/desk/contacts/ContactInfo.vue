@@ -266,7 +266,6 @@ export default {
           this.$router.go()
         },
         onError: (error) => {
-          console.log(error)
           // TODO:
         },
       }
@@ -277,9 +276,7 @@ export default {
         onSuccess: async (contact) => {
           this.$router.go()
         },
-        onError: (error) => {
-          console.log(error)
-        },
+        onError: (error) => {},
       }
     },
     createContactCourse() {
@@ -289,7 +286,6 @@ export default {
           this.$resources.courses.fetch()
         },
         onError: (error) => {
-          console.log(error)
           // TODO:
         },
       }
@@ -306,7 +302,6 @@ export default {
           this.contactCourses = data
         },
         onError: (error) => {
-          console.log(error)
           // TODO:
         },
       }

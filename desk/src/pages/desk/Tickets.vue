@@ -503,9 +503,7 @@ export default {
 
           // this.$event.emit('update_ticket_list')
         },
-        onError: (err) => {
-          console.log(err)
-        },
+        onError: (err) => {},
       }
     },
     bulkAssignTicketStatus() {

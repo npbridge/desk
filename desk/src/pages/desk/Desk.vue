@@ -281,7 +281,6 @@ export default {
           this.$router.go()
         },
         onError: (err) => {
-          console.log(err)
           this.$toast({
             title: 'Something went wrong.',
             text: 'Please try again later.',
@@ -298,7 +297,6 @@ export default {
           this.$resources.frappedeskSettings.fetch()
         },
         onError: (err) => {
-          console.log(err)
           this.$toast({
             title: 'Something went wrong.',
             text: 'Please try again later.',
@@ -319,9 +317,7 @@ export default {
             appearance: 'success',
           })
         },
-        onError: (error) => {
-          console.log(error)
-        },
+        onError: (error) => {},
       }
     },
     skipHelpdeskNameSetup() {
@@ -369,7 +365,6 @@ export default {
           }
         },
         onError: (error) => {
-          console.log(error)
           this.$toast({
             title: 'Something went wrong.',
             text: 'Please try again later.',
@@ -412,9 +407,7 @@ export default {
             this.$resources.agentCount.fetch()
           }
         },
-        onError: (error) => {
-          console.log(error)
-        },
+        onError: (error) => {},
       }
     },
     agentCount() {
@@ -443,9 +436,7 @@ export default {
             })
           }
         },
-        onError: (error) => {
-          console.log(error)
-        },
+        onError: (error) => {},
       }
     },
     createTicket() {
@@ -456,7 +447,6 @@ export default {
         },
         onError: (error) => {
           // TODO:
-          console.log(error)
         },
       }
     },
@@ -468,7 +458,6 @@ export default {
         },
         onError: (error) => {
           // TODO:
-          console.log(error)
         },
       }
     },
@@ -480,7 +469,6 @@ export default {
         },
         onError: (error) => {
           // TODO:
-          console.log(error)
         },
       }
     },
@@ -497,7 +485,6 @@ export default {
         },
         onError: (error) => {
           // TODO:
-          console.log(error)
         },
       }
     },
@@ -513,7 +500,6 @@ export default {
           this.ticketTags = data
         },
         onError: (error) => {
-          console.log(error)
           // TODO:
         },
       }
@@ -530,7 +516,6 @@ export default {
           this.contactCourses = data
         },
         onError: (error) => {
-          console.log(error)
           // TODO:
         },
       }
@@ -547,7 +532,6 @@ export default {
         },
         onError: (error) => {
           // TODO:
-          console.log(error)
         },
       }
     },
@@ -560,7 +544,6 @@ export default {
         },
         onError: (error) => {
           // TODO:
-          console.log(error)
         },
       }
     },
@@ -578,7 +561,6 @@ export default {
         },
         onError: (error) => {
           // TODO:
-          console.log(error)
         },
       }
     },
@@ -592,6 +574,7 @@ export default {
             'agent_name',
             // TODO: 'user.user_image'
           ],
+          limit_page_length: 0,
         },
         auto: this.user.has_desk_access,
         onSuccess: (data) => {
@@ -599,7 +582,6 @@ export default {
         },
         onError: (error) => {
           // TODO:
-          console.log(error)
         },
       }
     },
@@ -615,7 +597,6 @@ export default {
         },
         onError: (error) => {
           // TODO:
-          console.log(error)
         },
       }
     },
@@ -627,7 +608,6 @@ export default {
         },
         onError: (error) => {
           // TODO:
-          console.log(error)
         },
       }
     },
@@ -637,7 +617,6 @@ export default {
         onSuccess: async (ticket) => {},
         onError: (error) => {
           // TODO:
-          console.log(error)
         },
       }
     },
@@ -646,7 +625,6 @@ export default {
         method: 'frappedesk.api.ticket.assign_ticket_tag',
         onSuccess: async (ticket) => {},
         onError: (error) => {
-          console.log(error)
           // TODO:
         },
       }
@@ -656,7 +634,6 @@ export default {
         method: 'frappedesk.api.ticket.assign_contact_course',
         onSuccess: async (contact) => {},
         onError: (error) => {
-          console.log(error)
           // TODO:
         },
       }
@@ -665,18 +642,14 @@ export default {
       return {
         method: 'frappedesk.api.ticket.delete_ticket_tag',
         onSuccess: async (ticket) => {},
-        onError: (error) => {
-          console.log(error)
-        },
+        onError: (error) => {},
       }
     },
     deleteContactCourse() {
       return {
         method: 'frappedesk.api.ticket.delete_contact_course',
         onSuccess: async (contact) => {},
-        onError: (error) => {
-          console.log(error)
-        },
+        onError: (error) => {},
       }
     },
     assignTicketStatus() {
@@ -686,7 +659,6 @@ export default {
           this.$event.emit('update_ticket_list')
         },
         onError: (error) => {
-          console.log(error)
           // TODO:
         },
       }
@@ -696,7 +668,6 @@ export default {
         method: 'frappedesk.api.ticket.assign_ticket_priority',
         onSuccess: async (ticket) => {},
         onError: (error) => {
-          console.log(error)
           // TODO:
         },
       }
@@ -706,7 +677,6 @@ export default {
         method: 'frappedesk.api.ticket.assign_ticket_group',
         onSuccess: async (ticket) => {},
         onError: (error) => {
-          console.log(error)
           // TODO:
         },
       }
@@ -718,7 +688,6 @@ export default {
           this.$resources.types.fetch()
         },
         onError: (error) => {
-          console.log(error)
           // TODO:
         },
       }
@@ -730,7 +699,6 @@ export default {
           this.$resources.tags.fetch()
         },
         onError: (error) => {
-          console.log(error)
           // TODO:
         },
       }
@@ -742,7 +710,6 @@ export default {
           this.$resources.courses.fetch()
         },
         onError: (error) => {
-          console.log(error)
           // TODO:
         },
       }
@@ -751,9 +718,7 @@ export default {
       return {
         method: 'frappedesk.api.ticket.set_ticket_notes',
         onSuccess: async (ticket) => {},
-        onError: (error) => {
-          console.log(error)
-        },
+        onError: (error) => {},
       }
     },
   },
